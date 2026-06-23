@@ -12,7 +12,7 @@ kotlin-for-forge = "5.10.0"
 cobblemon = "1.7.3+1.21.1"
 junit = "5.1.0"
 publish = "0.35.0"
-matthiesen_lib = "1.5.5"
+matthiesen_lib = "1.8.0"
 sponge-mixin = "0.8.5"
 
 [plugins]
@@ -38,9 +38,6 @@ cobblemon-fabric = { group = "com.cobblemon", name = "fabric", version.ref = "co
 cobblemon-neoforge = { group = "com.cobblemon", name = "neoforge", version.ref = "cobblemon" }
 junit-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit" }
 junit-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit" }
-matthiesen-lib-common = { group = "dev.matthiesen", name = "matthiesen-lib-common", version.ref = "matthiesen_lib" }
-matthiesen-lib-fabric = { group = "dev.matthiesen", name = "matthiesen-lib-fabric", version.ref = "matthiesen_lib" }
-matthiesen-lib-neoforge = { group = "dev.matthiesen", name = "matthiesen-lib-neoforge", version.ref = "matthiesen_lib" }
 matthiesen-lib-api-common = { group = "dev.matthiesen", name = "matthiesen-lib-api-common", version.ref = "matthiesen_lib" }
 matthiesen-lib-api-fabric = { group = "dev.matthiesen", name = "matthiesen-lib-api-fabric", version.ref = "matthiesen_lib" }
 matthiesen-lib-api-neoforge = { group = "dev.matthiesen", name = "matthiesen-lib-api-neoforge", version.ref = "matthiesen_lib" }
