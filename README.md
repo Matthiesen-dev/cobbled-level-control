@@ -1,12 +1,13 @@
-# template-cobblemon-sidemod
+# cobbled-level-control
 
 <div>
   <img src="https://mods.matthiesen.dev/badges/matthiesenLibAPI.svg" alt="Matthiesen Lib API">
   <img src="https://mods.matthiesen.dev/badges/cobblemon.svg" alt="Cobblemon">
 </div>
 
-Template for a Cobblemon side mod. This template includes the necessary setup for a mod that depends on the Matthiesen Lib API and Cobblemon, 
-but does not include any specific functionality. You can use this as a starting point for creating your own Cobblemon side mod.
+This server-side mod gives the server-owner full control over level caps on pokemons using LuckPerms permissions for absolute control. Perfect for a tailored player experience!
+
+TODO: Expand this README with more information about the mod.
 
 ## Requirements
 - [Matthiesen Lib API](https://modrinth.com/mod/matthiesen-lib-api)
