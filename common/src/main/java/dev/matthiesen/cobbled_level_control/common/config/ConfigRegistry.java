@@ -29,11 +29,11 @@ public final class ConfigRegistry {
         DIFFICULTY_CONFIGS = INSTANCE.createConfigFolderManager(DifficultyConfig.class, "difficulties");
 
         loadConfigs();
+        PLAYER_ACCOUNTS_CONFIG.loadConfig();
     }
 
     public void loadConfigs() {
         MAIN_CONFIG.loadConfig();
-        PLAYER_ACCOUNTS_CONFIG.loadConfig();
         DIFFICULTY_CONFIGS.loadConfigs();
 
         // Ensure all registered difficulties have a config and are registered
