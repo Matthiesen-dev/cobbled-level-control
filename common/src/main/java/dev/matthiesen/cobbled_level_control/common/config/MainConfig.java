@@ -41,6 +41,9 @@ public final class MainConfig {
     }
 
     public static class ErrorMessages {
+        @SerializedName("useActionBar")
+        public boolean useActionBar = false;
+
         @SerializedName("battle")
         public String battle = "One or more of your Pokemon exceeds your leveling cap! Please put it in your PC!";
 

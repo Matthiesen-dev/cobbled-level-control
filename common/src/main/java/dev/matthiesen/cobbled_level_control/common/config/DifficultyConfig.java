@@ -48,6 +48,12 @@ public final class DifficultyConfig {
         @SerializedName("legendary")
         public String legendary = "cobbled_level_control.catching.legendary";
 
+        @SerializedName("mythical")
+        public String mythical = "cobbled_level_control.catching.mythical";
+
+        @SerializedName("ultraBeast")
+        public String ultraBeast = "cobbled_level_control.catching.ultra_beast";
+
         @SerializedName("shiny")
         public String shiny = "cobbled_level_control.catching.shiny";
     }

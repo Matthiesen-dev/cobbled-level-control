@@ -33,8 +33,11 @@ public final class ConfigRegistry {
     }
 
     public void loadConfigs() {
+        INSTANCE.createInfoLog("Loading configs...");
         MAIN_CONFIG.loadConfig();
         DIFFICULTY_CONFIGS.loadConfigs();
+
+        INSTANCE.createInfoLog("Loaded configs! Loading difficulties...");
 
         // Ensure all registered difficulties have a config and are registered
         var difficulties = MAIN_CONFIG.getConfig().difficulties;
@@ -48,19 +51,13 @@ public final class ConfigRegistry {
             Difficulty difficultyRuntime = new Difficulty(difficulty, catchingRuntime, levelingRuntime, battleRuntime);
             difficultyRuntime.add();
         }
+
+        INSTANCE.createInfoLog("Loaded all difficulties!");
     }
 
     private static @NotNull Catching getCatching(DifficultyConfig loadedConfig) {
         var catchingConfig = loadedConfig.catching;
-        return new Catching(
-                catchingConfig.evolutionStages.finalStageEvo,
-                catchingConfig.evolutionStages.firstStageEvo,
-                catchingConfig.evolutionStages.secondStageEvo,
-                catchingConfig.evolutionStages.singleEvo,
-                catchingConfig.permissions.legendary,
-                catchingConfig.permissions.shiny,
-                catchingConfig.tiers
-        );
+        return new Catching(catchingConfig);
     }
 
     public void savePlayerAccounts() {

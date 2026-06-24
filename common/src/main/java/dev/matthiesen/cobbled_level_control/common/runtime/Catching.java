@@ -1,9 +1,7 @@
 package dev.matthiesen.cobbled_level_control.common.runtime;
 
-import java.util.Map;
+import dev.matthiesen.cobbled_level_control.common.config.DifficultyConfig;
 
-public record Catching(String finalStagePermission, String firstStagePermission, String middleStagePermission,
-                       String singleStagePermission, String legendaryPermission, String shinyPermission,
-                       Map<Integer, Integer> tierMap) {
+public record Catching(DifficultyConfig.CatchingConfig config) {
 
 }
