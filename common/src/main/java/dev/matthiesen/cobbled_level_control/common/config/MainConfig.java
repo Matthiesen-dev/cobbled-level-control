@@ -25,7 +25,7 @@ public final class MainConfig {
     public SaveConfig saveConfig = new SaveConfig();
 
     public static class Defaults {
-        @SerializedName("default")
+        @SerializedName("defaultDifficulty")
         public String defaultDifficulty = "default";
 
         @SerializedName("autoApplyDefault")
