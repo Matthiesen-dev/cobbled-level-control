@@ -47,9 +47,10 @@ public final class CobbledLevelControl extends AbstractCommonMod {
         return () -> {
             if (initialized) {
                 configManager.savePlayerAccounts();
+                createInfoLog("Saved Player Account Records");
             }
             configManager.loadConfigs();
-            createInfoLog("Saved Player Account Records, and reloaded configs!");
+            createInfoLog("Reloaded configs!");
         };
     }
 
