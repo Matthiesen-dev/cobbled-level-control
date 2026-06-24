@@ -6,7 +6,8 @@ import net.neoforged.fml.common.Mod;
 @Mod(CobbledLevelControl.MOD_ID)
 public final class CobbledLevelControlNeoForge {
     public CobbledLevelControlNeoForge() {
-        CobbledLevelControl.INSTANCE.createInfoLog("Loading for NeoForge Mod Loader");
-        CobbledLevelControl.INSTANCE.initialize();
+        var instance = CobbledLevelControl.INSTANCE;
+        instance.createInfoLog("Loading for NeoForge Mod Loader");
+        instance.initialize();
     }
 }

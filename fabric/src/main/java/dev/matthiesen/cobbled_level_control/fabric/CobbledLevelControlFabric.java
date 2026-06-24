@@ -7,7 +7,8 @@ public final class CobbledLevelControlFabric implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        CobbledLevelControl.INSTANCE.createInfoLog("Loading for Fabric Mod Loader");
-        CobbledLevelControl.INSTANCE.initialize();
+        var instance = CobbledLevelControl.INSTANCE;
+        instance.createInfoLog("Loading for Fabric Mod Loader");
+        instance.initialize();
     }
 }
