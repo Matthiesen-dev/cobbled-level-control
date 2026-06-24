@@ -56,7 +56,7 @@ public final class BattleStartEventsListener {
 
                 Leveling levelingModule = difficulty.leveling();
                 int levelingLevel = playerData.getLeveling();
-                int maxLevelingLevel = levelingModule.tierMap().get(levelingLevel);
+                int maxLevelingLevel = levelingModule.config().tiers.get(levelingLevel);
 
                 if (maxLevel > maxLevelingLevel) {
                     event.cancel();

@@ -18,8 +18,8 @@ public final class PermissionHelpers {
         return MatthiesenLibApi.getPermissionValidator().hasPermission(source, permission);
     }
 
-    public static boolean checkPermission(ServerPlayer source, String permission) {
-        return MatthiesenLibApi.getPermissionValidator().hasPermission(source, permission, 4);
+    public static boolean doesNotHavePermission(ServerPlayer source, String permission) {
+        return !MatthiesenLibApi.getPermissionValidator().hasPermission(source, permission, 4);
     }
 
     public static PermissionLevel toPermLevel(int permLevel) {

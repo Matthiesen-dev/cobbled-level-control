@@ -1,7 +1,6 @@
 package dev.matthiesen.cobbled_level_control.common.runtime;
 
-import java.util.Map;
+import dev.matthiesen.cobbled_level_control.common.config.DifficultyConfig;
 
-public record Leveling(Map<Integer, Integer> tierMap) {
-
+public record Leveling(DifficultyConfig.LevelingConfig config) {
 }

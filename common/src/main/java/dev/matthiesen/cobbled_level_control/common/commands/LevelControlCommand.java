@@ -124,7 +124,7 @@ public final class LevelControlCommand extends AbstractCommand {
                 }
                 case "level" -> {
                     Leveling levelingModule = difficulty.leveling();
-                    int maxLevel = levelingModule.tierMap().size();
+                    int maxLevel = levelingModule.config().tiers.size();
 
                     if (level > maxLevel) {
                         source.sendSystemMessage(Component.literal("Level exceeds maximum level for Leveling module. Max level is " + maxLevel + ".").withStyle(ChatFormatting.RED));
@@ -221,7 +221,7 @@ public final class LevelControlCommand extends AbstractCommand {
 
                     level = playerData.getLeveling();
                     nextLevel = level + 1;
-                    int maxLevel = levelingModule.tierMap().size();
+                    int maxLevel = levelingModule.config().tiers.size();
 
                     if (nextLevel > maxLevel) {
                         source.sendSystemMessage(Component.literal("Target player is already at the maximum level for the Leveling module.").withStyle(ChatFormatting.YELLOW));

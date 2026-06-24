@@ -14,7 +14,8 @@ public final class CobblemonSubscriptionsManager {
             "capture", CaptureListener::register,
             "experience", ExperienceGainedListener::register,
             "level-up", LevelUpListener::register,
-            "spawn", PokemonSpawnListener::register
+            "spawn", PokemonSpawnListener::register,
+            "evolution", EvolutionListener::register
     );
 
     public static void registerSubscriptions() {

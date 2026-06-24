@@ -28,6 +28,7 @@ set catch rules, and even control the level of wild pokemon spawns. All of this 
 - `ExperienceGainedEvent` - Triggered when a Pokemon gains experience.
 - `LevelUpEvent` - Triggered when a Pokemon levels up.
 - `PokemonSpawnEvent` - Triggered when a Pokemon spawns in the world.
+- `EvolutionEvent` - Triggered when a Pokemon evolves.
 
 ## Requirements
 - [Matthiesen Lib API](https://modrinth.com/mod/matthiesen-lib-api)

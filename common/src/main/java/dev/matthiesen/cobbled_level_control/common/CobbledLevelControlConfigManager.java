@@ -48,8 +48,8 @@ public final class CobbledLevelControlConfigManager {
             var loadedConfig = DIFFICULTY_CONFIGS.loadConfig(difficulty);
 
             Catching catchingRuntime = getCatching(loadedConfig);
-            Leveling levelingRuntime = new Leveling(loadedConfig.leveling.tiers);
-            Battle battleRuntime = new Battle(loadedConfig.battles.restrictBattles);
+            Leveling levelingRuntime = new Leveling(loadedConfig.leveling);
+            Battle battleRuntime = new Battle(loadedConfig.battles);
 
             Difficulty difficultyRuntime = new Difficulty(difficulty, catchingRuntime, levelingRuntime, battleRuntime);
             difficultyRuntime.add();

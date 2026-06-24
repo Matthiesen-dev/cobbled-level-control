@@ -11,6 +11,7 @@ import dev.matthiesen.cobbled_level_control.common.config.MainConfig;
 import dev.matthiesen.cobbled_level_control.common.permissions.PermissionHelpers;
 import dev.matthiesen.cobbled_level_control.common.runtime.Catching;
 import dev.matthiesen.cobbled_level_control.common.runtime.Difficulty;
+import dev.matthiesen.cobbled_level_control.common.utils.PokemonUtility;
 import kotlin.Unit;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -39,35 +40,28 @@ public final class CaptureListener {
                 ItemStack ball = event.getPokeBall().getPokeBall().item().getDefaultInstance();
                 ball.setCount(1);
 
-                if (pokemon.getShiny() && conditionalCheck(player, catchingModule.config().permissions.shiny, modConfig.errorMessages.missingPermission, ball, modConfig)) {
+                if (pokemon.getShiny() && conditionalCheck(player, catchingModule.config().shiny, modConfig.errorMessages.missingPermission, ball, modConfig)) {
                     event.cancel();
                     return Unit.INSTANCE;
                 }
 
-                if (pokemon.isLegendary() && conditionalCheck(player, catchingModule.config().permissions.legendary, modConfig.errorMessages.missingPermission, ball, modConfig)) {
+                if (pokemon.isLegendary() && conditionalCheck(player, catchingModule.config().legendary, modConfig.errorMessages.missingPermission, ball, modConfig)) {
                     event.cancel();
                     return Unit.INSTANCE;
                 }
 
-                if (pokemon.isMythical() && conditionalCheck(player, catchingModule.config().permissions.mythical, modConfig.errorMessages.missingPermission, ball, modConfig)) {
+                if (pokemon.isMythical() && conditionalCheck(player, catchingModule.config().mythical, modConfig.errorMessages.missingPermission, ball, modConfig)) {
                     event.cancel();
                     return Unit.INSTANCE;
                 }
 
-                if (pokemon.isUltraBeast() && conditionalCheck(player, catchingModule.config().permissions.ultraBeast, modConfig.errorMessages.missingPermission, ball, modConfig)) {
+                if (pokemon.isUltraBeast() && conditionalCheck(player, catchingModule.config().ultraBeast, modConfig.errorMessages.missingPermission, ball, modConfig)) {
                     event.cancel();
                     return Unit.INSTANCE;
                 }
 
-                EvoStage evoStage = getEvoStage(pokemon);
-                String perm;
-
-                switch (evoStage) {
-                    case EvoStage.FINAL -> perm = catchingModule.config().evolutionStages.finalStageEvo;
-                    case EvoStage.FIRST -> perm = catchingModule.config().evolutionStages.firstStageEvo;
-                    case EvoStage.SECOND -> perm = catchingModule.config().evolutionStages.secondStageEvo;
-                    default -> perm = catchingModule.config().evolutionStages.singleEvo;
-                }
+                PokemonUtility.EvoStage evoStage = PokemonUtility.getEvoStage(pokemon);
+                String perm = getPermissionString(evoStage, catchingModule);
 
                 if (!perm.isEmpty() && conditionalCheck(player, perm, modConfig.errorMessages.missingPermission, ball, modConfig)) {
                     event.cancel();
@@ -86,6 +80,18 @@ public final class CaptureListener {
         });
     }
 
+    private static String getPermissionString(PokemonUtility.EvoStage evoStage, Catching catchingModule) {
+        String perm;
+
+        switch (evoStage) {
+            case PokemonUtility.EvoStage.FINAL -> perm = catchingModule.config().evolutionStages.finalStageEvo;
+            case PokemonUtility.EvoStage.FIRST -> perm = catchingModule.config().evolutionStages.firstStageEvo;
+            case PokemonUtility.EvoStage.SECOND -> perm = catchingModule.config().evolutionStages.secondStageEvo;
+            default -> perm = catchingModule.config().evolutionStages.singleEvo;
+        }
+        return perm;
+    }
+
     private static boolean conditionalCheck(ServerPlayer player, boolean condition, String errorMessage, ItemStack ball, MainConfig modConfig) {
         if (condition) {
             player.sendSystemMessage(Component.literal(errorMessage).withStyle(ChatFormatting.RED), modConfig.errorMessages.useActionBar);
@@ -96,32 +102,11 @@ public final class CaptureListener {
     }
 
     private static boolean conditionalCheck(ServerPlayer player, String permissionNode, String errorMessage, ItemStack ball, MainConfig modConfig) {
-        if (!permissionNode.isEmpty()) {
-            if (!PermissionHelpers.checkPermission(player, permissionNode)) {
-                player.sendSystemMessage(Component.literal(errorMessage).withStyle(ChatFormatting.RED), modConfig.errorMessages.useActionBar);
-                player.getInventory().add(ball);
-                return true;
-            }
+        if (!permissionNode.isEmpty() && PermissionHelpers.doesNotHavePermission(player, permissionNode)) {
+            player.sendSystemMessage(Component.literal(errorMessage).withStyle(ChatFormatting.RED), modConfig.errorMessages.useActionBar);
+            player.getInventory().add(ball);
+            return true;
         }
         return false;
-    }
-
-    private static EvoStage getEvoStage (Pokemon pokemon) {
-        var preEvolution = pokemon.getForm().getPreEvolution();
-        var evolutionsCount = pokemon.getForm().getEvolutions().size();
-
-        if (preEvolution == null) {
-            if (evolutionsCount == 0) return EvoStage.SINGLE;
-            return EvoStage.FIRST;
-        }
-        if (evolutionsCount == 0) return EvoStage.FINAL;
-        return EvoStage.SECOND;
-    }
-
-    enum EvoStage {
-        SINGLE,
-        FIRST,
-        SECOND,
-        FINAL
     }
 }

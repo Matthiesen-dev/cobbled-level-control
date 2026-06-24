@@ -1,7 +1,9 @@
 package dev.matthiesen.cobbled_level_control.common.runtime;
 
-public record Battle(boolean checkBattles) {
+import dev.matthiesen.cobbled_level_control.common.config.DifficultyConfig;
+
+public record Battle(DifficultyConfig.BattleConfig config) {
     public boolean doCheckBattles() {
-        return this.checkBattles;
+        return this.config.restrictBattles;
     }
 }
