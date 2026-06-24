@@ -1,6 +1,9 @@
-package dev.matthiesen.cobbled_level_control.common.config;
+package dev.matthiesen.cobbled_level_control.common;
 
-import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
+import dev.matthiesen.cobbled_level_control.common.config.DifficultyConfig;
+import dev.matthiesen.cobbled_level_control.common.config.MainConfig;
+import dev.matthiesen.cobbled_level_control.common.config.PlayerAccountsConfig;
+import dev.matthiesen.cobbled_level_control.common.utils.PlayerAccountRecord;
 import dev.matthiesen.cobbled_level_control.common.runtime.Battle;
 import dev.matthiesen.cobbled_level_control.common.runtime.Catching;
 import dev.matthiesen.cobbled_level_control.common.runtime.Difficulty;
@@ -12,14 +15,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public final class ConfigRegistry {
+public final class CobbledLevelControlConfigManager {
     private final CobbledLevelControl INSTANCE;
 
     private ConfigManager<MainConfig> MAIN_CONFIG;
     private ConfigManager<PlayerAccountsConfig> PLAYER_ACCOUNTS_CONFIG;
     private ConfigFolderManager<DifficultyConfig> DIFFICULTY_CONFIGS;
 
-    public ConfigRegistry(CobbledLevelControl modInstance) {
+    public CobbledLevelControlConfigManager(CobbledLevelControl modInstance) {
         this.INSTANCE = modInstance;
     }
 

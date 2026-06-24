@@ -97,7 +97,7 @@ public final class LevelControlCommand extends AbstractCommand {
             String module = StringArgumentType.getString(context, "module");
             int level = IntegerArgumentType.getInteger(context, "level");
 
-            var playerData = modInstance.getConfigRegistry().getPlayerAccountRecord(player.getUUID());
+            var playerData = modInstance.getConfigManager().getPlayerAccountRecord(player.getUUID());
             String playerDiffValue = playerData.getDifficulty();
 
             if (playerDiffValue.equalsIgnoreCase("none")) {
@@ -117,7 +117,7 @@ public final class LevelControlCommand extends AbstractCommand {
                         return 0;
                     }
 
-                    modInstance.getConfigRegistry().editPlayerAccountRecord(player.getUUID(), record -> record.setCatching(level));
+                    modInstance.getConfigManager().editPlayerAccountRecord(player.getUUID(), record -> record.setCatching(level));
                     player.sendSystemMessage(Component.literal("Your Catching level has been set to " + level + ".").withStyle(ChatFormatting.GREEN));
                     source.sendSystemMessage(Component.literal("Set Catching level of " + player.getName().getString() + " to " + level + ".").withStyle(ChatFormatting.GREEN));
                     return 1;
@@ -131,7 +131,7 @@ public final class LevelControlCommand extends AbstractCommand {
                         return 0;
                     }
 
-                    modInstance.getConfigRegistry().editPlayerAccountRecord(player.getUUID(), record -> record.setLeveling(level));
+                    modInstance.getConfigManager().editPlayerAccountRecord(player.getUUID(), record -> record.setLeveling(level));
                     player.sendSystemMessage(Component.literal("Your Leveling level has been set to " + level + ".").withStyle(ChatFormatting.GREEN));
                     source.sendSystemMessage(Component.literal("Set Leveling level of " + player.getName().getString() + " to " + level + ".").withStyle(ChatFormatting.GREEN));
                     return 1;
@@ -167,7 +167,7 @@ public final class LevelControlCommand extends AbstractCommand {
             }
 
             final String finalDifficulty = difficulty;
-            modInstance.getConfigRegistry().editPlayerAccountRecord(player.getUUID(), record -> record.setDifficulty(finalDifficulty));
+            modInstance.getConfigManager().editPlayerAccountRecord(player.getUUID(), record -> record.setDifficulty(finalDifficulty));
             player.sendSystemMessage(Component.literal("Your difficulty has been set to " + difficulty + "!").withStyle(ChatFormatting.GREEN));
             source.sendSystemMessage(Component.literal("Set " + player.getName().getString() + "'s difficulty to " + difficulty + "!").withStyle(ChatFormatting.GREEN));
             return 1;
@@ -185,7 +185,7 @@ public final class LevelControlCommand extends AbstractCommand {
             String module = StringArgumentType.getString(context, "module");
 
             var modInstance = CobbledLevelControl.INSTANCE;
-            var playerData = modInstance.getConfigRegistry().getPlayerAccountRecord(player.getUUID());
+            var playerData = modInstance.getConfigManager().getPlayerAccountRecord(player.getUUID());
             String playerDiffValue = playerData.getDifficulty();
 
             if (playerDiffValue.equalsIgnoreCase("none")) {
@@ -211,7 +211,7 @@ public final class LevelControlCommand extends AbstractCommand {
                         return 0;
                     }
 
-                    modInstance.getConfigRegistry().editPlayerAccountRecord(player.getUUID(), record -> record.setCatching(nextLevel));
+                    modInstance.getConfigManager().editPlayerAccountRecord(player.getUUID(), record -> record.setCatching(nextLevel));
                     player.sendSystemMessage(Component.literal("Your tier in catching has increased to " + nextLevel + "!").withStyle(ChatFormatting.AQUA));
                     source.sendSystemMessage(Component.literal("Successfully leveled up " + player.getName().getString() + " in the Catching module to tier " + nextLevel + ".").withStyle(ChatFormatting.GREEN));
                     return 1;
@@ -228,7 +228,7 @@ public final class LevelControlCommand extends AbstractCommand {
                         return 0;
                     }
 
-                    modInstance.getConfigRegistry().editPlayerAccountRecord(player.getUUID(), record -> record.setLeveling(nextLevel));
+                    modInstance.getConfigManager().editPlayerAccountRecord(player.getUUID(), record -> record.setLeveling(nextLevel));
                     player.sendSystemMessage(Component.literal("Your tier in leveling has increased to " + nextLevel + "!").withStyle(ChatFormatting.AQUA));
                     source.sendSystemMessage(Component.literal("Successfully leveled up " + player.getName().getString() + " in the Leveling module to tier " + nextLevel + ".").withStyle(ChatFormatting.GREEN));
                     return 1;

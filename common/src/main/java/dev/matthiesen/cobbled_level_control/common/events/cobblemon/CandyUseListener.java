@@ -21,7 +21,7 @@ public final class CandyUseListener {
 
             var modInstance = CobbledLevelControl.INSTANCE;
 
-            var playerData = modInstance.getConfigRegistry().getPlayerAccountRecord(player.getUUID());
+            var playerData = modInstance.getConfigManager().getPlayerAccountRecord(player.getUUID());
             String playerDiffValue = playerData.getDifficulty();
 
             if (playerDiffValue.equalsIgnoreCase("none")) return Unit.INSTANCE;
@@ -35,7 +35,7 @@ public final class CandyUseListener {
 
             if (pokemonLevel >= maxLevel) {
                 event.setExperienceYield(0);
-                var config = modInstance.getConfigRegistry().getMainConfig();
+                var config = modInstance.getConfigManager().getMainConfig();
                 player.sendSystemMessage(Component.literal(config.errorMessages.levelingTier).withStyle(ChatFormatting.RED), config.errorMessages.useActionBar);
             }
 

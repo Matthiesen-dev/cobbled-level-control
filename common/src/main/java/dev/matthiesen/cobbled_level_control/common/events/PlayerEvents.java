@@ -7,7 +7,7 @@ import net.minecraft.server.level.ServerPlayer;
 public final class PlayerEvents implements MatthiesenLibPlayerEventHandler {
     @Override
     public void onPlayerJoin(ServerPlayer player) {
-        var registry = CobbledLevelControl.INSTANCE.getConfigRegistry();
+        var registry = CobbledLevelControl.INSTANCE.getConfigManager();
         if (!registry.hasPlayerAccountRecord(player.getUUID()))
             registry.createNewPlayerAccountRecord(player.getUUID());
     }

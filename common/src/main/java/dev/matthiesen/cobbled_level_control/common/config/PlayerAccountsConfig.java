@@ -3,6 +3,7 @@ package dev.matthiesen.cobbled_level_control.common.config;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
+import dev.matthiesen.cobbled_level_control.common.utils.PlayerAccountRecord;
 
 import java.util.HashMap;
 import java.util.Map;

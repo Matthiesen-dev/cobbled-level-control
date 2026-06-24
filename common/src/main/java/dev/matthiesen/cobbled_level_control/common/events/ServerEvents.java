@@ -10,17 +10,17 @@ public final class ServerEvents implements MatthiesenLibServerEventHandler {
 
     @Override
     public void onServerStart(MinecraftServer server) {
-        CobblemonSubscriptionsManager.setupSubscriptions();
+        CobblemonSubscriptionsManager.registerSubscriptions();
     }
 
     @Override
     public void onServerTick(MinecraftServer server) {
         var instance = CobbledLevelControl.INSTANCE;
-        var config = instance.getConfigRegistry().getMainConfig();
+        var config = instance.getConfigManager().getMainConfig();
         if (config.saveConfig.enableAutoSave) {
             tickCount++;
             if (tickCount >= config.saveConfig.saveIntervalTicks) {
-                instance.getConfigRegistry().savePlayerAccounts();
+                instance.getConfigManager().savePlayerAccounts();
                 tickCount = 0;
             }
         }
@@ -30,8 +30,8 @@ public final class ServerEvents implements MatthiesenLibServerEventHandler {
     public void onServerStop(MinecraftServer server) {
         var instance = CobbledLevelControl.INSTANCE;
         instance.createInfoLog("Saving player accounts on server shutdown");
-        instance.getConfigRegistry().savePlayerAccounts();
+        instance.getConfigManager().savePlayerAccounts();
         instance.createInfoLog("Saved player accounts on server shutdown");
-        CobblemonSubscriptionsManager.teardownSubscriptions();
+        CobblemonSubscriptionsManager.teardownAllActiveSubscriptions();
     }
 }

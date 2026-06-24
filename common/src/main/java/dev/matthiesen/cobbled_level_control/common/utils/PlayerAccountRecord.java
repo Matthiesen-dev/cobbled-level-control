@@ -1,4 +1,4 @@
-package dev.matthiesen.cobbled_level_control.common.config;
+package dev.matthiesen.cobbled_level_control.common.utils;
 
 import org.jetbrains.annotations.Nullable;
 

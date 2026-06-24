@@ -16,7 +16,7 @@ public final class ExperienceGainedListener {
     public static ObservableSubscription<ExperienceGainedEvent.Pre> register() {
         return CobblemonEvents.EXPERIENCE_GAINED_EVENT_PRE.subscribe(Priority.NORMAL, event -> {
             var modInstance = CobbledLevelControl.INSTANCE;
-            var modConfig = modInstance.getConfigRegistry().getMainConfig();
+            var modConfig = modInstance.getConfigManager().getMainConfig();
 
             Pokemon pokemon = event.getPokemon();
             if (!pokemon.isPlayerOwned()) return Unit.INSTANCE;
@@ -29,7 +29,7 @@ public final class ExperienceGainedListener {
                 return Unit.INSTANCE;
             }
 
-            var playerData = modInstance.getConfigRegistry().getPlayerAccountRecord(player.getUUID());
+            var playerData = modInstance.getConfigManager().getPlayerAccountRecord(player.getUUID());
             String playerDiffValue = playerData.getDifficulty();
 
             if (playerDiffValue.equalsIgnoreCase("none")) return Unit.INSTANCE;

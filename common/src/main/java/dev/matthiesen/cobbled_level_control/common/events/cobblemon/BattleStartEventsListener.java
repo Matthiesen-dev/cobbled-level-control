@@ -32,7 +32,7 @@ public final class BattleStartEventsListener {
 
                 if (player == null) return Unit.INSTANCE;
 
-                var playerData = modInstance.getConfigRegistry().getPlayerAccountRecord(player.getUUID());
+                var playerData = modInstance.getConfigManager().getPlayerAccountRecord(player.getUUID());
                 String playerDiffValue = playerData.getDifficulty();
 
                 if (!playerDiffValue.equalsIgnoreCase("none")) return Unit.INSTANCE;
@@ -60,7 +60,7 @@ public final class BattleStartEventsListener {
 
                 if (maxLevel > maxLevelingLevel) {
                     event.cancel();
-                    var config = modInstance.getConfigRegistry().getMainConfig();
+                    var config = modInstance.getConfigManager().getMainConfig();
                     player.sendSystemMessage(Component.literal(config.errorMessages.battle).withStyle(ChatFormatting.RED), config.errorMessages.useActionBar);
                 }
             }

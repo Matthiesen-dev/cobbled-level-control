@@ -17,7 +17,7 @@ public final class PokemonSpawnListener {
     public static ObservableSubscription<SpawnEvent<PokemonEntity>> register() {
         return CobblemonEvents.POKEMON_ENTITY_SPAWN.subscribe(Priority.NORMAL, event -> {
             var modInstance = CobbledLevelControl.INSTANCE;
-            var modConfig = modInstance.getConfigRegistry().getMainConfig();
+            var modConfig = modInstance.getConfigManager().getMainConfig();
 
             if (!modConfig.spawnConfig.enableScaling) return Unit.INSTANCE;
 
@@ -27,7 +27,7 @@ public final class PokemonSpawnListener {
             if (pokemon.isPlayerOwned()) return Unit.INSTANCE;
 
             if (event.getSpawnablePosition().getCause().getEntity() instanceof ServerPlayer player) {
-                var playerData = modInstance.getConfigRegistry().getPlayerAccountRecord(player.getUUID());
+                var playerData = modInstance.getConfigManager().getPlayerAccountRecord(player.getUUID());
                 String playerDiffValue = playerData.getDifficulty();
 
                 if (playerDiffValue.equalsIgnoreCase("none")) return Unit.INSTANCE;

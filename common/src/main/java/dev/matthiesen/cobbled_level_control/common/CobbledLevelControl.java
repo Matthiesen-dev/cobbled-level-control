@@ -3,7 +3,6 @@ package dev.matthiesen.cobbled_level_control.common;
 import dev.matthiesen.cobbled_level_control.common.commands.LevelControlCommand;
 import dev.matthiesen.cobbled_level_control.common.permissions.PermissionHelpers;
 import dev.matthiesen.cobbled_level_control.common.runtime.Difficulty;
-import dev.matthiesen.cobbled_level_control.common.config.ConfigRegistry;
 import dev.matthiesen.cobbled_level_control.common.events.*;
 import dev.matthiesen.common.matthiesen_lib_api.abstracts.AbstractCommonMod;
 import dev.matthiesen.libs.faststats.Token;
@@ -18,20 +17,20 @@ public final class CobbledLevelControl extends AbstractCommonMod {
     public static final String MOD_NAME = "Cobbled Level Control";
     private static @Token final String METRICS_TOKEN = "00c30fedc5bd584dd1060bada0f2637a";
     private boolean initialized;
-    private final ConfigRegistry configRegistry;
+    private final CobbledLevelControlConfigManager configManager;
     private final Map<String, Difficulty> difficulties = new HashMap<>();
 
     public static final CobbledLevelControl INSTANCE = new CobbledLevelControl();
 
     public CobbledLevelControl() {
         super(MOD_ID, MOD_NAME);
-        configRegistry = new ConfigRegistry(this);
+        configManager = new CobbledLevelControlConfigManager(this);
     }
 
     @Override
     public void initialize() {
         super.initialize();
-        configRegistry.init();
+        configManager.init();
         PermissionHelpers.init();
         registerServerEventHandler(new ServerEvents());
         registerPlayerEventHandler(new PlayerEvents());
@@ -47,9 +46,9 @@ public final class CobbledLevelControl extends AbstractCommonMod {
     public Runnable reload() {
         return () -> {
             if (initialized) {
-                configRegistry.savePlayerAccounts();
+                configManager.savePlayerAccounts();
             }
-            configRegistry.loadConfigs();
+            configManager.loadConfigs();
             createInfoLog("Saved Player Account Records, and reloaded configs!");
         };
     }
@@ -59,8 +58,8 @@ public final class CobbledLevelControl extends AbstractCommonMod {
         return METRICS_TOKEN;
     }
 
-    public ConfigRegistry getConfigRegistry() {
-        return configRegistry;
+    public CobbledLevelControlConfigManager getConfigManager() {
+        return configManager;
     }
 
     public void addDifficulty(Difficulty difficulty) {

@@ -1,55 +1,38 @@
 package dev.matthiesen.cobbled_level_control.common.events.cobblemon;
 
-import com.cobblemon.mod.common.api.events.battles.BattleStartedEvent;
-import com.cobblemon.mod.common.api.events.entity.SpawnEvent;
-import com.cobblemon.mod.common.api.events.pokeball.ThrownPokeballHitEvent;
-import com.cobblemon.mod.common.api.events.pokemon.ExperienceGainedEvent;
-import com.cobblemon.mod.common.api.events.pokemon.LevelUpEvent;
-import com.cobblemon.mod.common.api.events.pokemon.interaction.ExperienceCandyUseEvent;
 import com.cobblemon.mod.common.api.reactive.ObservableSubscription;
-import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 
 public final class CobblemonSubscriptionsManager {
-    private static ObservableSubscription<BattleStartedEvent.Pre> battleStartSubscription;
-    private static ObservableSubscription<ExperienceCandyUseEvent.Pre> experienceCandyUseSubscription;
-    private static ObservableSubscription<ThrownPokeballHitEvent> thrownPokeballHitSubscription;
-    private static ObservableSubscription<ExperienceGainedEvent.Pre> experienceGainedSubscription;
-    private static ObservableSubscription<LevelUpEvent> levelUpSubscription;
-    private static ObservableSubscription<SpawnEvent<PokemonEntity>> spawnSubscription;
+    private static final Map<String, ObservableSubscription<?>> activeSubscriptions = new HashMap<>();
+    private static final Map<String, Supplier<ObservableSubscription<?>>> subscriptionSuppliers = Map.of(
+            "battle-start", BattleStartEventsListener::register,
+            "candy-use", CandyUseListener::register,
+            "capture", CaptureListener::register,
+            "experience", ExperienceGainedListener::register,
+            "level-up", LevelUpListener::register,
+            "spawn", PokemonSpawnListener::register
+    );
 
-    public static void setupSubscriptions() {
-        battleStartSubscription = BattleStartEventsListener.register();
-        experienceCandyUseSubscription = CandyUseListener.register();
-        thrownPokeballHitSubscription = CaptureListener.register();
-        experienceGainedSubscription = ExperienceGainedListener.register();
-        levelUpSubscription = LevelUpListener.register();
-        spawnSubscription = PokemonSpawnListener.register();
+    public static void registerSubscriptions() {
+        for (Map.Entry<String, Supplier<ObservableSubscription<?>>> entry : subscriptionSuppliers.entrySet()) {
+            String key = entry.getKey();
+            Supplier<ObservableSubscription<?>> supplier = entry.getValue();
+            ObservableSubscription<?> subscription = supplier.get();
+            activeSubscriptions.put(key, subscription);
+        }
     }
 
-    public static void teardownSubscriptions() {
-        if (battleStartSubscription != null) {
-            battleStartSubscription.unsubscribe();
-            battleStartSubscription = null;
+    public static void teardownAllActiveSubscriptions() {
+        for (Map.Entry<String, ObservableSubscription<?>> entry : activeSubscriptions.entrySet()) {
+            ObservableSubscription<?> subscription = entry.getValue();
+            if (subscription != null) {
+                subscription.unsubscribe();
+            }
         }
-        if (experienceCandyUseSubscription != null) {
-            experienceCandyUseSubscription.unsubscribe();
-            experienceCandyUseSubscription = null;
-        }
-        if (thrownPokeballHitSubscription != null) {
-            thrownPokeballHitSubscription.unsubscribe();
-            thrownPokeballHitSubscription = null;
-        }
-        if (experienceGainedSubscription != null) {
-            experienceGainedSubscription.unsubscribe();
-            experienceGainedSubscription = null;
-        }
-        if (levelUpSubscription != null) {
-            levelUpSubscription.unsubscribe();
-            levelUpSubscription = null;
-        }
-        if (spawnSubscription != null) {
-            spawnSubscription.unsubscribe();
-            spawnSubscription = null;
-        }
+        activeSubscriptions.clear();
     }
 }

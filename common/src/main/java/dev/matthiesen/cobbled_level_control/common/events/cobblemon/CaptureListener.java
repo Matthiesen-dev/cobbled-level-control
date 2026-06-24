@@ -25,9 +25,9 @@ public final class CaptureListener {
 
             if (event.getPokeBall().getOwner() instanceof ServerPlayer player) {
                 var modInstance = CobbledLevelControl.INSTANCE;
-                var modConfig = modInstance.getConfigRegistry().getMainConfig();
+                var modConfig = modInstance.getConfigManager().getMainConfig();
 
-                var playerData = modInstance.getConfigRegistry().getPlayerAccountRecord(player.getUUID());
+                var playerData = modInstance.getConfigManager().getPlayerAccountRecord(player.getUUID());
                 String playerDiffValue = playerData.getDifficulty();
 
                 if (playerDiffValue.equalsIgnoreCase("none")) return Unit.INSTANCE;
