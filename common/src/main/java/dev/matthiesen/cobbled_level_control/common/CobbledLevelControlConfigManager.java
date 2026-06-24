@@ -2,7 +2,7 @@ package dev.matthiesen.cobbled_level_control.common;
 
 import dev.matthiesen.cobbled_level_control.common.config.*;
 import dev.matthiesen.cobbled_level_control.common.runtime.*;
-import dev.matthiesen.cobbled_level_control.common.utils.PlayerAccountRecord;
+import dev.matthiesen.cobbled_level_control.common.runtime.PlayerAccountRecord;
 import dev.matthiesen.common.matthiesen_lib_api.config.ConfigFolderManager;
 import dev.matthiesen.common.matthiesen_lib_api.config.ConfigManager;
 
