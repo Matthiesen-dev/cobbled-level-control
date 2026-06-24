@@ -42,11 +42,11 @@ public final class DifficultyConfig {
     }
 
     public static class LevelingConfig {
-        @SerializedName("tiers")
-        public Map<Integer, Integer> tiers = tierConfig;
-
         @SerializedName("evolutionStages")
         public EvolutionStagePermissions evolutionStages = new EvolutionStagePermissions();
+
+        @SerializedName("tiers")
+        public Map<Integer, Integer> tiers = tierConfig;
     }
 
     public static class EvolutionStagePermissions {
