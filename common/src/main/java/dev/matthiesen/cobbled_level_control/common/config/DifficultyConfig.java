@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Map;
 
-public class DifficultyConfig {
+public final class DifficultyConfig {
     @SerializedName("battles")
     public BattleConfig battles = new BattleConfig();
 
