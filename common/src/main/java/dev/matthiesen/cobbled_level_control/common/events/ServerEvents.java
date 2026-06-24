@@ -1,6 +1,7 @@
 package dev.matthiesen.cobbled_level_control.common.events;
 
 import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
+import dev.matthiesen.cobbled_level_control.common.events.cobblemon.SubscriptionManager;
 import dev.matthiesen.common.matthiesen_lib_api.core.interfaces.MatthiesenLibServerEventHandler;
 import net.minecraft.server.MinecraftServer;
 
@@ -9,7 +10,7 @@ public final class ServerEvents implements MatthiesenLibServerEventHandler {
 
     @Override
     public void onServerStart(MinecraftServer server) {
-        MatthiesenLibServerEventHandler.super.onServerStart(server);
+        SubscriptionManager.setupSubscriptions();
     }
 
     @Override
@@ -31,5 +32,6 @@ public final class ServerEvents implements MatthiesenLibServerEventHandler {
         instance.createInfoLog("Saving player accounts on server shutdown");
         instance.getConfigRegistry().savePlayerAccounts();
         instance.createInfoLog("Saved player accounts on server shutdown");
+        SubscriptionManager.teardownSubscriptions();
     }
 }
