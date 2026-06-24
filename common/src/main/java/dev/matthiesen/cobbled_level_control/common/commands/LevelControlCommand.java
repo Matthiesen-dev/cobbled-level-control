@@ -43,7 +43,7 @@ public final class LevelControlCommand extends AbstractCommand {
                                 .then(Commands.argument("player", EntityArgument.player())
                                         .then(Commands.argument("difficulty", StringArgumentType.string())
                                                 .suggests((_ctx, builder) -> {
-                                                    var diffNames = CobbledLevelControl.INSTANCE.getDifficultyNames();
+                                                    var diffNames = CobbledLevelControl.INSTANCE.getConfigManager().getMainConfig().difficulties;
                                                     for (var difficulty : diffNames) {
                                                         builder.suggest(difficulty);
                                                     }
@@ -157,7 +157,7 @@ public final class LevelControlCommand extends AbstractCommand {
 
             String difficulty = null;
 
-            if (modInstance.getDifficultyNames().contains(difficultyName)) {
+            if (modInstance.getConfigManager().getMainConfig().difficulties.contains(difficultyName)) {
                 difficulty = difficultyName;
             }
 

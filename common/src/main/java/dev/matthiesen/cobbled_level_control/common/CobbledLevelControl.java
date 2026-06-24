@@ -9,7 +9,6 @@ import dev.matthiesen.libs.faststats.Token;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public final class CobbledLevelControl extends AbstractCommonMod {
@@ -69,9 +68,5 @@ public final class CobbledLevelControl extends AbstractCommonMod {
 
     public Difficulty getDifficulty(String key) {
         return difficulties.get(key);
-    }
-
-    public List<String> getDifficultyNames() {
-        return difficulties.keySet().stream().toList();
     }
 }
