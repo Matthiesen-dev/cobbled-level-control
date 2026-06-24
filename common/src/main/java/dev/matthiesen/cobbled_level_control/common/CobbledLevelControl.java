@@ -1,10 +1,14 @@
 package dev.matthiesen.cobbled_level_control.common;
 
+import dev.matthiesen.cobbled_level_control.common.runtime.Difficulty;
 import dev.matthiesen.cobbled_level_control.common.config.ConfigRegistry;
 import dev.matthiesen.cobbled_level_control.common.events.*;
 import dev.matthiesen.common.matthiesen_lib_api.abstracts.AbstractCommonMod;
 import dev.matthiesen.libs.faststats.Token;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public final class CobbledLevelControl extends AbstractCommonMod {
     public static final String MOD_ID = "cobbled_level_control";
@@ -12,6 +16,7 @@ public final class CobbledLevelControl extends AbstractCommonMod {
     private static @Token final String METRICS_TOKEN = "00c30fedc5bd584dd1060bada0f2637a";
     private boolean initialized;
     private final ConfigRegistry configRegistry;
+    private final Map<String, Difficulty> difficulties = new HashMap<>();
 
     public static final CobbledLevelControl INSTANCE = new CobbledLevelControl();
 
@@ -50,5 +55,13 @@ public final class CobbledLevelControl extends AbstractCommonMod {
 
     public ConfigRegistry getConfigRegistry() {
         return configRegistry;
+    }
+
+    public void addDifficulty(Difficulty difficulty) {
+        difficulties.put(difficulty.difficulty(), difficulty);
+    }
+
+    public Difficulty getDifficulty(String key) {
+        return difficulties.get(key);
     }
 }

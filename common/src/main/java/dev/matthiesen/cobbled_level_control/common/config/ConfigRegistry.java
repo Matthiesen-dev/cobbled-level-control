@@ -1,7 +1,13 @@
 package dev.matthiesen.cobbled_level_control.common.config;
 
 import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
+import dev.matthiesen.cobbled_level_control.common.runtime.Battle;
+import dev.matthiesen.cobbled_level_control.common.runtime.Catching;
+import dev.matthiesen.cobbled_level_control.common.runtime.Difficulty;
+import dev.matthiesen.cobbled_level_control.common.runtime.Leveling;
+import dev.matthiesen.common.matthiesen_lib_api.config.ConfigFolderManager;
 import dev.matthiesen.common.matthiesen_lib_api.config.ConfigManager;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -11,6 +17,7 @@ public final class ConfigRegistry {
 
     private ConfigManager<MainConfig> MAIN_CONFIG;
     private ConfigManager<PlayerAccountsConfig> PLAYER_ACCOUNTS_CONFIG;
+    private ConfigFolderManager<DifficultyConfig> DIFFICULTY_CONFIGS;
 
     public ConfigRegistry(CobbledLevelControl modInstance) {
         this.INSTANCE = modInstance;
@@ -19,6 +26,7 @@ public final class ConfigRegistry {
     public void init() {
         MAIN_CONFIG = INSTANCE.createConfigManager(MainConfig.class, "main");
         PLAYER_ACCOUNTS_CONFIG = INSTANCE.createConfigManager(PlayerAccountsConfig.class, "player_accounts");
+        DIFFICULTY_CONFIGS = INSTANCE.createConfigFolderManager(DifficultyConfig.class, "difficulties");
 
         loadConfigs();
     }
@@ -26,6 +34,33 @@ public final class ConfigRegistry {
     public void loadConfigs() {
         MAIN_CONFIG.loadConfig();
         PLAYER_ACCOUNTS_CONFIG.loadConfig();
+        DIFFICULTY_CONFIGS.loadConfigs();
+
+        // Ensure all registered difficulties have a config and are registered
+        var difficulties = MAIN_CONFIG.getConfig().difficulties;
+        for (String difficulty : difficulties) {
+            var loadedConfig = DIFFICULTY_CONFIGS.loadConfig(difficulty);
+
+            Catching catchingRuntime = getCatching(loadedConfig);
+            Leveling levelingRuntime = new Leveling(loadedConfig.leveling.tiers);
+            Battle battleRuntime = new Battle(loadedConfig.battles.restrictBattles);
+
+            Difficulty difficultyRuntime = new Difficulty(difficulty, catchingRuntime, levelingRuntime, battleRuntime);
+            difficultyRuntime.add();
+        }
+    }
+
+    private static @NotNull Catching getCatching(DifficultyConfig loadedConfig) {
+        var catchingConfig = loadedConfig.catching;
+        return new Catching(
+                catchingConfig.evolutionStages.finalStageEvo,
+                catchingConfig.evolutionStages.firstStageEvo,
+                catchingConfig.evolutionStages.secondStageEvo,
+                catchingConfig.evolutionStages.singleEvo,
+                catchingConfig.permissions.legendary,
+                catchingConfig.permissions.shiny,
+                catchingConfig.tiers
+        );
     }
 
     public void savePlayerAccounts() {
@@ -53,11 +88,7 @@ public final class ConfigRegistry {
 
     public void setPlayerAccountRecord(UUID playerUUID, PlayerAccountRecord record) {
         PlayerAccountsConfig accountsConfig = getPlayerAccountsConfig();
-        if (accountsConfig.accounts.containsKey(playerUUID)) {
-            accountsConfig.accounts.replace(playerUUID, record);
-        } else {
-            accountsConfig.accounts.put(playerUUID, record);
-        }
+        accountsConfig.accounts.put(playerUUID, record);
         updatePlayerAccounts(accountsConfig);
     }
 
