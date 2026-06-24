@@ -23,7 +23,7 @@ public final class DifficultyConfig {
 
     public static class CatchingConfig {
         @SerializedName("evolutionStages")
-        public EvolutionStagePermissions evolutionStages = new EvolutionStagePermissions();
+        public CatchingEvolutionStagePermissions evolutionStages = new CatchingEvolutionStagePermissions();
 
         @SerializedName("legendary")
         public String legendary = "cobbled_level_control.catching.legendary";
@@ -43,17 +43,24 @@ public final class DifficultyConfig {
 
     public static class LevelingConfig {
         @SerializedName("evolutionStages")
-        public EvolutionStagePermissions evolutionStages = new EvolutionStagePermissions();
+        public LevelingEvolutionStagePermissions evolutionStages = new LevelingEvolutionStagePermissions();
 
         @SerializedName("tiers")
         public Map<Integer, Integer> tiers = tierConfig;
     }
 
-    public static class EvolutionStagePermissions {
+    public static class CatchingEvolutionStagePermissions {
         public String singleEvo = "";
         public String firstStageEvo = "";
         public String secondStageEvo = "cobbled_level_control.catching.second_stage_evo";
         public String finalStageEvo = "cobbled_level_control.catching.final_stage_evo";
+    }
+
+    public static class LevelingEvolutionStagePermissions {
+        public String singleEvo = "";
+        public String firstStageEvo = "";
+        public String secondStageEvo = "cobbled_level_control.leveling.second_stage_evo";
+        public String finalStageEvo = "cobbled_level_control.leveling.final_stage_evo";
     }
 
     public static final Map<Integer, Integer> tierConfig = Map.of(
