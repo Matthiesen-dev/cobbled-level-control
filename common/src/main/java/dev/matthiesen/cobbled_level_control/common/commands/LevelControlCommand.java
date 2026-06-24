@@ -8,9 +8,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
 import dev.matthiesen.cobbled_level_control.common.permissions.PermissionHelpers;
-import dev.matthiesen.cobbled_level_control.common.runtime.Catching;
-import dev.matthiesen.cobbled_level_control.common.runtime.Difficulty;
-import dev.matthiesen.cobbled_level_control.common.runtime.Leveling;
+import dev.matthiesen.cobbled_level_control.common.runtime.RuntimeDifficulty;
 import dev.matthiesen.common.matthiesen_lib_api.command.AbstractCommand;
 import dev.matthiesen.common.matthiesen_lib_api.utility.CommandBuilder;
 import net.minecraft.ChatFormatting;
@@ -30,7 +28,6 @@ public final class LevelControlCommand extends AbstractCommand {
                 new CommandBuilder("level-control")
                         .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_ADMIN_PERMISSION))
                         .then("reload", reload -> reload.executes(this::reload))
-
                         .then("level-up", levelUp -> levelUp
                                 .then(Commands.argument("player", EntityArgument.player())
                                         .then(Commands.argument("module", StringArgumentType.string())
@@ -63,7 +60,6 @@ public final class LevelControlCommand extends AbstractCommand {
                                         )
                                 )
                         )
-
                         .build()
         );
     }
@@ -92,45 +88,36 @@ public final class LevelControlCommand extends AbstractCommand {
         try {
             var modInstance = CobbledLevelControl.INSTANCE;
             var source = context.getSource();
-
             ServerPlayer player = EntityArgument.getPlayer(context, "player");
             String module = StringArgumentType.getString(context, "module");
             int level = IntegerArgumentType.getInteger(context, "level");
-
             var playerData = modInstance.getConfigManager().getPlayerAccountRecord(player.getUUID());
             String playerDiffValue = playerData.getDifficulty();
-
             if (playerDiffValue.equalsIgnoreCase("none")) {
                 source.sendSystemMessage(Component.literal("Target player does not have a difficulty set. Please set a difficulty first.").withStyle(ChatFormatting.YELLOW));
                 return 0;
             }
-
-            Difficulty difficulty = modInstance.getDifficulty(playerDiffValue);
-
+            RuntimeDifficulty difficulty = modInstance.getDifficulty(playerDiffValue);
             switch (module) {
                 case "catch" -> {
-                    Catching catchingModule = difficulty.catching();
-                    int maxLevel = catchingModule.config().tiers.size();
-
+                    var catchingModule = difficulty.getCatchingModule();
+                    int maxLevel = catchingModule.tiers.size();
                     if (level > maxLevel) {
                         source.sendSystemMessage(Component.literal("Level exceeds maximum level for Catching module. Max level is " + maxLevel + ".").withStyle(ChatFormatting.RED));
                         return 0;
                     }
-
                     modInstance.getConfigManager().editPlayerAccountRecord(player.getUUID(), record -> record.setCatching(level));
                     player.sendSystemMessage(Component.literal("Your Catching level has been set to " + level + ".").withStyle(ChatFormatting.GREEN));
                     source.sendSystemMessage(Component.literal("Set Catching level of " + player.getName().getString() + " to " + level + ".").withStyle(ChatFormatting.GREEN));
                     return 1;
                 }
                 case "level" -> {
-                    Leveling levelingModule = difficulty.leveling();
-                    int maxLevel = levelingModule.config().tiers.size();
-
+                    var levelingModule = difficulty.getLevelingModule();
+                    int maxLevel = levelingModule.tiers.size();
                     if (level > maxLevel) {
                         source.sendSystemMessage(Component.literal("Level exceeds maximum level for Leveling module. Max level is " + maxLevel + ".").withStyle(ChatFormatting.RED));
                         return 0;
                     }
-
                     modInstance.getConfigManager().editPlayerAccountRecord(player.getUUID(), record -> record.setLeveling(level));
                     player.sendSystemMessage(Component.literal("Your Leveling level has been set to " + level + ".").withStyle(ChatFormatting.GREEN));
                     source.sendSystemMessage(Component.literal("Set Leveling level of " + player.getName().getString() + " to " + level + ".").withStyle(ChatFormatting.GREEN));
@@ -151,21 +138,16 @@ public final class LevelControlCommand extends AbstractCommand {
         try {
             var modInstance = CobbledLevelControl.INSTANCE;
             var source = context.getSource();
-
             ServerPlayer player = EntityArgument.getPlayer(context, "player");
             String difficultyName = StringArgumentType.getString(context, "difficulty");
-
             String difficulty = null;
-
             if (modInstance.getConfigManager().getMainConfig().difficulties.contains(difficultyName)) {
                 difficulty = difficultyName;
             }
-
             if (difficulty == null) {
                 source.sendFailure(Component.literal("Difficulty " + difficultyName + " does not exist!").withStyle(ChatFormatting.RED));
                 return 0;
             }
-
             final String finalDifficulty = difficulty;
             modInstance.getConfigManager().editPlayerAccountRecord(player.getUUID(), record -> record.setDifficulty(finalDifficulty));
             player.sendSystemMessage(Component.literal("Your difficulty has been set to " + difficulty + "!").withStyle(ChatFormatting.GREEN));
@@ -180,54 +162,42 @@ public final class LevelControlCommand extends AbstractCommand {
     public int levelUp(CommandContext<CommandSourceStack> context) {
         try {
             var source = context.getSource();
-
             ServerPlayer player = EntityArgument.getPlayer(context, "player");
             String module = StringArgumentType.getString(context, "module");
-
             var modInstance = CobbledLevelControl.INSTANCE;
             var playerData = modInstance.getConfigManager().getPlayerAccountRecord(player.getUUID());
             String playerDiffValue = playerData.getDifficulty();
-
             if (playerDiffValue.equalsIgnoreCase("none")) {
                 source.sendSystemMessage(Component.literal("Target player does not have a difficulty set. Please set a difficulty first.").withStyle(ChatFormatting.YELLOW));
                 return 0;
             }
-
-            Difficulty difficulty = modInstance.getDifficulty(playerDiffValue);
-
+            RuntimeDifficulty difficulty = modInstance.getDifficulty(playerDiffValue);
             int level;
             int nextLevel;
-
             switch (module.toLowerCase()) {
                 case "catch" -> {
-                    Catching catchingModule = difficulty.catching();
-
+                    var catchingModule = difficulty.getCatchingModule();
                     level = playerData.getCatching();
                     nextLevel = level + 1;
-                    int maxLevel = catchingModule.config().tiers.size();
-
+                    int maxLevel = catchingModule.tiers.size();
                     if (nextLevel > maxLevel) {
                         source.sendSystemMessage(Component.literal("Target player is already at the maximum level for the Catching module.").withStyle(ChatFormatting.YELLOW));
                         return 0;
                     }
-
                     modInstance.getConfigManager().editPlayerAccountRecord(player.getUUID(), record -> record.setCatching(nextLevel));
                     player.sendSystemMessage(Component.literal("Your tier in catching has increased to " + nextLevel + "!").withStyle(ChatFormatting.AQUA));
                     source.sendSystemMessage(Component.literal("Successfully leveled up " + player.getName().getString() + " in the Catching module to tier " + nextLevel + ".").withStyle(ChatFormatting.GREEN));
                     return 1;
                 }
                 case "level" -> {
-                    Leveling levelingModule = difficulty.leveling();
-
+                    var levelingModule = difficulty.getLevelingModule();
                     level = playerData.getLeveling();
                     nextLevel = level + 1;
-                    int maxLevel = levelingModule.config().tiers.size();
-
+                    int maxLevel = levelingModule.tiers.size();
                     if (nextLevel > maxLevel) {
                         source.sendSystemMessage(Component.literal("Target player is already at the maximum level for the Leveling module.").withStyle(ChatFormatting.YELLOW));
                         return 0;
                     }
-
                     modInstance.getConfigManager().editPlayerAccountRecord(player.getUUID(), record -> record.setLeveling(nextLevel));
                     player.sendSystemMessage(Component.literal("Your tier in leveling has increased to " + nextLevel + "!").withStyle(ChatFormatting.AQUA));
                     source.sendSystemMessage(Component.literal("Successfully leveled up " + player.getName().getString() + " in the Leveling module to tier " + nextLevel + ".").withStyle(ChatFormatting.GREEN));

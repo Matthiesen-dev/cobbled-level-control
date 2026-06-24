@@ -1,16 +1,10 @@
 package dev.matthiesen.cobbled_level_control.common;
 
-import dev.matthiesen.cobbled_level_control.common.config.DifficultyConfig;
-import dev.matthiesen.cobbled_level_control.common.config.MainConfig;
-import dev.matthiesen.cobbled_level_control.common.config.PlayerAccountsConfig;
+import dev.matthiesen.cobbled_level_control.common.config.*;
+import dev.matthiesen.cobbled_level_control.common.runtime.*;
 import dev.matthiesen.cobbled_level_control.common.utils.PlayerAccountRecord;
-import dev.matthiesen.cobbled_level_control.common.runtime.Battle;
-import dev.matthiesen.cobbled_level_control.common.runtime.Catching;
-import dev.matthiesen.cobbled_level_control.common.runtime.Difficulty;
-import dev.matthiesen.cobbled_level_control.common.runtime.Leveling;
 import dev.matthiesen.common.matthiesen_lib_api.config.ConfigFolderManager;
 import dev.matthiesen.common.matthiesen_lib_api.config.ConfigManager;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -47,20 +41,11 @@ public final class CobbledLevelControlConfigManager {
         for (String difficulty : difficulties) {
             var loadedConfig = DIFFICULTY_CONFIGS.loadConfig(difficulty);
 
-            Catching catchingRuntime = getCatching(loadedConfig);
-            Leveling levelingRuntime = new Leveling(loadedConfig.leveling);
-            Battle battleRuntime = new Battle(loadedConfig.battles);
-
-            Difficulty difficultyRuntime = new Difficulty(difficulty, catchingRuntime, levelingRuntime, battleRuntime);
-            difficultyRuntime.add();
+            RuntimeDifficulty difficultyRuntime = new RuntimeDifficulty(difficulty, loadedConfig);
+            difficultyRuntime.addToRuntime();
         }
 
         INSTANCE.createInfoLog("Loaded all difficulties!");
-    }
-
-    private static @NotNull Catching getCatching(DifficultyConfig loadedConfig) {
-        var catchingConfig = loadedConfig.catching;
-        return new Catching(catchingConfig);
     }
 
     public void savePlayerAccounts() {

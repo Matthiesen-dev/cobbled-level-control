@@ -12,9 +12,7 @@ import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
 import com.cobblemon.mod.common.battles.actor.PlayerBattleActor;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
-import dev.matthiesen.cobbled_level_control.common.runtime.Battle;
-import dev.matthiesen.cobbled_level_control.common.runtime.Difficulty;
-import dev.matthiesen.cobbled_level_control.common.runtime.Leveling;
+import dev.matthiesen.cobbled_level_control.common.runtime.RuntimeDifficulty;
 import kotlin.Unit;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -27,21 +25,14 @@ public final class BattleStartEventsListener {
             var modInstance = CobbledLevelControl.INSTANCE;
             for (BattleActor actor : battle.getActors()) {
                 if (actor.getType() != ActorType.PLAYER) return Unit.INSTANCE;
-
                 ServerPlayer player = ((PlayerBattleActor) actor).getEntity();
-
                 if (player == null) return Unit.INSTANCE;
-
                 var playerData = modInstance.getConfigManager().getPlayerAccountRecord(player.getUUID());
                 String playerDiffValue = playerData.getDifficulty();
-
                 if (!playerDiffValue.equalsIgnoreCase("none")) return Unit.INSTANCE;
-
-                Difficulty difficulty = modInstance.getDifficulty(playerDiffValue);
-                Battle battleModule = difficulty.battle();
-
+                RuntimeDifficulty difficulty = modInstance.getDifficulty(playerDiffValue);
+                var battleModule = difficulty.getBattleModule();
                 if (!battleModule.doCheckBattles()) return Unit.INSTANCE;
-
                 PlayerPartyStore partyStore = Cobblemon.INSTANCE.getStorage().getParty(player);
                 int maxLevel = 0;
                 for (int i = 0; i < 6; i++) {
@@ -53,11 +44,9 @@ public final class BattleStartEventsListener {
                         }
                     }
                 }
-
-                Leveling levelingModule = difficulty.leveling();
+                var levelingModule = difficulty.getLevelingModule();
                 int levelingLevel = playerData.getLeveling();
-                int maxLevelingLevel = levelingModule.config().tiers.get(levelingLevel);
-
+                int maxLevelingLevel = levelingModule.tiers.get(levelingLevel);
                 if (maxLevel > maxLevelingLevel) {
                     event.cancel();
                     var config = modInstance.getConfigManager().getMainConfig();

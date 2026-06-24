@@ -2,8 +2,8 @@ package dev.matthiesen.cobbled_level_control.common;
 
 import dev.matthiesen.cobbled_level_control.common.commands.LevelControlCommand;
 import dev.matthiesen.cobbled_level_control.common.permissions.PermissionHelpers;
-import dev.matthiesen.cobbled_level_control.common.runtime.Difficulty;
 import dev.matthiesen.cobbled_level_control.common.events.*;
+import dev.matthiesen.cobbled_level_control.common.runtime.RuntimeDifficulty;
 import dev.matthiesen.common.matthiesen_lib_api.abstracts.AbstractCommonMod;
 import dev.matthiesen.libs.faststats.Token;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +17,7 @@ public final class CobbledLevelControl extends AbstractCommonMod {
     private static @Token final String METRICS_TOKEN = "00c30fedc5bd584dd1060bada0f2637a";
     private boolean initialized;
     private final CobbledLevelControlConfigManager configManager;
-    private final Map<String, Difficulty> difficulties = new HashMap<>();
+    private final Map<String, RuntimeDifficulty> difficulties = new HashMap<>();
 
     public static final CobbledLevelControl INSTANCE = new CobbledLevelControl();
 
@@ -62,11 +62,11 @@ public final class CobbledLevelControl extends AbstractCommonMod {
         return configManager;
     }
 
-    public void addDifficulty(Difficulty difficulty) {
-        difficulties.put(difficulty.difficulty(), difficulty);
+    public void addDifficulty(RuntimeDifficulty difficulty) {
+        difficulties.put(difficulty.getDifficultyName(), difficulty);
     }
 
-    public Difficulty getDifficulty(String key) {
+    public RuntimeDifficulty getDifficulty(String key) {
         return difficulties.get(key);
     }
 }

@@ -1,7 +1,0 @@
-package dev.matthiesen.cobbled_level_control.common.runtime;
-
-import dev.matthiesen.cobbled_level_control.common.config.DifficultyConfig;
-
-public record Catching(DifficultyConfig.CatchingConfig config) {
-
-}
