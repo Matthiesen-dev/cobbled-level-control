@@ -20,7 +20,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
-public class BattleStartEventsListener {
+public final class BattleStartEventsListener {
     public static ObservableSubscription<BattleStartedEvent.Pre> register() {
         return CobblemonEvents.BATTLE_STARTED_PRE.subscribe(Priority.NORMAL, event -> {
             PokemonBattle battle = event.getBattle();

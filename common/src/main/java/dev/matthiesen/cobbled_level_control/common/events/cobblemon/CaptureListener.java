@@ -17,7 +17,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 
-public class CaptureListener {
+public final class CaptureListener {
     public static ObservableSubscription<ThrownPokeballHitEvent> register() {
         return CobblemonEvents.THROWN_POKEBALL_HIT.subscribe(Priority.NORMAL, event -> {
             PokemonEntity entity = event.getPokemon();

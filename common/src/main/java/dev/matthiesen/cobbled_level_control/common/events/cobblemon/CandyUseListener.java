@@ -13,7 +13,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
-public class CandyUseListener {
+public final class CandyUseListener {
     public static ObservableSubscription<ExperienceCandyUseEvent.Pre> register() {
         return CobblemonEvents.EXPERIENCE_CANDY_USE_PRE.subscribe(Priority.NORMAL, event -> {
             Pokemon pokemon = event.getPokemon();
