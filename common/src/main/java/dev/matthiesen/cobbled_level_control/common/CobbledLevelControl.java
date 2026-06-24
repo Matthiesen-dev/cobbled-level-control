@@ -1,5 +1,7 @@
 package dev.matthiesen.cobbled_level_control.common;
 
+import dev.matthiesen.cobbled_level_control.common.commands.LevelControlCommand;
+import dev.matthiesen.cobbled_level_control.common.permissions.PermissionHelpers;
 import dev.matthiesen.cobbled_level_control.common.runtime.Difficulty;
 import dev.matthiesen.cobbled_level_control.common.config.ConfigRegistry;
 import dev.matthiesen.cobbled_level_control.common.events.*;
@@ -8,6 +10,7 @@ import dev.matthiesen.libs.faststats.Token;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public final class CobbledLevelControl extends AbstractCommonMod {
@@ -29,8 +32,10 @@ public final class CobbledLevelControl extends AbstractCommonMod {
     public void initialize() {
         super.initialize();
         configRegistry.init();
+        PermissionHelpers.init();
         registerServerEventHandler(new ServerEvents());
         registerPlayerEventHandler(new PlayerEvents());
+        registerCommand(LevelControlCommand.CMD);
 
         if (!initialized) {
             initialized = true;
@@ -64,5 +69,9 @@ public final class CobbledLevelControl extends AbstractCommonMod {
 
     public Difficulty getDifficulty(String key) {
         return difficulties.get(key);
+    }
+
+    public List<String> getDifficultyNames() {
+        return difficulties.keySet().stream().toList();
     }
 }

@@ -20,19 +20,16 @@ public final class PlayerAccountRecord {
         this.leveling = leveling;
     }
 
-    public PlayerAccountRecord setDifficulty(String difficulty) {
+    public void setDifficulty(String difficulty) {
         this.difficulty = difficulty;
-        return this;
     }
 
-    public PlayerAccountRecord setCatching(int catching) {
+    public void setCatching(int catching) {
         this.catching = catching;
-        return this;
     }
 
-    public PlayerAccountRecord setLeveling(int leveling) {
+    public void setLeveling(int leveling) {
         this.leveling = leveling;
-        return this;
     }
 
     public String getDifficulty() {
