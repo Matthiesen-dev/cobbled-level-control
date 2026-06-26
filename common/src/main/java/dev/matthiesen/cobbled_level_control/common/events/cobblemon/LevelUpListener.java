@@ -15,13 +15,13 @@ public final class LevelUpListener {
     public static ObservableSubscription<LevelUpEvent> register() {
         return CobblemonEvents.LEVEL_UP_EVENT.subscribe(Priority.NORMAL, event -> {
             var modInstance = CobbledLevelControl.INSTANCE;
-            var modConfig = modInstance.getConfigManager().getMainConfig();
+            var modConfig = modInstance.getConfigManager().getMessagesConfig();
             Pokemon pokemon = event.getPokemon();
             ServerPlayer player = pokemon.getOwnerPlayer();
             if (player == null) return Unit.INSTANCE;
             var playerData = modInstance.getConfigManager().getPlayerAccountRecord(player.getUUID());
             String playerDiffValue = playerData.getDifficulty();
-            if (playerDiffValue.equalsIgnoreCase("none")) return Unit.INSTANCE;
+            if (playerDiffValue.equalsIgnoreCase(RuntimeDifficulty.emptyDifficulty)) return Unit.INSTANCE;
             RuntimeDifficulty difficulty = modInstance.getDifficulty(playerDiffValue);
             var levelingModule = difficulty.getLevelingModule();
             int tierLevel = playerData.getLeveling();
@@ -29,7 +29,7 @@ public final class LevelUpListener {
             int pokemonLevel = pokemon.getLevel();
             if (pokemonLevel >= maxLevel) {
                 event.setNewLevel(pokemonLevel);
-                player.sendSystemMessage(Component.literal(modConfig.errorMessages.levelingTier), modConfig.errorMessages.useActionBar);
+                player.sendSystemMessage(Component.literal(modConfig.errors.levelingTier), modConfig.errors.useActionBar);
             }
             return Unit.INSTANCE;
         });

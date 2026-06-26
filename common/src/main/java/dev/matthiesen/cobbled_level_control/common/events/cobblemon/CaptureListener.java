@@ -8,7 +8,7 @@ import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
 import dev.matthiesen.cobbled_level_control.common.config.DifficultyConfig;
-import dev.matthiesen.cobbled_level_control.common.config.MainConfig;
+import dev.matthiesen.cobbled_level_control.common.config.MessagesConfig;
 import dev.matthiesen.cobbled_level_control.common.permissions.PermissionHelpers;
 import dev.matthiesen.cobbled_level_control.common.runtime.RuntimeDifficulty;
 import dev.matthiesen.cobbled_level_control.common.utils.PokemonUtility;
@@ -25,39 +25,39 @@ public final class CaptureListener {
             Pokemon pokemon = entity.getPokemon();
             if (event.getPokeBall().getOwner() instanceof ServerPlayer player) {
                 var modInstance = CobbledLevelControl.INSTANCE;
-                var modConfig = modInstance.getConfigManager().getMainConfig();
+                var modConfig = modInstance.getConfigManager().getMessagesConfig();
                 var playerData = modInstance.getConfigManager().getPlayerAccountRecord(player.getUUID());
                 String playerDiffValue = playerData.getDifficulty();
-                if (playerDiffValue.equalsIgnoreCase("none")) return Unit.INSTANCE;
+                if (playerDiffValue.equalsIgnoreCase(RuntimeDifficulty.emptyDifficulty)) return Unit.INSTANCE;
                 RuntimeDifficulty difficulty = modInstance.getDifficulty(playerDiffValue);
                 var catchingModule = difficulty.getCatchingModule();
                 ItemStack ball = event.getPokeBall().getPokeBall().item().getDefaultInstance();
                 ball.setCount(1);
-                if (pokemon.getShiny() && conditionalCheck(player, catchingModule.shiny, modConfig.errorMessages.missingPermission, ball, modConfig)) {
+                if (pokemon.getShiny() && conditionalCheck(player, catchingModule.shiny, modConfig.errors.missingPermission, ball, modConfig)) {
                     event.cancel();
                     return Unit.INSTANCE;
                 }
-                if (pokemon.isLegendary() && conditionalCheck(player, catchingModule.legendary, modConfig.errorMessages.missingPermission, ball, modConfig)) {
+                if (pokemon.isLegendary() && conditionalCheck(player, catchingModule.legendary, modConfig.errors.missingPermission, ball, modConfig)) {
                     event.cancel();
                     return Unit.INSTANCE;
                 }
-                if (pokemon.isMythical() && conditionalCheck(player, catchingModule.mythical, modConfig.errorMessages.missingPermission, ball, modConfig)) {
+                if (pokemon.isMythical() && conditionalCheck(player, catchingModule.mythical, modConfig.errors.missingPermission, ball, modConfig)) {
                     event.cancel();
                     return Unit.INSTANCE;
                 }
-                if (pokemon.isUltraBeast() && conditionalCheck(player, catchingModule.ultraBeast, modConfig.errorMessages.missingPermission, ball, modConfig)) {
+                if (pokemon.isUltraBeast() && conditionalCheck(player, catchingModule.ultraBeast, modConfig.errors.missingPermission, ball, modConfig)) {
                     event.cancel();
                     return Unit.INSTANCE;
                 }
                 PokemonUtility.EvoStage evoStage = PokemonUtility.getEvoStage(pokemon);
                 String perm = getPermissionString(evoStage, catchingModule);
-                if (!perm.isEmpty() && conditionalCheck(player, perm, modConfig.errorMessages.missingPermission, ball, modConfig)) {
+                if (!perm.isEmpty() && conditionalCheck(player, perm, modConfig.errors.missingPermission, ball, modConfig)) {
                     event.cancel();
                     return Unit.INSTANCE;
                 }
                 int tierLevel = playerData.getCatching();
                 int maxLevel = catchingModule.tiers.get(tierLevel);
-                if (conditionalCheck(player, pokemon.getLevel() > maxLevel, modConfig.errorMessages.catchingTier, ball, modConfig)) {
+                if (conditionalCheck(player, pokemon.getLevel() > maxLevel, modConfig.errors.catchingTier, ball, modConfig)) {
                     event.cancel();
                     return Unit.INSTANCE;
                 }
@@ -77,18 +77,18 @@ public final class CaptureListener {
         return perm;
     }
 
-    private static boolean conditionalCheck(ServerPlayer player, boolean condition, String errorMessage, ItemStack ball, MainConfig modConfig) {
+    private static boolean conditionalCheck(ServerPlayer player, boolean condition, String errorMessage, ItemStack ball, MessagesConfig modConfig) {
         if (condition) {
-            player.sendSystemMessage(Component.literal(errorMessage).withStyle(ChatFormatting.RED), modConfig.errorMessages.useActionBar);
+            player.sendSystemMessage(Component.literal(errorMessage).withStyle(ChatFormatting.RED), modConfig.errors.useActionBar);
             player.getInventory().add(ball);
             return true;
         }
         return false;
     }
 
-    private static boolean conditionalCheck(ServerPlayer player, String permissionNode, String errorMessage, ItemStack ball, MainConfig modConfig) {
+    private static boolean conditionalCheck(ServerPlayer player, String permissionNode, String errorMessage, ItemStack ball, MessagesConfig modConfig) {
         if (!permissionNode.isEmpty() && PermissionHelpers.doesNotHavePermission(player, permissionNode)) {
-            player.sendSystemMessage(Component.literal(errorMessage).withStyle(ChatFormatting.RED), modConfig.errorMessages.useActionBar);
+            player.sendSystemMessage(Component.literal(errorMessage).withStyle(ChatFormatting.RED), modConfig.errors.useActionBar);
             player.getInventory().add(ball);
             return true;
         }

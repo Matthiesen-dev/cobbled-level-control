@@ -4,6 +4,8 @@ import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
 import dev.matthiesen.cobbled_level_control.common.config.DifficultyConfig;
 
 public final class RuntimeDifficulty {
+    public static final String emptyDifficulty = "none";
+
     private final String difficulty;
     private final DifficultyConfig difficultyConfig;
 

@@ -4,7 +4,7 @@ import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("unused")
 public final class PlayerAccountRecord {
-    public String difficulty = "none";
+    public String difficulty = RuntimeDifficulty.emptyDifficulty;
     public int catching = 1;
     public int leveling = 1;
 
