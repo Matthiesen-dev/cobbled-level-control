@@ -12,6 +12,16 @@ public final class MessagesConfig {
     public ErrorMessages errors = new ErrorMessages();
 
     public static class SuccessMessages {
+        @SuppressWarnings("unused")
+        @SerializedName("//useActionBar_NOTE")
+        public String _useActionBarNote = "useActionBar is only applied to the messages being sent to the target user, and not the user/console executing the command";
+
+        @SerializedName("useActionBar")
+        public boolean useActionBar = false;
+
+        @SerializedName("reloaded")
+        public String reloaded = "Cobbled Level Control configuration reloaded successfully.";
+
         @SerializedName("targetCatchingLevelSet")
         public String targetCatchingLevelSet = "Your Catching level has been set to %level%.";
 

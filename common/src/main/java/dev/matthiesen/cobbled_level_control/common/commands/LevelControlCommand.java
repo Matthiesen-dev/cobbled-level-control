@@ -80,8 +80,10 @@ public final class LevelControlCommand extends AbstractCommand {
     }
 
     public int reload(CommandContext<CommandSourceStack> context) {
-        CobbledLevelControl.INSTANCE.reload().run();
-        context.getSource().sendSystemMessage(Component.literal("Reloaded config!").withStyle(ChatFormatting.GREEN));
+        var modInstance = CobbledLevelControl.INSTANCE;
+        var messagesConfig = modInstance.getConfigManager().getMessagesConfig();
+        modInstance.reload().run();
+        context.getSource().sendSystemMessage(Component.literal(messagesConfig.messages.reloaded).withStyle(ChatFormatting.GREEN));
         return 1;
     }
 
@@ -115,7 +117,7 @@ public final class LevelControlCommand extends AbstractCommand {
                     player.sendSystemMessage(Component.literal(
                             messagesConfig.messages.targetCatchingLevelSet
                                     .replace("%level%", Integer.toString(level))
-                    ).withStyle(ChatFormatting.GREEN));
+                    ).withStyle(ChatFormatting.GREEN), messagesConfig.messages.useActionBar);
                     source.sendSystemMessage(Component.literal(
                             messagesConfig.messages.sourceCatchingLevelSet
                                     .replace("%target%", player.getName().getString())
@@ -136,7 +138,7 @@ public final class LevelControlCommand extends AbstractCommand {
                     player.sendSystemMessage(Component.literal(
                             messagesConfig.messages.targetLevelingLevelSet
                                     .replace("%level%", Integer.toString(level))
-                    ).withStyle(ChatFormatting.GREEN));
+                    ).withStyle(ChatFormatting.GREEN), messagesConfig.messages.useActionBar);
                     source.sendSystemMessage(Component.literal(
                             messagesConfig.messages.sourceLevelingLevelSet
                                     .replace("%target%", player.getName().getString())
@@ -182,7 +184,7 @@ public final class LevelControlCommand extends AbstractCommand {
             player.sendSystemMessage(Component.literal(
                     messagesConfig.messages.targetSetDifficulty
                             .replace("%difficulty%", finalDifficulty)
-            ).withStyle(ChatFormatting.GREEN));
+            ).withStyle(ChatFormatting.GREEN), messagesConfig.messages.useActionBar);
             source.sendSystemMessage(Component.literal(
                     messagesConfig.messages.sourceSetDifficulty
                             .replace("%target%", player.getName().getString())
@@ -225,7 +227,7 @@ public final class LevelControlCommand extends AbstractCommand {
                     player.sendSystemMessage(Component.literal(
                             messagesConfig.messages.targetCatchingTierSet
                                     .replace("%tier%", Integer.toString(nextLevel))
-                    ).withStyle(ChatFormatting.AQUA));
+                    ).withStyle(ChatFormatting.AQUA), messagesConfig.messages.useActionBar);
                     source.sendSystemMessage(Component.literal(
                             messagesConfig.messages.sourceCatchingTierSet
                                     .replace("%target%", player.getName().getString())
@@ -246,7 +248,7 @@ public final class LevelControlCommand extends AbstractCommand {
                     player.sendSystemMessage(Component.literal(
                             messagesConfig.messages.targetLevelingTierSet
                                     .replace("%tier%", Integer.toString(nextLevel))
-                    ).withStyle(ChatFormatting.AQUA));
+                    ).withStyle(ChatFormatting.AQUA), messagesConfig.messages.useActionBar);
                     source.sendSystemMessage(Component.literal(
                             messagesConfig.messages.sourceLevelingTierSet
                                     .replace("%target%", player.getName().getString())
