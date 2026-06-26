@@ -21,7 +21,7 @@ public final class EvolutionListener {
             if (player == null) return Unit.INSTANCE;
             var playerData = modInstance.getConfigManager().getPlayerAccountRecord(player.getUUID());
             String playerDiffValue = playerData.getDifficulty();
-            if (playerDiffValue.equalsIgnoreCase("none")) return Unit.INSTANCE;
+            if (playerDiffValue.equalsIgnoreCase(RuntimeDifficulty.emptyDifficulty)) return Unit.INSTANCE;
             RuntimeDifficulty difficulty = modInstance.getDifficulty(playerDiffValue);
             var levelingModule = difficulty.getLevelingModule();
             PokemonUtility.EvoStage evoStage = PokemonUtility.getEvoStage(pokemon);

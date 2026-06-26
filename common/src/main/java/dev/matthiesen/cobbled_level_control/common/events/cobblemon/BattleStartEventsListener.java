@@ -29,7 +29,7 @@ public final class BattleStartEventsListener {
                 if (player == null) return Unit.INSTANCE;
                 var playerData = modInstance.getConfigManager().getPlayerAccountRecord(player.getUUID());
                 String playerDiffValue = playerData.getDifficulty();
-                if (!playerDiffValue.equalsIgnoreCase("none")) return Unit.INSTANCE;
+                if (!playerDiffValue.equalsIgnoreCase(RuntimeDifficulty.emptyDifficulty)) return Unit.INSTANCE;
                 RuntimeDifficulty difficulty = modInstance.getDifficulty(playerDiffValue);
                 var battleModule = difficulty.getBattleModule();
                 if (!battleModule.doCheckBattles()) return Unit.INSTANCE;
@@ -49,8 +49,8 @@ public final class BattleStartEventsListener {
                 int maxLevelingLevel = levelingModule.tiers.get(levelingLevel);
                 if (maxLevel > maxLevelingLevel) {
                     event.cancel();
-                    var config = modInstance.getConfigManager().getMainConfig();
-                    player.sendSystemMessage(Component.literal(config.errorMessages.battle).withStyle(ChatFormatting.RED), config.errorMessages.useActionBar);
+                    var config = modInstance.getConfigManager().getMessagesConfig();
+                    player.sendSystemMessage(Component.literal(config.errors.battle).withStyle(ChatFormatting.RED), config.errors.useActionBar);
                 }
             }
             return Unit.INSTANCE;

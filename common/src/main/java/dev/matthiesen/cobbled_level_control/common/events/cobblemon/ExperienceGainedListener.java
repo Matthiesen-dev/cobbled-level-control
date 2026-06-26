@@ -15,7 +15,7 @@ public final class ExperienceGainedListener {
     public static ObservableSubscription<ExperienceGainedEvent.Pre> register() {
         return CobblemonEvents.EXPERIENCE_GAINED_EVENT_PRE.subscribe(Priority.NORMAL, event -> {
             var modInstance = CobbledLevelControl.INSTANCE;
-            var modConfig = modInstance.getConfigManager().getMainConfig();
+            var modConfig = modInstance.getConfigManager().getMessagesConfig();
             Pokemon pokemon = event.getPokemon();
             if (!pokemon.isPlayerOwned()) return Unit.INSTANCE;
             ServerPlayer player = pokemon.getOwnerPlayer();
@@ -27,7 +27,7 @@ public final class ExperienceGainedListener {
             }
             var playerData = modInstance.getConfigManager().getPlayerAccountRecord(player.getUUID());
             String playerDiffValue = playerData.getDifficulty();
-            if (playerDiffValue.equalsIgnoreCase("none")) return Unit.INSTANCE;
+            if (playerDiffValue.equalsIgnoreCase(RuntimeDifficulty.emptyDifficulty)) return Unit.INSTANCE;
             RuntimeDifficulty difficulty = modInstance.getDifficulty(playerDiffValue);
             var levelingModule = difficulty.getLevelingModule();
             int tierLevel = playerData.getLeveling();
@@ -38,7 +38,7 @@ public final class ExperienceGainedListener {
             if (pokemonLevel >= maxLevel || experience >= experienceRequired) {
                 event.cancel();
                 event.setExperience(Math.max(experienceRequired - 1, 0));
-                player.sendSystemMessage(Component.literal(modConfig.errorMessages.levelingTier), modConfig.errorMessages.useActionBar);
+                player.sendSystemMessage(Component.literal(modConfig.errors.levelingTier), modConfig.errors.useActionBar);
             }
             return Unit.INSTANCE;
         });

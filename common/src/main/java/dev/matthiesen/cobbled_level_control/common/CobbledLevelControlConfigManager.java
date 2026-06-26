@@ -14,6 +14,8 @@ public final class CobbledLevelControlConfigManager {
 
     private ConfigManager<MainConfig> MAIN_CONFIG;
     private ConfigManager<PlayerAccountsConfig> PLAYER_ACCOUNTS_CONFIG;
+    private ConfigManager<MessagesConfig> MESSAGES_CONFIG;
+
     private ConfigFolderManager<DifficultyConfig> DIFFICULTY_CONFIGS;
 
     public CobbledLevelControlConfigManager(CobbledLevelControl modInstance) {
@@ -23,6 +25,7 @@ public final class CobbledLevelControlConfigManager {
     public void init() {
         MAIN_CONFIG = INSTANCE.createConfigManager(MainConfig.class, "main");
         PLAYER_ACCOUNTS_CONFIG = INSTANCE.createConfigManager(PlayerAccountsConfig.class, "player_accounts");
+        MESSAGES_CONFIG = INSTANCE.createConfigManager(MessagesConfig.class, "messages");
         DIFFICULTY_CONFIGS = INSTANCE.createConfigFolderManager(DifficultyConfig.class, "difficulties");
 
         loadConfigs();
@@ -32,6 +35,7 @@ public final class CobbledLevelControlConfigManager {
     public void loadConfigs() {
         INSTANCE.createInfoLog("Loading configs...");
         MAIN_CONFIG.loadConfig();
+        MESSAGES_CONFIG.loadConfig();
         DIFFICULTY_CONFIGS.loadConfigs();
 
         INSTANCE.createInfoLog("Loaded configs! Loading difficulties...");
@@ -54,6 +58,10 @@ public final class CobbledLevelControlConfigManager {
 
     public MainConfig getMainConfig() {
         return MAIN_CONFIG.getConfig();
+    }
+
+    public MessagesConfig getMessagesConfig() {
+        return MESSAGES_CONFIG.getConfig();
     }
 
     public boolean hasPlayerAccountRecord(UUID playerUUID) {

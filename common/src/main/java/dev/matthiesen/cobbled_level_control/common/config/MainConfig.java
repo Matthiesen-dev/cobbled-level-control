@@ -18,9 +18,6 @@ public final class MainConfig {
     @SerializedName("spawnConfig")
     public SpawnConfig spawnConfig = new SpawnConfig();
 
-    @SerializedName("errorMessages")
-    public ErrorMessages errorMessages = new ErrorMessages();
-
     @SerializedName("saveConfig")
     public SaveConfig saveConfig = new SaveConfig();
 
@@ -38,23 +35,6 @@ public final class MainConfig {
 
         @SerializedName("scalingMethod")
         public String scalingMethod = "+- random7";
-    }
-
-    public static class ErrorMessages {
-        @SerializedName("useActionBar")
-        public boolean useActionBar = false;
-
-        @SerializedName("battle")
-        public String battle = "One or more of your Pokemon exceeds your leveling cap! Please put it in your PC!";
-
-        @SerializedName("catchingTier")
-        public String catchingTier = "Your Catching Tier level is too low for this Pokemon!";
-
-        @SerializedName("levelingTier")
-        public String levelingTier = "Your Leveling Tier level is too low to level up this Pokemon!";
-
-        @SerializedName("missingPermission")
-        public String missingPermission = "You do not have permission to do that!";
     }
 
     public static class SaveConfig {
