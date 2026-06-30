@@ -48,6 +48,7 @@ public final class CobbledLevelControl extends AbstractCommonMod {
                 configManager.savePlayerAccounts();
                 createInfoLog("Saved Player Account Records");
             }
+            clearDifficulties();
             configManager.loadConfigs();
             createInfoLog("Reloaded configs!");
         };
@@ -64,6 +65,10 @@ public final class CobbledLevelControl extends AbstractCommonMod {
 
     public void addDifficulty(RuntimeDifficulty difficulty) {
         difficulties.put(difficulty.getDifficultyName(), difficulty);
+    }
+
+    public void clearDifficulties() {
+        difficulties.clear();
     }
 
     public RuntimeDifficulty getDifficulty(String key) {
