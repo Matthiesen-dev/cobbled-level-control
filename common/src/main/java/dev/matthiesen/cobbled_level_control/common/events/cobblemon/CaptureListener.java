@@ -21,7 +21,6 @@ import kotlin.Unit;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.ItemStack;
 
 public final class CaptureListener {
     public static ObservableSubscription<ThrownPokeballHitEvent> register() {
@@ -36,28 +35,26 @@ public final class CaptureListener {
                 if (playerDiffValue.equalsIgnoreCase(RuntimeDifficulty.emptyDifficulty)) return Unit.INSTANCE;
                 RuntimeDifficulty difficulty = modInstance.getDifficulty(playerDiffValue);
                 var catchingModule = difficulty.getCatchingModule();
-                ItemStack ball = event.getPokeBall().getPokeBall().item().getDefaultInstance();
-                ball.setCount(1);
-                if (pokemon.getShiny() && conditionalCheck(player, catchingModule.shiny, modConfig.errors.missingPermission, ball, modConfig, event)) {
+                if (pokemon.getShiny() && conditionalCheck(player, catchingModule.shiny, modConfig.errors.missingPermission, modConfig, event)) {
                     return Unit.INSTANCE;
                 }
-                if (pokemon.isLegendary() && conditionalCheck(player, catchingModule.legendary, modConfig.errors.missingPermission, ball, modConfig, event)) {
+                if (pokemon.isLegendary() && conditionalCheck(player, catchingModule.legendary, modConfig.errors.missingPermission, modConfig, event)) {
                     return Unit.INSTANCE;
                 }
-                if (pokemon.isMythical() && conditionalCheck(player, catchingModule.mythical, modConfig.errors.missingPermission, ball, modConfig, event)) {
+                if (pokemon.isMythical() && conditionalCheck(player, catchingModule.mythical, modConfig.errors.missingPermission, modConfig, event)) {
                     return Unit.INSTANCE;
                 }
-                if (pokemon.isUltraBeast() && conditionalCheck(player, catchingModule.ultraBeast, modConfig.errors.missingPermission, ball, modConfig, event)) {
+                if (pokemon.isUltraBeast() && conditionalCheck(player, catchingModule.ultraBeast, modConfig.errors.missingPermission, modConfig, event)) {
                     return Unit.INSTANCE;
                 }
                 PokemonUtility.EvoStage evoStage = PokemonUtility.getEvoStage(pokemon);
                 String perm = getPermissionString(evoStage, catchingModule);
-                if (!perm.isEmpty() && conditionalCheck(player, perm, modConfig.errors.missingPermission, ball, modConfig, event)) {
+                if (!perm.isEmpty() && conditionalCheck(player, perm, modConfig.errors.missingPermission, modConfig, event)) {
                     return Unit.INSTANCE;
                 }
                 int tierLevel = playerData.getCatching();
                 int maxLevel = catchingModule.tiers.get(tierLevel);
-                if (conditionalCheck(player, pokemon.getLevel() > maxLevel, modConfig.errors.catchingTier, ball, modConfig, event)) {
+                if (conditionalCheck(player, pokemon.getLevel() > maxLevel, modConfig.errors.catchingTier, modConfig, event)) {
                     return Unit.INSTANCE;
                 }
             }
@@ -69,13 +66,9 @@ public final class CaptureListener {
     public static void doCancel(ThrownPokeballHitEvent event, ServerPlayer player, String errorMessage) {
         event.cancel();
 
-        CobbledLevelControl.INSTANCE.createInfoLog("Catch canceled for player " + player.getName().getString() + " due to: " + errorMessage);
-
         if (PlayerExtensionsKt.isInBattle(player)) {
-            CobbledLevelControl.INSTANCE.createInfoLog("Player is in battle, sending capture end packet and finishing capture action.");
             Pair<PokemonBattle, BattleActor> battleInstance = PlayerExtensionsKt.getBattleState(player);
             if (battleInstance == null) {
-                CobbledLevelControl.INSTANCE.createInfoLog("Battle instance is null, cannot send capture end packet or finish capture action.");
                 return;
             }
             PokemonBattle battle = battleInstance.component1();
@@ -86,7 +79,6 @@ public final class CaptureListener {
                     .orElse(null);
 
             if (catchAction == null) {
-                CobbledLevelControl.INSTANCE.createInfoLog("No capture action found for the target Pokemon, cannot finish capture action.");
                 return;
             }
 
@@ -96,8 +88,6 @@ public final class CaptureListener {
             });
             battle.sendUpdate(new BattleCaptureEndPacket(battleInstance.component1().getActivePokemon().iterator().next().getPNX(), false));
             battle.finishCaptureAction(catchAction);
-
-            CobbledLevelControl.INSTANCE.createInfoLog("Capture action finished for player " + player.getName().getString() + ". Capture canceled successfully.");
         }
     }
 
@@ -112,20 +102,18 @@ public final class CaptureListener {
         return perm;
     }
 
-    private static boolean conditionalCheck(ServerPlayer player, boolean condition, String errorMessage, ItemStack ball, MessagesConfig modConfig, ThrownPokeballHitEvent event) {
+    private static boolean conditionalCheck(ServerPlayer player, boolean condition, String errorMessage, MessagesConfig modConfig, ThrownPokeballHitEvent event) {
         if (condition) {
             player.sendSystemMessage(Component.literal(errorMessage).withStyle(ChatFormatting.RED), modConfig.errors.useActionBar);
-            player.getInventory().add(ball);
             doCancel(event, player, errorMessage);
             return true;
         }
         return false;
     }
 
-    private static boolean conditionalCheck(ServerPlayer player, String permissionNode, String errorMessage, ItemStack ball, MessagesConfig modConfig, ThrownPokeballHitEvent event) {
+    private static boolean conditionalCheck(ServerPlayer player, String permissionNode, String errorMessage, MessagesConfig modConfig, ThrownPokeballHitEvent event) {
         if (!permissionNode.isEmpty() && PermissionHelpers.doesNotHavePermission(player, permissionNode)) {
             player.sendSystemMessage(Component.literal(errorMessage).withStyle(ChatFormatting.RED), modConfig.errors.useActionBar);
-            player.getInventory().add(ball);
             doCancel(event, player, errorMessage);
             return true;
         }
