@@ -7,6 +7,7 @@ import com.cobblemon.mod.common.api.events.CobblemonEvents;
 import com.cobblemon.mod.common.api.events.pokeball.ThrownPokeballHitEvent;
 import com.cobblemon.mod.common.api.reactive.ObservableSubscription;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
+import com.cobblemon.mod.common.net.messages.client.battle.BattleCaptureEndPacket;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.cobblemon.mod.common.util.PlayerExtensionsKt;
 import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
@@ -67,15 +68,37 @@ public final class CaptureListener {
     @SuppressWarnings("SameReturnValue")
     public static void doCancel(ThrownPokeballHitEvent event, ServerPlayer player, String errorMessage) {
         event.cancel();
-        boolean isInBattle = PlayerExtensionsKt.isInBattle(player);
-        if (!isInBattle) return;
-        Pair<PokemonBattle, BattleActor> battleInstance = PlayerExtensionsKt.getBattleState(player);
-        if (battleInstance == null) return;
-        PokemonBattle battle = battleInstance.component1();
-        battle.dispatchWaiting(2F, () -> {
-            battle.broadcastChatMessage(Component.literal("Catch Canceled: " + errorMessage).withStyle(ChatFormatting.RED));
-            return Unit.INSTANCE;
-        });
+
+        CobbledLevelControl.INSTANCE.createInfoLog("Catch canceled for player " + player.getName().getString() + " due to: " + errorMessage);
+
+        if (PlayerExtensionsKt.isInBattle(player)) {
+            CobbledLevelControl.INSTANCE.createInfoLog("Player is in battle, sending capture end packet and finishing capture action.");
+            Pair<PokemonBattle, BattleActor> battleInstance = PlayerExtensionsKt.getBattleState(player);
+            if (battleInstance == null) {
+                CobbledLevelControl.INSTANCE.createInfoLog("Battle instance is null, cannot send capture end packet or finish capture action.");
+                return;
+            }
+            PokemonBattle battle = battleInstance.component1();
+
+            var catchAction = battle.getCaptureActions().stream()
+                    .filter(action -> action.getTargetPokemon().getActor().isForPokemon(event.getPokemon()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (catchAction == null) {
+                CobbledLevelControl.INSTANCE.createInfoLog("No capture action found for the target Pokemon, cannot finish capture action.");
+                return;
+            }
+
+            battle.dispatchWaiting(2F, () -> {
+                battle.broadcastChatMessage(Component.literal("Catch Canceled: " + errorMessage).withStyle(ChatFormatting.RED));
+                return Unit.INSTANCE;
+            });
+            battle.sendUpdate(new BattleCaptureEndPacket(battleInstance.component1().getActivePokemon().iterator().next().getPNX(), false));
+            battle.finishCaptureAction(catchAction);
+
+            CobbledLevelControl.INSTANCE.createInfoLog("Capture action finished for player " + player.getName().getString() + ". Capture canceled successfully.");
+        }
     }
 
     private static String getPermissionString(PokemonUtility.EvoStage evoStage, DifficultyConfig.CatchingConfig catchingModule) {
