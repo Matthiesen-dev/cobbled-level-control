@@ -66,13 +66,9 @@ public final class CaptureListener {
     public static void doCancel(ThrownPokeballHitEvent event, ServerPlayer player, String errorMessage) {
         event.cancel();
 
-        CobbledLevelControl.INSTANCE.createInfoLog("Catch canceled for player " + player.getName().getString() + " due to: " + errorMessage);
-
         if (PlayerExtensionsKt.isInBattle(player)) {
-            CobbledLevelControl.INSTANCE.createInfoLog("Player is in battle, sending capture end packet and finishing capture action.");
             Pair<PokemonBattle, BattleActor> battleInstance = PlayerExtensionsKt.getBattleState(player);
             if (battleInstance == null) {
-                CobbledLevelControl.INSTANCE.createInfoLog("Battle instance is null, cannot send capture end packet or finish capture action.");
                 return;
             }
             PokemonBattle battle = battleInstance.component1();
@@ -83,7 +79,6 @@ public final class CaptureListener {
                     .orElse(null);
 
             if (catchAction == null) {
-                CobbledLevelControl.INSTANCE.createInfoLog("No capture action found for the target Pokemon, cannot finish capture action.");
                 return;
             }
 
@@ -93,8 +88,6 @@ public final class CaptureListener {
             });
             battle.sendUpdate(new BattleCaptureEndPacket(battleInstance.component1().getActivePokemon().iterator().next().getPNX(), false));
             battle.finishCaptureAction(catchAction);
-
-            CobbledLevelControl.INSTANCE.createInfoLog("Capture action finished for player " + player.getName().getString() + ". Capture canceled successfully.");
         }
     }
 
