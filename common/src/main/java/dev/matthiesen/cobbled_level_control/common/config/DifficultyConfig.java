@@ -19,6 +19,28 @@ public final class DifficultyConfig {
     public static class BattleConfig {
         @SerializedName("restrictBattles")
         public Boolean restrictBattles = true;
+
+        @SerializedName("evolutionStages")
+        public BattlesEvolutionStagePermissions evolutionStages = new BattlesEvolutionStagePermissions();
+
+        @SerializedName("legendary")
+        public String legendary = "cobbled_level_control.battles.legendary";
+
+        @SerializedName("mythical")
+        public String mythical = "cobbled_level_control.battles.mythical";
+
+        @SerializedName("ultraBeast")
+        public String ultraBeast = "cobbled_level_control.battles.ultra_beast";
+
+        @SerializedName("shiny")
+        public String shiny = "cobbled_level_control.battles.shiny";
+
+        public static class BattlesEvolutionStagePermissions {
+            public String singleEvo = "";
+            public String firstStageEvo = "";
+            public String secondStageEvo = "cobbled_level_control.battles.second_stage_evo";
+            public String finalStageEvo = "cobbled_level_control.battles.final_stage_evo";
+        }
     }
 
     public static class CatchingConfig {
@@ -42,6 +64,13 @@ public final class DifficultyConfig {
 
         @SerializedName("tiers")
         public Map<Integer, Integer> tiers = tierConfig;
+
+        public static class CatchingEvolutionStagePermissions {
+            public String singleEvo = "";
+            public String firstStageEvo = "";
+            public String secondStageEvo = "cobbled_level_control.catching.second_stage_evo";
+            public String finalStageEvo = "cobbled_level_control.catching.final_stage_evo";
+        }
     }
 
     public static class LevelingConfig {
@@ -53,20 +82,13 @@ public final class DifficultyConfig {
 
         @SerializedName("tiers")
         public Map<Integer, Integer> tiers = tierConfig;
-    }
 
-    public static class CatchingEvolutionStagePermissions {
-        public String singleEvo = "";
-        public String firstStageEvo = "";
-        public String secondStageEvo = "cobbled_level_control.catching.second_stage_evo";
-        public String finalStageEvo = "cobbled_level_control.catching.final_stage_evo";
-    }
-
-    public static class LevelingEvolutionStagePermissions {
-        public String singleEvo = "";
-        public String firstStageEvo = "";
-        public String secondStageEvo = "cobbled_level_control.leveling.second_stage_evo";
-        public String finalStageEvo = "cobbled_level_control.leveling.final_stage_evo";
+        public static class LevelingEvolutionStagePermissions {
+            public String singleEvo = "";
+            public String firstStageEvo = "";
+            public String secondStageEvo = "cobbled_level_control.leveling.second_stage_evo";
+            public String finalStageEvo = "cobbled_level_control.leveling.final_stage_evo";
+        }
     }
 
     public static final Map<Integer, Integer> tierConfig = Map.of(

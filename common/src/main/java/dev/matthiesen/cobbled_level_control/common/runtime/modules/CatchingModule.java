@@ -9,8 +9,8 @@ public class CatchingModule {
         this.catchingConfig = catchingConfig;
     }
 
-    public boolean doRestrictCatching() {
-        return this.catchingConfig.restrictCatching;
+    public boolean doNotRestrictCatching() {
+        return !this.catchingConfig.restrictCatching;
     }
 
     public DifficultyConfig.CatchingConfig getConfig() {

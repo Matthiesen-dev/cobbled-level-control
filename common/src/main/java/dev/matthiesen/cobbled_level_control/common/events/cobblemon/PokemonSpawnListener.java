@@ -27,7 +27,7 @@ public final class PokemonSpawnListener {
                 if (playerDiffValue.equalsIgnoreCase(RuntimeDifficulty.emptyDifficulty)) return Unit.INSTANCE;
                 RuntimeDifficulty difficulty = modInstance.getDifficulty(playerDiffValue);
                 var catchingModule = difficulty.getCatchingModule();
-                if (catchingModule.doRestrictCatching()) return Unit.INSTANCE;
+                if (catchingModule.doNotRestrictCatching()) return Unit.INSTANCE;
                 int tierLevel = playerData.getCatching();
                 int maxLevel = catchingModule.getConfig().tiers.get(tierLevel);
                 String scalingMethod = modConfig.spawnConfig.scalingMethod;

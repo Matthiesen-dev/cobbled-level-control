@@ -9,6 +9,10 @@ public class LevelingModule {
         this.levelingConfig = levelingConfig;
     }
 
+    public boolean doNotRestrictLeveling() {
+        return !this.levelingConfig.restrictLeveling;
+    }
+
     public boolean doRestrictLeveling() {
         return this.levelingConfig.restrictLeveling;
     }

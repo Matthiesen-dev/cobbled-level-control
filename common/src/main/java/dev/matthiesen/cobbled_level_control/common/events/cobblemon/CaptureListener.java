@@ -35,7 +35,7 @@ public final class CaptureListener {
                 if (playerDiffValue.equalsIgnoreCase(RuntimeDifficulty.emptyDifficulty)) return Unit.INSTANCE;
                 RuntimeDifficulty difficulty = modInstance.getDifficulty(playerDiffValue);
                 var catchingModule = difficulty.getCatchingModule();
-                if (catchingModule.doRestrictCatching()) return Unit.INSTANCE;
+                if (catchingModule.doNotRestrictCatching()) return Unit.INSTANCE;
                 if (pokemon.getShiny() && conditionalCheck(player, catchingModule.getConfig().shiny, modConfig.errors.missingPermission, modConfig, event)) {
                     return Unit.INSTANCE;
                 }

@@ -9,8 +9,8 @@ public class BattleModule {
         this.battleConfig = battleConfig;
     }
 
-    public boolean doRestrictBattles() {
-        return this.battleConfig.restrictBattles;
+    public boolean doNotRestrictBattles() {
+        return !this.battleConfig.restrictBattles;
     }
 
     public DifficultyConfig.BattleConfig getConfig() {

@@ -30,7 +30,7 @@ public final class ExperienceGainedListener {
             if (playerDiffValue.equalsIgnoreCase(RuntimeDifficulty.emptyDifficulty)) return Unit.INSTANCE;
             RuntimeDifficulty difficulty = modInstance.getDifficulty(playerDiffValue);
             var levelingModule = difficulty.getLevelingModule();
-            if (levelingModule.doRestrictLeveling()) return Unit.INSTANCE;
+            if (levelingModule.doNotRestrictLeveling()) return Unit.INSTANCE;
             int tierLevel = playerData.getLeveling();
             int maxLevel = levelingModule.getConfig().tiers.get(tierLevel);
             int pokemonLevel = pokemon.getLevel();
