@@ -37,7 +37,7 @@ public final class BattleStartEventsListener {
                 if (actor.getType() != ActorType.PLAYER) return Unit.INSTANCE;
                 ServerPlayer player = ((PlayerBattleActor) actor).getEntity();
                 if (player == null) return Unit.INSTANCE;
-                var playerData = modInstance.getConfigManager().getPlayerAccountRecord(player.getUUID());
+                var playerData = modInstance.getStoredPlayerAccountRecords().getPlayerAccountRecord(player.getUUID());
                 String playerDiffValue = playerData.getDifficulty();
                 if (!playerDiffValue.equalsIgnoreCase(RuntimeDifficulty.emptyDifficulty)) return Unit.INSTANCE;
                 RuntimeDifficulty difficulty = modInstance.getDifficulty(playerDiffValue);

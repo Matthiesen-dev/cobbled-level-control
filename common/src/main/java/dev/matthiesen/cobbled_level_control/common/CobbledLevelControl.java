@@ -1,6 +1,7 @@
 package dev.matthiesen.cobbled_level_control.common;
 
 import dev.matthiesen.cobbled_level_control.common.commands.LevelControlCommand;
+import dev.matthiesen.cobbled_level_control.common.data.StoredPlayerAccountRecords;
 import dev.matthiesen.cobbled_level_control.common.permissions.PermissionHelpers;
 import dev.matthiesen.cobbled_level_control.common.events.*;
 import dev.matthiesen.cobbled_level_control.common.runtime.RuntimeDifficulty;
@@ -15,9 +16,9 @@ public final class CobbledLevelControl extends AbstractCommonMod {
     public static final String MOD_ID = "cobbled_level_control";
     public static final String MOD_NAME = "Cobbled Level Control";
     private static @Token final String METRICS_TOKEN = "00c30fedc5bd584dd1060bada0f2637a";
-    private boolean initialized;
     private final CobbledLevelControlConfigManager configManager;
     private final Map<String, RuntimeDifficulty> difficulties = new HashMap<>();
+    private StoredPlayerAccountRecords storedPlayerAccountRecords;
 
     public static final CobbledLevelControl INSTANCE = new CobbledLevelControl();
 
@@ -35,19 +36,12 @@ public final class CobbledLevelControl extends AbstractCommonMod {
         registerPlayerEventHandler(new PlayerEvents());
         registerCommand(LevelControlCommand.CMD);
 
-        if (!initialized) {
-            initialized = true;
-            createInfoLog("Initialized");
-        }
+        createInfoLog("Initialized");
     }
 
     @Override
     public Runnable reload() {
         return () -> {
-            if (initialized) {
-                configManager.savePlayerAccounts();
-                createInfoLog("Saved Player Account Records");
-            }
             clearDifficulties();
             configManager.loadConfigs();
             createInfoLog("Reloaded configs!");
@@ -73,5 +67,12 @@ public final class CobbledLevelControl extends AbstractCommonMod {
 
     public RuntimeDifficulty getDifficulty(String key) {
         return difficulties.get(key);
+    }
+
+    public StoredPlayerAccountRecords getStoredPlayerAccountRecords() {
+        if (storedPlayerAccountRecords == null) {
+            storedPlayerAccountRecords = StoredPlayerAccountRecords.getInstance();
+        }
+        return storedPlayerAccountRecords;
     }
 }
