@@ -1,6 +1,7 @@
 package dev.matthiesen.cobbled_level_control.common;
 
 import dev.matthiesen.cobbled_level_control.common.commands.LevelControlCommand;
+import dev.matthiesen.cobbled_level_control.common.config.CobbledLevelControlConfigManager;
 import dev.matthiesen.cobbled_level_control.common.runtime.data.StoredPlayerAccountRecords;
 import dev.matthiesen.cobbled_level_control.common.permissions.PermissionHelpers;
 import dev.matthiesen.cobbled_level_control.common.runtime.RuntimeDifficulty;

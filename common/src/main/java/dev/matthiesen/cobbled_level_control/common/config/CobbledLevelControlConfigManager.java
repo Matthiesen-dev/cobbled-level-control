@@ -1,6 +1,6 @@
-package dev.matthiesen.cobbled_level_control.common;
+package dev.matthiesen.cobbled_level_control.common.config;
 
-import dev.matthiesen.cobbled_level_control.common.config.*;
+import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
 import dev.matthiesen.cobbled_level_control.common.runtime.*;
 import dev.matthiesen.common.matthiesen_lib_api.config.ConfigFolderManager;
 import dev.matthiesen.common.matthiesen_lib_api.config.ConfigManager;
