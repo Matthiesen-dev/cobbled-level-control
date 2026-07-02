@@ -43,6 +43,8 @@ public final class BattleStartEventsListener {
                 RuntimeDifficulty difficulty = modInstance.getDifficulty(playerDiffValue);
                 var battleModule = difficulty.getBattleModule();
                 if (battleModule.doNotRestrictBattles()) return Unit.INSTANCE;
+
+                // Only restrict battles that are Player vs Wild Pokemon
                 if (!battle.isPvW()) return Unit.INSTANCE;
 
                 PlayerPartyStore partyStore = Cobblemon.INSTANCE.getStorage().getParty(player);
