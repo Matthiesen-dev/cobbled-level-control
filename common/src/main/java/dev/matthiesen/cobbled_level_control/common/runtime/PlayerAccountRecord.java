@@ -1,5 +1,8 @@
 package dev.matthiesen.cobbled_level_control.common.runtime;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.IntTag;
+import net.minecraft.nbt.StringTag;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("unused")
@@ -42,5 +45,20 @@ public final class PlayerAccountRecord {
 
     public int getLeveling() {
         return this.leveling;
+    }
+
+    public CompoundTag toNBT() {
+        CompoundTag accountRecordNBT = new CompoundTag();
+        accountRecordNBT.put("difficulty", StringTag.valueOf(this.difficulty));
+        accountRecordNBT.put("catching", IntTag.valueOf(this.catching));
+        accountRecordNBT.put("leveling", IntTag.valueOf(this.leveling));
+        return accountRecordNBT;
+    }
+
+    public static PlayerAccountRecord fromNBT(CompoundTag compoundTag) {
+        String difficulty = compoundTag.getString("difficulty");
+        int catching = compoundTag.getInt("catching");
+        int leveling = compoundTag.getInt("leveling");
+        return new PlayerAccountRecord(difficulty, catching, leveling);
     }
 }

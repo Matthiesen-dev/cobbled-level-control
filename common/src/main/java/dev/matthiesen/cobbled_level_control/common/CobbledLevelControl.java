@@ -1,9 +1,12 @@
 package dev.matthiesen.cobbled_level_control.common;
 
 import dev.matthiesen.cobbled_level_control.common.commands.LevelControlCommand;
+import dev.matthiesen.cobbled_level_control.common.config.CobbledLevelControlConfigManager;
+import dev.matthiesen.cobbled_level_control.common.runtime.data.StoredPlayerAccountRecords;
 import dev.matthiesen.cobbled_level_control.common.permissions.PermissionHelpers;
-import dev.matthiesen.cobbled_level_control.common.events.*;
 import dev.matthiesen.cobbled_level_control.common.runtime.RuntimeDifficulty;
+import dev.matthiesen.cobbled_level_control.common.runtime.events.PlayerEvents;
+import dev.matthiesen.cobbled_level_control.common.runtime.events.ServerEvents;
 import dev.matthiesen.common.matthiesen_lib_api.abstracts.AbstractCommonMod;
 import dev.matthiesen.libs.faststats.Token;
 import org.jetbrains.annotations.NotNull;
@@ -15,9 +18,9 @@ public final class CobbledLevelControl extends AbstractCommonMod {
     public static final String MOD_ID = "cobbled_level_control";
     public static final String MOD_NAME = "Cobbled Level Control";
     private static @Token final String METRICS_TOKEN = "00c30fedc5bd584dd1060bada0f2637a";
-    private boolean initialized;
     private final CobbledLevelControlConfigManager configManager;
     private final Map<String, RuntimeDifficulty> difficulties = new HashMap<>();
+    private StoredPlayerAccountRecords storedPlayerAccountRecords;
 
     public static final CobbledLevelControl INSTANCE = new CobbledLevelControl();
 
@@ -35,20 +38,13 @@ public final class CobbledLevelControl extends AbstractCommonMod {
         registerPlayerEventHandler(new PlayerEvents());
         registerCommand(LevelControlCommand.CMD);
 
-        if (!initialized) {
-            initialized = true;
-            createInfoLog("Initialized");
-        }
+        createInfoLog("Initialized");
     }
 
     @Override
     public Runnable reload() {
         return () -> {
-            if (initialized) {
-                configManager.savePlayerAccounts();
-                createInfoLog("Saved Player Account Records");
-            }
-            clearDifficulties();
+            difficulties.clear();
             configManager.loadConfigs();
             createInfoLog("Reloaded configs!");
         };
@@ -67,11 +63,14 @@ public final class CobbledLevelControl extends AbstractCommonMod {
         difficulties.put(difficulty.getDifficultyName(), difficulty);
     }
 
-    public void clearDifficulties() {
-        difficulties.clear();
-    }
-
     public RuntimeDifficulty getDifficulty(String key) {
         return difficulties.get(key);
+    }
+
+    public StoredPlayerAccountRecords getStoredPlayerAccountRecords() {
+        if (storedPlayerAccountRecords == null) {
+            storedPlayerAccountRecords = StoredPlayerAccountRecords.getInstance();
+        }
+        return storedPlayerAccountRecords;
     }
 }

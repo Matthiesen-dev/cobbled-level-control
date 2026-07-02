@@ -1,4 +1,4 @@
-package dev.matthiesen.cobbled_level_control.common.events.cobblemon;
+package dev.matthiesen.cobbled_level_control.common.runtime.events.cobblemon;
 
 import com.cobblemon.mod.common.api.Priority;
 import com.cobblemon.mod.common.api.events.CobblemonEvents;
@@ -25,13 +25,14 @@ public final class ExperienceGainedListener {
                 modInstance.createInfoLog("Player owned? " + pokemon.isPlayerOwned());
                 return Unit.INSTANCE;
             }
-            var playerData = modInstance.getConfigManager().getPlayerAccountRecord(player.getUUID());
+            var playerData = modInstance.getStoredPlayerAccountRecords().getPlayerAccountRecord(player.getUUID());
             String playerDiffValue = playerData.getDifficulty();
             if (playerDiffValue.equalsIgnoreCase(RuntimeDifficulty.emptyDifficulty)) return Unit.INSTANCE;
             RuntimeDifficulty difficulty = modInstance.getDifficulty(playerDiffValue);
             var levelingModule = difficulty.getLevelingModule();
+            if (levelingModule.doNotRestrictLeveling()) return Unit.INSTANCE;
             int tierLevel = playerData.getLeveling();
-            int maxLevel = levelingModule.tiers.get(tierLevel);
+            int maxLevel = levelingModule.getConfig().tiers.get(tierLevel);
             int pokemonLevel = pokemon.getLevel();
             int experience = event.getExperience();
             int experienceRequired = pokemon.getExperienceToLevel(maxLevel + 1);

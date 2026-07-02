@@ -1,4 +1,4 @@
-package dev.matthiesen.cobbled_level_control.common.events.cobblemon;
+package dev.matthiesen.cobbled_level_control.common.runtime.events.cobblemon;
 
 import com.cobblemon.mod.common.api.Priority;
 import com.cobblemon.mod.common.api.battles.model.PokemonBattle;
@@ -30,30 +30,31 @@ public final class CaptureListener {
             if (event.getPokeBall().getOwner() instanceof ServerPlayer player) {
                 var modInstance = CobbledLevelControl.INSTANCE;
                 var modConfig = modInstance.getConfigManager().getMessagesConfig();
-                var playerData = modInstance.getConfigManager().getPlayerAccountRecord(player.getUUID());
+                var playerData = modInstance.getStoredPlayerAccountRecords().getPlayerAccountRecord(player.getUUID());
                 String playerDiffValue = playerData.getDifficulty();
                 if (playerDiffValue.equalsIgnoreCase(RuntimeDifficulty.emptyDifficulty)) return Unit.INSTANCE;
                 RuntimeDifficulty difficulty = modInstance.getDifficulty(playerDiffValue);
                 var catchingModule = difficulty.getCatchingModule();
-                if (pokemon.getShiny() && conditionalCheck(player, catchingModule.shiny, modConfig.errors.missingPermission, modConfig, event)) {
+                if (catchingModule.doNotRestrictCatching()) return Unit.INSTANCE;
+                if (pokemon.getShiny() && conditionalCheck(player, catchingModule.getConfig().shiny, modConfig.errors.missingPermission, modConfig, event)) {
                     return Unit.INSTANCE;
                 }
-                if (pokemon.isLegendary() && conditionalCheck(player, catchingModule.legendary, modConfig.errors.missingPermission, modConfig, event)) {
+                if (pokemon.isLegendary() && conditionalCheck(player, catchingModule.getConfig().legendary, modConfig.errors.missingPermission, modConfig, event)) {
                     return Unit.INSTANCE;
                 }
-                if (pokemon.isMythical() && conditionalCheck(player, catchingModule.mythical, modConfig.errors.missingPermission, modConfig, event)) {
+                if (pokemon.isMythical() && conditionalCheck(player, catchingModule.getConfig().mythical, modConfig.errors.missingPermission, modConfig, event)) {
                     return Unit.INSTANCE;
                 }
-                if (pokemon.isUltraBeast() && conditionalCheck(player, catchingModule.ultraBeast, modConfig.errors.missingPermission, modConfig, event)) {
+                if (pokemon.isUltraBeast() && conditionalCheck(player, catchingModule.getConfig().ultraBeast, modConfig.errors.missingPermission, modConfig, event)) {
                     return Unit.INSTANCE;
                 }
                 PokemonUtility.EvoStage evoStage = PokemonUtility.getEvoStage(pokemon);
-                String perm = getPermissionString(evoStage, catchingModule);
+                String perm = getPermissionString(evoStage, catchingModule.getConfig());
                 if (!perm.isEmpty() && conditionalCheck(player, perm, modConfig.errors.missingPermission, modConfig, event)) {
                     return Unit.INSTANCE;
                 }
                 int tierLevel = playerData.getCatching();
-                int maxLevel = catchingModule.tiers.get(tierLevel);
+                int maxLevel = catchingModule.getConfig().tiers.get(tierLevel);
                 if (conditionalCheck(player, pokemon.getLevel() > maxLevel, modConfig.errors.catchingTier, modConfig, event)) {
                     return Unit.INSTANCE;
                 }

@@ -18,9 +18,6 @@ public final class MainConfig {
     @SerializedName("spawnConfig")
     public SpawnConfig spawnConfig = new SpawnConfig();
 
-    @SerializedName("saveConfig")
-    public SaveConfig saveConfig = new SaveConfig();
-
     public static class Defaults {
         @SerializedName("defaultDifficulty")
         public String defaultDifficulty = "default";
@@ -35,14 +32,6 @@ public final class MainConfig {
 
         @SerializedName("scalingMethod")
         public String scalingMethod = "+- random7";
-    }
-
-    public static class SaveConfig {
-        @SerializedName("enableAutoSave")
-        public Boolean enableAutoSave = true;
-
-        @SerializedName("saveIntervalTicks")
-        public Integer saveIntervalTicks = 100;
     }
 
     @SuppressWarnings("unused")
