@@ -1,4 +1,4 @@
-package dev.matthiesen.cobbled_level_control.common.data;
+package dev.matthiesen.cobbled_level_control.common.runtime.data;
 
 import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
 import dev.matthiesen.cobbled_level_control.common.runtime.PlayerAccountRecord;

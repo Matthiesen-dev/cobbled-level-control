@@ -1,7 +1,7 @@
-package dev.matthiesen.cobbled_level_control.common.events;
+package dev.matthiesen.cobbled_level_control.common.runtime.events;
 
 import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
-import dev.matthiesen.cobbled_level_control.common.events.cobblemon.CobblemonSubscriptionsManager;
+import dev.matthiesen.cobbled_level_control.common.runtime.events.cobblemon.CobblemonSubscriptionsManager;
 import dev.matthiesen.common.matthiesen_lib_api.core.interfaces.MatthiesenLibServerEventHandler;
 import net.minecraft.server.MinecraftServer;
 

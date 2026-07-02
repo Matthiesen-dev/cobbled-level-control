@@ -1,4 +1,4 @@
-package dev.matthiesen.cobbled_level_control.common.events;
+package dev.matthiesen.cobbled_level_control.common.runtime.events;
 
 import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
 import dev.matthiesen.common.matthiesen_lib_api.core.interfaces.MatthiesenLibPlayerEventHandler;

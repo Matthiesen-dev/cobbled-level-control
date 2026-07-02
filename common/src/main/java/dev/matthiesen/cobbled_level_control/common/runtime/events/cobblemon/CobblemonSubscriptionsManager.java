@@ -1,4 +1,4 @@
-package dev.matthiesen.cobbled_level_control.common.events.cobblemon;
+package dev.matthiesen.cobbled_level_control.common.runtime.events.cobblemon;
 
 import com.cobblemon.mod.common.api.reactive.ObservableSubscription;
 
