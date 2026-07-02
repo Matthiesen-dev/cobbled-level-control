@@ -44,7 +44,7 @@ public final class CobbledLevelControl extends AbstractCommonMod {
     @Override
     public Runnable reload() {
         return () -> {
-            clearDifficulties();
+            difficulties.clear();
             configManager.loadConfigs();
             createInfoLog("Reloaded configs!");
         };
@@ -61,10 +61,6 @@ public final class CobbledLevelControl extends AbstractCommonMod {
 
     public void addDifficulty(RuntimeDifficulty difficulty) {
         difficulties.put(difficulty.getDifficultyName(), difficulty);
-    }
-
-    public void clearDifficulties() {
-        difficulties.clear();
     }
 
     public RuntimeDifficulty getDifficulty(String key) {
