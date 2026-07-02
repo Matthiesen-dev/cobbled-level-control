@@ -32,7 +32,7 @@ public final class BattleStartEventsListener {
                 if (!playerDiffValue.equalsIgnoreCase(RuntimeDifficulty.emptyDifficulty)) return Unit.INSTANCE;
                 RuntimeDifficulty difficulty = modInstance.getDifficulty(playerDiffValue);
                 var battleModule = difficulty.getBattleModule();
-                if (!battleModule.doCheckBattles()) return Unit.INSTANCE;
+                if (battleModule.doRestrictBattles()) return Unit.INSTANCE;
                 PlayerPartyStore partyStore = Cobblemon.INSTANCE.getStorage().getParty(player);
                 int maxLevel = 0;
                 for (int i = 0; i < 6; i++) {
@@ -46,7 +46,7 @@ public final class BattleStartEventsListener {
                 }
                 var levelingModule = difficulty.getLevelingModule();
                 int levelingLevel = playerData.getLeveling();
-                int maxLevelingLevel = levelingModule.tiers.get(levelingLevel);
+                int maxLevelingLevel = levelingModule.getConfig().tiers.get(levelingLevel);
                 if (maxLevel > maxLevelingLevel) {
                     event.cancel();
                     var config = modInstance.getConfigManager().getMessagesConfig();

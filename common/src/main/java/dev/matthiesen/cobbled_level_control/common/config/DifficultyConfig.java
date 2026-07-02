@@ -18,10 +18,13 @@ public final class DifficultyConfig {
 
     public static class BattleConfig {
         @SerializedName("restrictBattles")
-        public Boolean restrictBattles = false;
+        public Boolean restrictBattles = true;
     }
 
     public static class CatchingConfig {
+        @SerializedName("restrictCatching")
+        public Boolean restrictCatching = true;
+
         @SerializedName("evolutionStages")
         public CatchingEvolutionStagePermissions evolutionStages = new CatchingEvolutionStagePermissions();
 
@@ -42,6 +45,9 @@ public final class DifficultyConfig {
     }
 
     public static class LevelingConfig {
+        @SerializedName("restrictLeveling")
+        public Boolean restrictLeveling = true;
+
         @SerializedName("evolutionStages")
         public LevelingEvolutionStagePermissions evolutionStages = new LevelingEvolutionStagePermissions();
 

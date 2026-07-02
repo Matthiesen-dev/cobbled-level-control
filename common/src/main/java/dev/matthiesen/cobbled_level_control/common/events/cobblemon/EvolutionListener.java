@@ -8,6 +8,7 @@ import com.cobblemon.mod.common.pokemon.Pokemon;
 import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
 import dev.matthiesen.cobbled_level_control.common.permissions.PermissionHelpers;
 import dev.matthiesen.cobbled_level_control.common.runtime.RuntimeDifficulty;
+import dev.matthiesen.cobbled_level_control.common.runtime.modules.LevelingModule;
 import dev.matthiesen.cobbled_level_control.common.utils.PokemonUtility;
 import kotlin.Unit;
 import net.minecraft.server.level.ServerPlayer;
@@ -24,20 +25,26 @@ public final class EvolutionListener {
             if (playerDiffValue.equalsIgnoreCase(RuntimeDifficulty.emptyDifficulty)) return Unit.INSTANCE;
             RuntimeDifficulty difficulty = modInstance.getDifficulty(playerDiffValue);
             var levelingModule = difficulty.getLevelingModule();
+            if (levelingModule.doRestrictLeveling()) return Unit.INSTANCE;
             PokemonUtility.EvoStage evoStage = PokemonUtility.getEvoStage(pokemon);
-            String perm;
-            switch (evoStage) {
-                case PokemonUtility.EvoStage.FINAL -> perm = levelingModule.evolutionStages.finalStageEvo;
-                case PokemonUtility.EvoStage.FIRST -> perm = levelingModule.evolutionStages.firstStageEvo;
-                case PokemonUtility.EvoStage.SECOND -> perm = levelingModule.evolutionStages.secondStageEvo;
-                default -> perm = levelingModule.evolutionStages.singleEvo;
-            }
+            String perm = getString(evoStage, levelingModule);
             if (!perm.isEmpty() && conditionalCheck(player, perm)) {
                 event.setResult(false);
                 return Unit.INSTANCE;
             }
            return Unit.INSTANCE;
         });
+    }
+
+    private static String getString(PokemonUtility.EvoStage evoStage, LevelingModule levelingModule) {
+        String perm;
+        switch (evoStage) {
+            case PokemonUtility.EvoStage.FINAL -> perm = levelingModule.getConfig().evolutionStages.finalStageEvo;
+            case PokemonUtility.EvoStage.FIRST -> perm = levelingModule.getConfig().evolutionStages.firstStageEvo;
+            case PokemonUtility.EvoStage.SECOND -> perm = levelingModule.getConfig().evolutionStages.secondStageEvo;
+            default -> perm = levelingModule.getConfig().evolutionStages.singleEvo;
+        }
+        return perm;
     }
 
     private static boolean conditionalCheck(ServerPlayer player, String permissionNode) {

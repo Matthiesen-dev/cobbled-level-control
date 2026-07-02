@@ -24,8 +24,9 @@ public final class LevelUpListener {
             if (playerDiffValue.equalsIgnoreCase(RuntimeDifficulty.emptyDifficulty)) return Unit.INSTANCE;
             RuntimeDifficulty difficulty = modInstance.getDifficulty(playerDiffValue);
             var levelingModule = difficulty.getLevelingModule();
+            if (levelingModule.doRestrictLeveling()) return Unit.INSTANCE;
             int tierLevel = playerData.getLeveling();
-            int maxLevel = levelingModule.tiers.get(tierLevel);
+            int maxLevel = levelingModule.getConfig().tiers.get(tierLevel);
             int pokemonLevel = pokemon.getLevel();
             if (pokemonLevel >= maxLevel) {
                 event.setNewLevel(pokemonLevel);

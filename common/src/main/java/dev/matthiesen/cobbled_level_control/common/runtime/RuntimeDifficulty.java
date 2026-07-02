@@ -2,6 +2,9 @@ package dev.matthiesen.cobbled_level_control.common.runtime;
 
 import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
 import dev.matthiesen.cobbled_level_control.common.config.DifficultyConfig;
+import dev.matthiesen.cobbled_level_control.common.runtime.modules.BattleModule;
+import dev.matthiesen.cobbled_level_control.common.runtime.modules.CatchingModule;
+import dev.matthiesen.cobbled_level_control.common.runtime.modules.LevelingModule;
 
 public final class RuntimeDifficulty {
     public static final String emptyDifficulty = "none";
@@ -26,23 +29,11 @@ public final class RuntimeDifficulty {
         return new BattleModule(this.difficultyConfig.battles);
     }
 
-    public DifficultyConfig.CatchingConfig getCatchingModule() {
-        return this.difficultyConfig.catching;
+    public CatchingModule getCatchingModule() {
+        return new CatchingModule(this.difficultyConfig.catching);
     }
 
-    public DifficultyConfig.LevelingConfig getLevelingModule() {
-        return this.difficultyConfig.leveling;
-    }
-
-    public static class BattleModule {
-        private final DifficultyConfig.BattleConfig battleConfig;
-
-        public BattleModule(DifficultyConfig.BattleConfig battleConfig) {
-            this.battleConfig = battleConfig;
-        }
-
-        public boolean doCheckBattles() {
-            return this.battleConfig.restrictBattles;
-        }
+    public LevelingModule getLevelingModule() {
+        return new LevelingModule(this.difficultyConfig.leveling);
     }
 }

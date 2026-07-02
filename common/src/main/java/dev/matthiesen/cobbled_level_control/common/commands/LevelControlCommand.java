@@ -105,7 +105,7 @@ public final class LevelControlCommand extends AbstractCommand {
             switch (module) {
                 case "catch" -> {
                     var catchingModule = difficulty.getCatchingModule();
-                    int maxLevel = catchingModule.tiers.size();
+                    int maxLevel = catchingModule.getConfig().tiers.size();
                     if (level > maxLevel) {
                         source.sendSystemMessage(Component.literal(
                                 messagesConfig.errors.catchingLevelToHigh
@@ -127,7 +127,7 @@ public final class LevelControlCommand extends AbstractCommand {
                 }
                 case "level" -> {
                     var levelingModule = difficulty.getLevelingModule();
-                    int maxLevel = levelingModule.tiers.size();
+                    int maxLevel = levelingModule.getConfig().tiers.size();
                     if (level > maxLevel) {
                         source.sendSystemMessage(Component.literal(
                                 messagesConfig.errors.levelingLevelToHigh.replace("%maxLevel%", Integer.toString(maxLevel))
@@ -218,7 +218,7 @@ public final class LevelControlCommand extends AbstractCommand {
                     var catchingModule = difficulty.getCatchingModule();
                     level = playerData.getCatching();
                     nextLevel = level + 1;
-                    int maxLevel = catchingModule.tiers.size();
+                    int maxLevel = catchingModule.getConfig().tiers.size();
                     if (nextLevel > maxLevel) {
                         source.sendSystemMessage(Component.literal(messagesConfig.errors.catchingLevelAlreadyMax).withStyle(ChatFormatting.YELLOW));
                         return 0;
@@ -239,7 +239,7 @@ public final class LevelControlCommand extends AbstractCommand {
                     var levelingModule = difficulty.getLevelingModule();
                     level = playerData.getLeveling();
                     nextLevel = level + 1;
-                    int maxLevel = levelingModule.tiers.size();
+                    int maxLevel = levelingModule.getConfig().tiers.size();
                     if (nextLevel > maxLevel) {
                         source.sendSystemMessage(Component.literal(messagesConfig.errors.levelingLevelAlreadyMax).withStyle(ChatFormatting.YELLOW));
                         return 0;
