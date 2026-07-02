@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class StoredPlayerAccountRecords extends SavedData {
+public final class StoredPlayerAccountRecords extends SavedData {
     private final Map<String, CompoundTag> accounts = new HashMap<>();
 
     public StoredPlayerAccountRecords() {
