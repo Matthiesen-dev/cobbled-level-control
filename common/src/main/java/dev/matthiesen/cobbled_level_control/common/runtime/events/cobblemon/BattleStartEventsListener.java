@@ -146,7 +146,7 @@ public final class BattleStartEventsListener {
     @SuppressWarnings("SameReturnValue")
     public static void doCancel(BattleStartedEvent.Pre event) {
         PokemonBattle battle = event.getBattle();
-        event.cancel();
         battle.stop();
+        event.cancel();
     }
 }
