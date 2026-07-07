@@ -10,6 +10,7 @@ import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
 import dev.matthiesen.cobbled_level_control.common.permissions.PermissionHelpers;
 import dev.matthiesen.cobbled_level_control.common.runtime.RuntimeDifficulty;
 import dev.matthiesen.common.matthiesen_lib_api.command.AbstractCommand;
+import dev.matthiesen.common.matthiesen_lib_api.utility.ChatTableBuilder;
 import dev.matthiesen.common.matthiesen_lib_api.utility.CommandBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandBuildContext;
@@ -109,10 +110,12 @@ public final class LevelControlCommand extends AbstractCommand {
                 difficulty = "Not set";
             }
 
-            source.sendSystemMessage(Component.literal("Account record for " + targetPlayer.getName().getString() + ":").withStyle(ChatFormatting.AQUA));
-            source.sendSystemMessage(Component.literal("- Difficulty: " + difficulty).withStyle(ChatFormatting.GRAY));
-            source.sendSystemMessage(Component.literal("- Catching: " + playerRecord.getCatching()).withStyle(ChatFormatting.GRAY));
-            source.sendSystemMessage(Component.literal("- Leveling: " + playerRecord.getLeveling()).withStyle(ChatFormatting.GRAY));
+            var builder = new ChatTableBuilder("Account record for " + targetPlayer.getName().getString())
+                    .addRow("- Difficulty", difficulty)
+                    .addRow("- Catching", Integer.toString(playerRecord.getCatching()))
+                    .addRow("- Leveling", Integer.toString(playerRecord.getLeveling()))
+                            .build();
+            source.sendSystemMessage(builder);
             return 1;
         } catch (CommandSyntaxException e) {
             context.getSource().sendFailure(Component.literal("This command requires a player target.").withStyle(ChatFormatting.RED));
