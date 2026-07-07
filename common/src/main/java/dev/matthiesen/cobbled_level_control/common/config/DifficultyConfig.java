@@ -63,7 +63,7 @@ public final class DifficultyConfig {
         public String shiny = "cobbled_level_control.catching.shiny";
 
         @SerializedName("tiers")
-        public Map<Integer, Integer> tiers = tierConfig;
+        public Map<String, Integer> tiers = tierConfig;
 
         public static class CatchingEvolutionStagePermissions {
             public String singleEvo = "";
@@ -81,7 +81,7 @@ public final class DifficultyConfig {
         public LevelingEvolutionStagePermissions evolutionStages = new LevelingEvolutionStagePermissions();
 
         @SerializedName("tiers")
-        public Map<Integer, Integer> tiers = tierConfig;
+        public Map<String, Integer> tiers = tierConfig;
 
         public static class LevelingEvolutionStagePermissions {
             public String singleEvo = "";
@@ -91,12 +91,12 @@ public final class DifficultyConfig {
         }
     }
 
-    public static final Map<Integer, Integer> tierConfig = Map.of(
-            1, 10,
-            2, 20,
-            3, 40,
-            4, 80,
-            5, 100
+    public static final Map<String, Integer> tierConfig = Map.of(
+            "1", 10,
+            "2", 20,
+            "3", 40,
+            "4", 80,
+            "5", 100
     );
 
     @SuppressWarnings("unused")

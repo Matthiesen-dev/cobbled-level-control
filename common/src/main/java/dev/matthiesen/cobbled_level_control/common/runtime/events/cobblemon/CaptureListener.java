@@ -54,7 +54,7 @@ public final class CaptureListener {
                     return Unit.INSTANCE;
                 }
                 int tierLevel = playerData.getCatching();
-                int maxLevel = catchingModule.getConfig().tiers.get(tierLevel);
+                int maxLevel = catchingModule.getConfig().tiers.get(Integer.toString(tierLevel));
                 if (conditionalCheck(player, pokemon.getLevel() > maxLevel, modConfig.errors.catchingTier, modConfig, event)) {
                     return Unit.INSTANCE;
                 }

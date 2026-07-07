@@ -62,7 +62,7 @@ public final class BattleStartEventsListener {
                 var levelingModule = difficulty.getLevelingModule();
                 if (levelingModule.doRestrictLeveling()) {
                     int levelingLevel = playerData.getLeveling();
-                    int maxLevelingLevel = levelingModule.getConfig().tiers.get(levelingLevel);
+                    int maxLevelingLevel = levelingModule.getConfig().tiers.get(Integer.toString(levelingLevel));
                     if (conditionalCheck(player, maxLevel > maxLevelingLevel, config.errors.battle, config, event)) {
                         return Unit.INSTANCE;
                     }

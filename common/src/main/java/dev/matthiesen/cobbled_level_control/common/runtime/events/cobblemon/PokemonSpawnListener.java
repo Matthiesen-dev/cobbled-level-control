@@ -29,7 +29,7 @@ public final class PokemonSpawnListener {
                 var catchingModule = difficulty.getCatchingModule();
                 if (catchingModule.doNotRestrictCatching()) return Unit.INSTANCE;
                 int tierLevel = playerData.getCatching();
-                int maxLevel = catchingModule.getConfig().tiers.get(tierLevel);
+                int maxLevel = catchingModule.getConfig().tiers.get(Integer.toString(tierLevel));
                 String scalingMethod = modConfig.spawnConfig.scalingMethod;
                 int newLevel = ScalingUtils.getNewLevel(maxLevel, scalingMethod);
                 pokemon.setLevel(newLevel);
