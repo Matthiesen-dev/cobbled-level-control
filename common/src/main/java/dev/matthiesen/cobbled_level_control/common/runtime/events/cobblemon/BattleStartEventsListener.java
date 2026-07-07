@@ -29,7 +29,7 @@ import java.util.Arrays;
 
 public final class BattleStartEventsListener {
     public static ObservableSubscription<BattleStartedEvent.Pre> register() {
-        return CobblemonEvents.BATTLE_STARTED_PRE.subscribe(Priority.NORMAL, event -> {
+        return CobblemonEvents.BATTLE_STARTED_PRE.subscribe(Priority.HIGHEST, event -> {
             PokemonBattle battle = event.getBattle();
             var modInstance = CobbledLevelControl.INSTANCE;
             var config = modInstance.getConfigManager().getMessagesConfig();
@@ -128,7 +128,8 @@ public final class BattleStartEventsListener {
     private static boolean conditionalCheck(ServerPlayer player, boolean condition, String errorMessage, MessagesConfig modConfig, BattleStartedEvent.Pre event) {
         if (condition) {
             player.sendSystemMessage(Component.literal(errorMessage).withStyle(ChatFormatting.RED), modConfig.errors.useActionBar);
-            doCancel(event);
+            event.setReason(Component.literal(errorMessage).withStyle(ChatFormatting.RED));
+            event.cancel();
             return true;
         }
         return false;
@@ -137,16 +138,10 @@ public final class BattleStartEventsListener {
     private static boolean conditionalCheck(ServerPlayer player, String permissionNode, String errorMessage, MessagesConfig modConfig, BattleStartedEvent.Pre event) {
         if (!permissionNode.isEmpty() && PermissionHelpers.doesNotHavePermission(player, permissionNode)) {
             player.sendSystemMessage(Component.literal(errorMessage).withStyle(ChatFormatting.RED), modConfig.errors.useActionBar);
-            doCancel(event);
+            event.setReason(Component.literal(errorMessage).withStyle(ChatFormatting.RED));
+            event.cancel();
             return true;
         }
         return false;
-    }
-
-    @SuppressWarnings("SameReturnValue")
-    public static void doCancel(BattleStartedEvent.Pre event) {
-        PokemonBattle battle = event.getBattle();
-        battle.stop();
-        event.cancel();
     }
 }
