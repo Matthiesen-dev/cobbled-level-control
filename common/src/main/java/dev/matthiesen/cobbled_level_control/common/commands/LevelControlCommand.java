@@ -60,6 +60,14 @@ public final class LevelControlCommand extends AbstractCommand {
                                         )
                                 )
                         )
+
+                        .then("status", status -> status.executes(this::action))
+                        .then("status-other", statusOther -> statusOther
+                                .then(Commands.argument("player", EntityArgument.player())
+                                        .executes(this::action)
+                                )
+                        )
+
                         .build()
         );
     }
@@ -76,7 +84,40 @@ public final class LevelControlCommand extends AbstractCommand {
 
     @Override
     public int action(CommandContext<CommandSourceStack> context) {
-        return 0;
+        try {
+            var source = context.getSource();
+            var modInstance = CobbledLevelControl.INSTANCE;
+            ServerPlayer targetPlayer;
+
+            // status-other includes a player argument, while status resolves to the command source player.
+            boolean hasPlayerArgument = context.getNodes().stream()
+                    .anyMatch(node -> "player".equals(node.getNode().getName()));
+            if (hasPlayerArgument) {
+                targetPlayer = EntityArgument.getPlayer(context, "player");
+            } else {
+                targetPlayer = source.getPlayerOrException();
+            }
+
+            var playerRecord = modInstance.getStoredPlayerAccountRecords().getPlayerAccountRecord(targetPlayer.getUUID());
+            if (playerRecord == null) {
+                source.sendFailure(Component.literal("No account record found for " + targetPlayer.getName().getString() + ".").withStyle(ChatFormatting.RED));
+                return 0;
+            }
+
+            String difficulty = playerRecord.getDifficulty();
+            if (difficulty.equalsIgnoreCase(RuntimeDifficulty.emptyDifficulty)) {
+                difficulty = "Not set";
+            }
+
+            source.sendSystemMessage(Component.literal("Account record for " + targetPlayer.getName().getString() + ":").withStyle(ChatFormatting.AQUA));
+            source.sendSystemMessage(Component.literal("- Difficulty: " + difficulty).withStyle(ChatFormatting.GRAY));
+            source.sendSystemMessage(Component.literal("- Catching: " + playerRecord.getCatching()).withStyle(ChatFormatting.GRAY));
+            source.sendSystemMessage(Component.literal("- Leveling: " + playerRecord.getLeveling()).withStyle(ChatFormatting.GRAY));
+            return 1;
+        } catch (CommandSyntaxException e) {
+            context.getSource().sendFailure(Component.literal("This command requires a player target.").withStyle(ChatFormatting.RED));
+            return 0;
+        }
     }
 
     public int reload(CommandContext<CommandSourceStack> context) {

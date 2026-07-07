@@ -25,7 +25,7 @@ public final class CandyUseListener {
             var levelingModule = difficulty.getLevelingModule();
             if (levelingModule.doNotRestrictLeveling()) return Unit.INSTANCE;
             int tierLevel = playerData.getLeveling();
-            int maxLevel = levelingModule.getConfig().tiers.get(tierLevel);
+            int maxLevel = levelingModule.getConfig().tiers.get(Integer.toString(tierLevel));
             int pokemonLevel = pokemon.getLevel();
             if (pokemonLevel >= maxLevel) {
                 event.setExperienceYield(0);
