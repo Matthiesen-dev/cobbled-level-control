@@ -7,6 +7,7 @@ import dev.matthiesen.cobbled_level_control.common.permissions.PermissionHelpers
 import dev.matthiesen.cobbled_level_control.common.runtime.RuntimeDifficulty;
 import dev.matthiesen.cobbled_level_control.common.runtime.events.PlayerEvents;
 import dev.matthiesen.cobbled_level_control.common.runtime.events.ServerEvents;
+import dev.matthiesen.cobbled_level_control.common.runtime.molang.PlayerExtensions;
 import dev.matthiesen.common.matthiesen_lib_api.abstracts.AbstractCommonMod;
 import dev.matthiesen.libs.faststats.Token;
 import org.jetbrains.annotations.NotNull;
@@ -37,6 +38,7 @@ public final class CobbledLevelControl extends AbstractCommonMod {
         registerServerEventHandler(new ServerEvents());
         registerPlayerEventHandler(new PlayerEvents());
         registerCommand(LevelControlCommand.CMD);
+        PlayerExtensions.init();
 
         createInfoLog("Initialized");
     }
