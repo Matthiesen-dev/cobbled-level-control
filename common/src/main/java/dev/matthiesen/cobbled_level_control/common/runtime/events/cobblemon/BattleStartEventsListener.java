@@ -44,8 +44,12 @@ public final class BattleStartEventsListener {
                 var battleModule = difficulty.getBattleModule();
                 if (battleModule.doNotRestrictBattles()) return Unit.INSTANCE;
 
+                modInstance.createInfoLog("Battle Event Started, Checking if Player vs Wild Pokemon");
+
                 // Only restrict battles that are Player vs Wild Pokemon
                 if (!battle.isPvW()) return Unit.INSTANCE;
+
+                modInstance.createInfoLog("Battle started for player " + player.getName().getString() + " with difficulty " + playerDiffValue);
 
                 PlayerPartyStore partyStore = Cobblemon.INSTANCE.getStorage().getParty(player);
                 int maxLevel = 0;
@@ -61,9 +65,18 @@ public final class BattleStartEventsListener {
 
                 var levelingModule = difficulty.getLevelingModule();
                 if (levelingModule.doRestrictLeveling()) {
+
+                    modInstance.createInfoLog("Player " + player.getName().getString() + " has max level " + maxLevel + " and leveling tier " + playerData.getLeveling());
+
                     int levelingLevel = playerData.getLeveling();
                     int maxLevelingLevel = levelingModule.getConfig().tiers.get(Integer.toString(levelingLevel));
-                    if (conditionalCheck(player, maxLevel > maxLevelingLevel, config.errors.battle, config, event)) {
+                    if (maxLevel > maxLevelingLevel) {
+
+                        modInstance.createInfoLog("Player " + player.getName().getString() + " has max level " + maxLevel + " which exceeds the allowed level " + maxLevelingLevel + " for their leveling tier " + levelingLevel);
+
+                        player.sendSystemMessage(Component.literal(config.errors.battle).withStyle(ChatFormatting.RED), config.errors.useActionBar);
+                        event.setReason(Component.literal(config.errors.battle).withStyle(ChatFormatting.RED));
+                        event.cancel();
                         return Unit.INSTANCE;
                     }
                 }
@@ -123,16 +136,6 @@ public final class BattleStartEventsListener {
             default -> perm = battleConfig.evolutionStages.singleEvo;
         }
         return perm;
-    }
-
-    private static boolean conditionalCheck(ServerPlayer player, boolean condition, String errorMessage, MessagesConfig modConfig, BattleStartedEvent.Pre event) {
-        if (condition) {
-            player.sendSystemMessage(Component.literal(errorMessage).withStyle(ChatFormatting.RED), modConfig.errors.useActionBar);
-            event.setReason(Component.literal(errorMessage).withStyle(ChatFormatting.RED));
-            event.cancel();
-            return true;
-        }
-        return false;
     }
 
     private static boolean conditionalCheck(ServerPlayer player, String permissionNode, String errorMessage, MessagesConfig modConfig, BattleStartedEvent.Pre event) {

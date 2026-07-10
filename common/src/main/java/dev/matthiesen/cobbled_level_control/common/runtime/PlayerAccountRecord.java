@@ -1,5 +1,6 @@
 package dev.matthiesen.cobbled_level_control.common.runtime;
 
+import com.cobblemon.mod.common.api.molang.ObjectValue;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.StringTag;
@@ -60,5 +61,17 @@ public final class PlayerAccountRecord {
         int catching = compoundTag.getInt("catching");
         int leveling = compoundTag.getInt("leveling");
         return new PlayerAccountRecord(difficulty, catching, leveling);
+    }
+
+    public static String makeString(PlayerAccountRecord data) {
+        return "{" +
+                "\"difficulty\": \"" + data.difficulty + "\", " +
+                "\"catching\": " + data.catching + ", " +
+                "\"leveling\": " + data.leveling +
+                "}";
+    }
+
+    public ObjectValue<PlayerAccountRecord> asMolangValue() {
+        return new ObjectValue<>(this, PlayerAccountRecord::makeString, d -> 1.0);
     }
 }
