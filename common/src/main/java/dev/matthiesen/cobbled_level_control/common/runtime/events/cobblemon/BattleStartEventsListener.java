@@ -29,6 +29,7 @@ import java.util.Arrays;
 
 public final class BattleStartEventsListener {
     public static ObservableSubscription<BattleStartedEvent.Pre> register() {
+        // TODO: Figure out why this event handler refuses to cancel events... for now we are relying only on the BattleRegistryMixin
         return CobblemonEvents.BATTLE_STARTED_PRE.subscribe(Priority.HIGHEST, event -> {
             PokemonBattle battle = event.getBattle();
             var modInstance = CobbledLevelControl.INSTANCE;
