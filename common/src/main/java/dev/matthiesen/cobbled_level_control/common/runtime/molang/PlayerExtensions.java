@@ -144,6 +144,16 @@ public final class PlayerExtensions {
         }
     }
 
+    private static ObjectValue<LevelControlData> buildLevelControlObject(Player player) {
+        var modInstance = CobbledLevelControl.INSTANCE;
+        var playerData = modInstance.getStoredPlayerAccountRecords().getPlayerAccountRecord(player.getUUID());
+        if (playerData == null) return null;
+        var data = new LevelControlData(player, playerData);
+        var value = data.asMolangValue();
+        value.functions.putAll(getPlayerLevelControlFunctions(data));
+        return value;
+    }
+
     private static Map<String,? extends Function<MoParams, Object>> getPlayerLevelControlFunctions(LevelControlData data) {
         HashMap<String, Function<MoParams, Object>> map = new HashMap<>();
 
@@ -163,16 +173,6 @@ public final class PlayerExtensions {
         return map;
     }
 
-    private static ObjectValue<LevelControlData> buildLevelControlObject(Player player) {
-        var modInstance = CobbledLevelControl.INSTANCE;
-        var playerData = modInstance.getStoredPlayerAccountRecords().getPlayerAccountRecord(player.getUUID());
-        if (playerData == null) return null;
-        var data = new LevelControlData(player, playerData);
-        var value = data.asMolangValue();
-        value.functions.putAll(getPlayerLevelControlFunctions(data));
-        return value;
-    }
-
     public static void init() {
         CobbledLevelControl.INSTANCE.createInfoLog("Registering MoLang Player Extensions...");
 
@@ -181,6 +181,8 @@ public final class PlayerExtensions {
 
             // q.player.level_control()
             map.put("level_control", params -> buildLevelControlObject(player));
+
+            // --- DEPRECATED ---
 
             // q.player.lvl_ctrl_status() returns following object or 0
             // { "difficulty": "string", "catching": int, "leveling": int }

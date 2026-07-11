@@ -16,9 +16,6 @@
       }
     }
   },
-  "mixins": [
-    "cobbled_level_control.mixins.json"
-  ],
   "environment": "*",
   "entrypoints": {
     "main": [

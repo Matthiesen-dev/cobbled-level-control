@@ -13,9 +13,6 @@ ${mod_description}
 '''
 #logoFile = ""
 
-[[mixins]]
-config = "cobbled_level_control.mixins.json"
-
 [[dependencies.${mod_id}]]
 modId = "minecraft"
 mandatory = true
