@@ -35,22 +35,22 @@ public final class BattleStartEventsListener {
             var modInstance = CobbledLevelControl.INSTANCE;
             var config = modInstance.getConfigManager().getMessagesConfig();
             for (BattleActor actor : battle.getActors()) {
-                if (actor.getType() != ActorType.PLAYER) return Unit.INSTANCE;
+                if (actor.getType() != ActorType.PLAYER) continue;
                 ServerPlayer player = ((PlayerBattleActor) actor).getEntity();
-                if (player == null) return Unit.INSTANCE;
+                if (player == null) continue;
                 var playerData = modInstance.getStoredPlayerAccountRecords().getPlayerAccountRecord(player.getUUID());
                 String playerDiffValue = playerData.getDifficulty();
-                if (!playerDiffValue.equalsIgnoreCase(RuntimeDifficulty.emptyDifficulty)) return Unit.INSTANCE;
+                if (playerDiffValue.equalsIgnoreCase(RuntimeDifficulty.emptyDifficulty)) continue;
                 RuntimeDifficulty difficulty = modInstance.getDifficulty(playerDiffValue);
                 var battleModule = difficulty.getBattleModule();
-                if (battleModule.doNotRestrictBattles()) return Unit.INSTANCE;
+                if (battleModule.doNotRestrictBattles()) continue;
 
-                modInstance.createInfoLog("Battle Event Started, Checking if Player vs Wild Pokemon");
+                modInstance.createInfoLog("[BattleStartEventsListener] Battle Event Started, Checking if Player vs Wild Pokemon");
 
                 // Only restrict battles that are Player vs Wild Pokemon
                 if (!battle.isPvW()) return Unit.INSTANCE;
 
-                modInstance.createInfoLog("Battle started for player " + player.getName().getString() + " with difficulty " + playerDiffValue);
+                modInstance.createInfoLog("[BattleStartEventsListener] Battle started for player " + player.getName().getString() + " with difficulty " + playerDiffValue);
 
                 PlayerPartyStore partyStore = Cobblemon.INSTANCE.getStorage().getParty(player);
                 int maxLevel = 0;
@@ -67,13 +67,13 @@ public final class BattleStartEventsListener {
                 var levelingModule = difficulty.getLevelingModule();
                 if (levelingModule.doRestrictLeveling()) {
 
-                    modInstance.createInfoLog("Player " + player.getName().getString() + " has max level " + maxLevel + " and leveling tier " + playerData.getLeveling());
+                    modInstance.createInfoLog("[BattleStartEventsListener] Player " + player.getName().getString() + " has max level " + maxLevel + " and leveling tier " + playerData.getLeveling());
 
                     int levelingLevel = playerData.getLeveling();
                     int maxLevelingLevel = levelingModule.getConfig().tiers.get(Integer.toString(levelingLevel));
                     if (maxLevel > maxLevelingLevel) {
 
-                        modInstance.createInfoLog("Player " + player.getName().getString() + " has max level " + maxLevel + " which exceeds the allowed level " + maxLevelingLevel + " for their leveling tier " + levelingLevel);
+                        modInstance.createInfoLog("[BattleStartEventsListener] Player " + player.getName().getString() + " has max level " + maxLevel + " which exceeds the allowed level " + maxLevelingLevel + " for their leveling tier " + levelingLevel);
 
                         player.sendSystemMessage(Component.literal(config.errors.battle).withStyle(ChatFormatting.RED), config.errors.useActionBar);
                         event.setReason(Component.literal(config.errors.battle).withStyle(ChatFormatting.RED));
@@ -96,7 +96,7 @@ public final class BattleStartEventsListener {
                     }
                 }
 
-                if (playerSide == null || pokemonSide == null) return Unit.INSTANCE;
+                if (playerSide == null || pokemonSide == null) continue;
 
                 var activePokemon = pokemonSide.getActivePokemon();
                 for (ActiveBattlePokemon activeMon : activePokemon) {

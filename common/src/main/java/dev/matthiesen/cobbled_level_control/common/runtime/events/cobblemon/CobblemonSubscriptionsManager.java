@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 public final class CobblemonSubscriptionsManager {
     private static final Map<String, ObservableSubscription<?>> activeSubscriptions = new HashMap<>();
     private static final Map<String, Supplier<ObservableSubscription<?>>> subscriptionSuppliers = Map.of(
-//            "battle-start", BattleStartEventsListener::register,
+            "battle-start", BattleStartEventsListener::register,
             "candy-use", CandyUseListener::register,
             "capture", CaptureListener::register,
             "experience", ExperienceGainedListener::register,
