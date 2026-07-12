@@ -2,7 +2,7 @@ package dev.matthiesen.cobbled_level_control.common.runtime.modules;
 
 import dev.matthiesen.cobbled_level_control.common.config.DifficultyConfig;
 
-public class LevelingModule {
+public final class LevelingModule {
     private final DifficultyConfig.LevelingConfig levelingConfig;
 
     public LevelingModule(DifficultyConfig.LevelingConfig levelingConfig) {

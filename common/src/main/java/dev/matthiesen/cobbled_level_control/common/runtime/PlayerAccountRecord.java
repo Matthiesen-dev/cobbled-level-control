@@ -6,7 +6,6 @@ import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.StringTag;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("unused")
 public final class PlayerAccountRecord {
     public String difficulty = RuntimeDifficulty.emptyDifficulty;
     public int catching = 1;
