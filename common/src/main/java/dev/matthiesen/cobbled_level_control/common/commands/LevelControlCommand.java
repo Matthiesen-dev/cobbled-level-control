@@ -11,7 +11,6 @@ import dev.matthiesen.cobbled_level_control.common.permissions.PermissionHelpers
 import dev.matthiesen.cobbled_level_control.common.runtime.RuntimeDifficulty;
 import dev.matthiesen.common.matthiesen_lib_api.command.AbstractCommand;
 import dev.matthiesen.common.matthiesen_lib_api.utility.ChatTableBuilder;
-import dev.matthiesen.common.matthiesen_lib_api.utility.CommandBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -26,58 +25,60 @@ public final class LevelControlCommand extends AbstractCommand {
     @Override
     public void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registry, Commands.CommandSelection context) {
         dispatcher.register(
-                new CommandBuilder("level-control")
+                Commands.literal("level-control")
                         .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_ROOT_PERMISSION))
-                        .then("reload", reload -> reload
-                                .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_RELOAD_PERMISSION))
-                                .executes(this::reload))
-                        .then("level-up", levelUp -> levelUp
-                                .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_LEVEL_UP_PERMISSION))
-                                .then(Commands.argument("player", EntityArgument.player())
-                                        .then(Commands.argument("module", StringArgumentType.string())
-                                                .suggests(modulesProvider())
-                                                .executes(this::levelUp)
-                                        )
-                                )
+                        .then(
+                                Commands.literal("reload")
+                                        .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_RELOAD_PERMISSION))
+                                        .executes(this::reload)
                         )
-                        .then("set-difficulty", setDifficulty -> setDifficulty
-                                .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_SET_DIFFICULTY_PERMISSION))
-                                .then(Commands.argument("player", EntityArgument.player())
-                                        .then(Commands.argument("difficulty", StringArgumentType.string())
-                                                .suggests((_ctx, builder) -> {
-                                                    var diffNames = CobbledLevelControl.INSTANCE.getConfigManager().getMainConfig().difficulties;
-                                                    for (var difficulty : diffNames) {
-                                                        builder.suggest(difficulty);
-                                                    }
-                                                    return builder.buildFuture();
-                                                })
-                                                .executes(this::setDifficulty)
+                        .then(
+                                Commands.literal("level-up")
+                                        .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_LEVEL_UP_PERMISSION))
+                                        .then(Commands.argument("player", EntityArgument.player())
+                                                .then(Commands.argument("module", StringArgumentType.string())
+                                                        .suggests(modulesProvider())
+                                                        .executes(this::levelUp)
+                                                )
                                         )
-                                )
                         )
-                        .then("set-level", setLevel -> setLevel
-                                .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_SET_LEVEL_PERMISSION))
-                                .then(Commands.argument("player", EntityArgument.player())
-                                        .then(Commands.argument("module", StringArgumentType.string())
-                                                .suggests(modulesProvider())
-                                                .then(Commands.argument("level", IntegerArgumentType.integer(1))
+                        .then(
+                                Commands.literal("set-difficulty")
+                                        .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_SET_DIFFICULTY_PERMISSION))
+                                        .then(Commands.argument("player", EntityArgument.player())
+                                                .then(Commands.argument("difficulty", StringArgumentType.string())
+                                                        .suggests((_ctx, builder) -> {
+                                                            var diffNames = CobbledLevelControl.INSTANCE.getConfigManager().getMainConfig().difficulties;
+                                                            for (var difficulty : diffNames) {
+                                                                builder.suggest(difficulty);
+                                                            }
+                                                            return builder.buildFuture();
+                                                        })
+                                                        .executes(this::setDifficulty)
+                                                )
+                                        )
+                        )
+                        .then(
+                                Commands.literal("set-level")
+                                        .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_SET_LEVEL_PERMISSION))
+                                        .then(Commands.argument("player", EntityArgument.player())
+                                                .then(Commands.argument("level", IntegerArgumentType.integer())
                                                         .executes(this::setLevel)
                                                 )
                                         )
-                                )
                         )
-
-                        .then("status", status -> status
-                                .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_STATUS_PERMISSION))
-                                .executes(this::action))
-                        .then("status-other", statusOther -> statusOther
-                                .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_STATUS_OTHER_PERMISSION))
-                                .then(Commands.argument("player", EntityArgument.player())
+                        .then(
+                                Commands.literal("status")
+                                        .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_STATUS_PERMISSION))
                                         .executes(this::action)
-                                )
                         )
-
-                        .build()
+                        .then(
+                                Commands.literal("status-other")
+                                        .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_STATUS_OTHER_PERMISSION))
+                                        .then(Commands.argument("player", EntityArgument.player())
+                                                .executes(this::action)
+                                        )
+                        )
         );
     }
 
