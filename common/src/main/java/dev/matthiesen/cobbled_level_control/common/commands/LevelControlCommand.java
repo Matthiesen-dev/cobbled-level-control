@@ -11,6 +11,7 @@ import dev.matthiesen.cobbled_level_control.common.permissions.PermissionHelpers
 import dev.matthiesen.cobbled_level_control.common.runtime.RuntimeDifficulty;
 import dev.matthiesen.common.matthiesen_lib_api.command.AbstractCommand;
 import dev.matthiesen.common.matthiesen_lib_api.utility.ChatTableBuilder;
+import dev.matthiesen.common.matthiesen_lib_api.utility.CommandBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -25,22 +26,18 @@ public final class LevelControlCommand extends AbstractCommand {
     @Override
     public void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registry, Commands.CommandSelection context) {
         dispatcher.register(
-                Commands.literal("level-control")
-                        .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_ROOT_PERMISSION))
-                        .then(
-                                Commands.literal("reload")
-                                        .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_RELOAD_PERMISSION))
-                                        .executes(this::reload)
-                        )
-                        .then(
-                                Commands.literal("level-up")
-                                        .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_LEVEL_UP_PERMISSION))
-                                        .then(Commands.argument("player", EntityArgument.player())
-                                                .then(Commands.argument("module", StringArgumentType.string())
-                                                        .suggests(modulesProvider())
-                                                        .executes(this::levelUp)
-                                                )
+                new CommandBuilder("level-control")
+                        .then("reload", reload -> reload
+                                .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_RELOAD_PERMISSION))
+                                .executes(this::reload))
+                        .then("level-up", levelUp -> levelUp
+                                .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_LEVEL_UP_PERMISSION))
+                                .then(Commands.argument("player", EntityArgument.player())
+                                        .then(Commands.argument("module", StringArgumentType.string())
+                                                .suggests(modulesProvider())
+                                                .executes(this::levelUp)
                                         )
+                                )
                         )
                         .then(
                                 Commands.literal("set-difficulty")
@@ -79,6 +76,8 @@ public final class LevelControlCommand extends AbstractCommand {
                                                 .executes(this::action)
                                         )
                         )
+
+                        .build()
         );
     }
 
