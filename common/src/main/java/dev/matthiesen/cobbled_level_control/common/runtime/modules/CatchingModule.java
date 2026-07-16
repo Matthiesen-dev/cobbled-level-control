@@ -2,7 +2,7 @@ package dev.matthiesen.cobbled_level_control.common.runtime.modules;
 
 import dev.matthiesen.cobbled_level_control.common.config.DifficultyConfig;
 
-public class CatchingModule {
+public final class CatchingModule {
     private final DifficultyConfig.CatchingConfig catchingConfig;
 
     public CatchingModule(DifficultyConfig.CatchingConfig catchingConfig) {

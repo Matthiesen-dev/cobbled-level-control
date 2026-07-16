@@ -15,9 +15,6 @@ import com.cobblemon.mod.common.battles.actor.PlayerBattleActor;
 import com.cobblemon.mod.common.battles.pokemon.BattlePokemon;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
-import dev.matthiesen.cobbled_level_control.common.config.DifficultyConfig;
-import dev.matthiesen.cobbled_level_control.common.config.MessagesConfig;
-import dev.matthiesen.cobbled_level_control.common.permissions.PermissionHelpers;
 import dev.matthiesen.cobbled_level_control.common.runtime.RuntimeDifficulty;
 import dev.matthiesen.cobbled_level_control.common.utils.PokemonUtility;
 import kotlin.Unit;
@@ -104,48 +101,27 @@ public final class BattleStartEventsListener {
                     if (battlePokemon == null) continue;
                     Pokemon pokemon = battlePokemon.getOriginalPokemon();
 
-                    if (pokemon.getShiny() && conditionalCheck(player, battleConfig.shiny, config.errors.missingPermission, config, event)) {
+                    if (pokemon.getShiny() && Util.conditionalCheck(player, battleConfig.shiny, config.errors.missingPermission, config, event)) {
                         return Unit.INSTANCE;
                     }
-                    if (pokemon.isLegendary() && conditionalCheck(player, battleConfig.legendary, config.errors.missingPermission, config, event)) {
+                    if (pokemon.isLegendary() && Util.conditionalCheck(player, battleConfig.legendary, config.errors.missingPermission, config, event)) {
                         return Unit.INSTANCE;
                     }
-                    if (pokemon.isMythical() && conditionalCheck(player, battleConfig.mythical, config.errors.missingPermission, config, event)) {
+                    if (pokemon.isMythical() && Util.conditionalCheck(player, battleConfig.mythical, config.errors.missingPermission, config, event)) {
                         return Unit.INSTANCE;
                     }
-                    if (pokemon.isUltraBeast() && conditionalCheck(player, battleConfig.ultraBeast, config.errors.missingPermission, config, event)) {
+                    if (pokemon.isUltraBeast() && Util.conditionalCheck(player, battleConfig.ultraBeast, config.errors.missingPermission, config, event)) {
                         return Unit.INSTANCE;
                     }
 
                     PokemonUtility.EvoStage evoStage = PokemonUtility.getEvoStage(pokemon);
-                    String perm = getPermissionString(evoStage, battleConfig);
-                    if (!perm.isEmpty() && conditionalCheck(player, perm, config.errors.missingPermission, config, event)) {
+                    String perm = Util.getPermissionString(evoStage, battleConfig);
+                    if (!perm.isEmpty() && Util.conditionalCheck(player, perm, config.errors.missingPermission, config, event)) {
                         return Unit.INSTANCE;
                     }
                 }
             }
             return Unit.INSTANCE;
         });
-    }
-
-    private static String getPermissionString(PokemonUtility.EvoStage evoStage, DifficultyConfig.BattleConfig battleConfig) {
-        String perm;
-        switch (evoStage) {
-            case PokemonUtility.EvoStage.FINAL -> perm = battleConfig.evolutionStages.finalStageEvo;
-            case PokemonUtility.EvoStage.FIRST -> perm = battleConfig.evolutionStages.firstStageEvo;
-            case PokemonUtility.EvoStage.SECOND -> perm = battleConfig.evolutionStages.secondStageEvo;
-            default -> perm = battleConfig.evolutionStages.singleEvo;
-        }
-        return perm;
-    }
-
-    private static boolean conditionalCheck(ServerPlayer player, String permissionNode, String errorMessage, MessagesConfig modConfig, BattleStartedEvent.Pre event) {
-        if (!permissionNode.isEmpty() && PermissionHelpers.doesNotHavePermission(player, permissionNode)) {
-            player.sendSystemMessage(Component.literal(errorMessage).withStyle(ChatFormatting.RED), modConfig.errors.useActionBar);
-            event.setReason(Component.literal(errorMessage).withStyle(ChatFormatting.RED));
-            event.cancel();
-            return true;
-        }
-        return false;
     }
 }

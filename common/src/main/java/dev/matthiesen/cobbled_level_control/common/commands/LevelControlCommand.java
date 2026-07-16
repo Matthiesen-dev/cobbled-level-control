@@ -58,18 +58,15 @@ public final class LevelControlCommand extends AbstractCommand {
                         .then("set-level", setLevel -> setLevel
                                 .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_SET_LEVEL_PERMISSION))
                                 .then(Commands.argument("player", EntityArgument.player())
-                                        .then(Commands.argument("module", StringArgumentType.string())
-                                                .suggests(modulesProvider())
                                                 .then(Commands.argument("level", IntegerArgumentType.integer(1))
                                                         .executes(this::setLevel)
                                                 )
                                         )
-                                )
                         )
-
                         .then("status", status -> status
                                 .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_STATUS_PERMISSION))
-                                .executes(this::action))
+                                .executes(this::action)
+                        )
                         .then("status-other", statusOther -> statusOther
                                 .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_STATUS_OTHER_PERMISSION))
                                 .then(Commands.argument("player", EntityArgument.player())

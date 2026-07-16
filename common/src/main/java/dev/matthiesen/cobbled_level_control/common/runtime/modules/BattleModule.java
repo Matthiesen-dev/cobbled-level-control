@@ -2,7 +2,7 @@ package dev.matthiesen.cobbled_level_control.common.runtime.modules;
 
 import dev.matthiesen.cobbled_level_control.common.config.DifficultyConfig;
 
-public class BattleModule {
+public final class BattleModule {
     private final DifficultyConfig.BattleConfig battleConfig;
 
     public BattleModule(DifficultyConfig.BattleConfig battleConfig) {

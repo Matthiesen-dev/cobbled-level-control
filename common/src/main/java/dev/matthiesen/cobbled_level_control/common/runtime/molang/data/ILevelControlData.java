@@ -7,8 +7,10 @@ public interface ILevelControlData {
     Player player();
     PlayerAccountRecord accountRecord();
 
-    default String baseJsonFields() {
-        return "\"playerUUID\": \"" + player().getUUID() + "\"," +
-                "\"accountRecord\": " + PlayerAccountRecord.makeString(accountRecord());
+    default String makeString(ILevelControlData data) {
+        return "{" +
+                "\"playerUUID\": \"" + data.player().getUUID() + "\"," +
+                "\"accountRecord\": " + PlayerAccountRecord.makeString(data.accountRecord()) +
+                "}";
     }
 }
