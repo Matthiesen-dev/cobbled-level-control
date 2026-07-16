@@ -27,6 +27,7 @@ public final class LevelControlCommand extends AbstractCommand {
     public void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registry, Commands.CommandSelection context) {
         dispatcher.register(
                 new CommandBuilder("level-control")
+                        .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_ROOT_PERMISSION))
                         .then("reload", reload -> reload
                                 .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_RELOAD_PERMISSION))
                                 .executes(this::reload))
@@ -57,7 +58,7 @@ public final class LevelControlCommand extends AbstractCommand {
                         .then("set-level", setLevel -> setLevel
                                 .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_SET_LEVEL_PERMISSION))
                                 .then(Commands.argument("player", EntityArgument.player())
-                                                .then(Commands.argument("level", IntegerArgumentType.integer())
+                                                .then(Commands.argument("level", IntegerArgumentType.integer(1))
                                                         .executes(this::setLevel)
                                                 )
                                         )
