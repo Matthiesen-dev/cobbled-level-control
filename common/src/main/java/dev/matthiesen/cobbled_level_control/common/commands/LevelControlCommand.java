@@ -39,42 +39,38 @@ public final class LevelControlCommand extends AbstractCommand {
                                         )
                                 )
                         )
-                        .then(
-                                Commands.literal("set-difficulty")
-                                        .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_SET_DIFFICULTY_PERMISSION))
-                                        .then(Commands.argument("player", EntityArgument.player())
-                                                .then(Commands.argument("difficulty", StringArgumentType.string())
-                                                        .suggests((_ctx, builder) -> {
-                                                            var diffNames = CobbledLevelControl.INSTANCE.getConfigManager().getMainConfig().difficulties;
-                                                            for (var difficulty : diffNames) {
-                                                                builder.suggest(difficulty);
-                                                            }
-                                                            return builder.buildFuture();
-                                                        })
-                                                        .executes(this::setDifficulty)
-                                                )
+                        .then("set-difficulty", setDifficulty -> setDifficulty
+                                .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_SET_DIFFICULTY_PERMISSION))
+                                .then(Commands.argument("player", EntityArgument.player())
+                                        .then(Commands.argument("difficulty", StringArgumentType.string())
+                                                .suggests((_ctx, builder) -> {
+                                                    var diffNames = CobbledLevelControl.INSTANCE.getConfigManager().getMainConfig().difficulties;
+                                                    for (var difficulty : diffNames) {
+                                                        builder.suggest(difficulty);
+                                                    }
+                                                    return builder.buildFuture();
+                                                })
+                                                .executes(this::setDifficulty)
                                         )
+                                )
                         )
-                        .then(
-                                Commands.literal("set-level")
-                                        .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_SET_LEVEL_PERMISSION))
-                                        .then(Commands.argument("player", EntityArgument.player())
+                        .then("set-level", setLevel -> setLevel
+                                .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_SET_LEVEL_PERMISSION))
+                                .then(Commands.argument("player", EntityArgument.player())
                                                 .then(Commands.argument("level", IntegerArgumentType.integer())
                                                         .executes(this::setLevel)
                                                 )
                                         )
                         )
-                        .then(
-                                Commands.literal("status")
-                                        .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_STATUS_PERMISSION))
-                                        .executes(this::action)
+                        .then("status", status -> status
+                                .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_STATUS_PERMISSION))
+                                .executes(this::action)
                         )
-                        .then(
-                                Commands.literal("status-other")
-                                        .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_STATUS_OTHER_PERMISSION))
-                                        .then(Commands.argument("player", EntityArgument.player())
-                                                .executes(this::action)
-                                        )
+                        .then("status-other", statusOther -> statusOther
+                                .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_STATUS_OTHER_PERMISSION))
+                                .then(Commands.argument("player", EntityArgument.player())
+                                        .executes(this::action)
+                                )
                         )
 
                         .build()
