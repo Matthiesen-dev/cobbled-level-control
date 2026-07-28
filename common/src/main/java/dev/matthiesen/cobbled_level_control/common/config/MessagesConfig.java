@@ -1,7 +1,5 @@
 package dev.matthiesen.cobbled_level_control.common.config;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
 public final class MessagesConfig {
@@ -93,10 +91,4 @@ public final class MessagesConfig {
         @SerializedName("levelingLevelAlreadyMax")
         public String levelingLevelAlreadyMax = "Target player is already at the maximum level for the Leveling module.";
     }
-
-    @SuppressWarnings("unused")
-    public static final Gson GSON = new GsonBuilder()
-            .disableHtmlEscaping()
-            .setPrettyPrinting()
-            .create();
 }

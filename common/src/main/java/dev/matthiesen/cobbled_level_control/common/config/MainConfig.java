@@ -1,7 +1,5 @@
 package dev.matthiesen.cobbled_level_control.common.config;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -33,10 +31,4 @@ public final class MainConfig {
         @SerializedName("scalingMethod")
         public String scalingMethod = "+- random7";
     }
-
-    @SuppressWarnings("unused")
-    public static final Gson GSON = new GsonBuilder()
-            .disableHtmlEscaping()
-            .setPrettyPrinting()
-            .create();
 }

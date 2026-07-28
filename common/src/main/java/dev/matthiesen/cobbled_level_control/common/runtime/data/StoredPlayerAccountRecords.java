@@ -106,7 +106,7 @@ public final class StoredPlayerAccountRecords extends SavedData {
     );
 
     public static StoredPlayerAccountRecords getInstance() {
-        MinecraftServer server = CobbledLevelControl.INSTANCE.getMinecraftServer();
+        MinecraftServer server = CobbledLevelControl.INSTANCE.getCommonUtils().getServer();
         if (server == null) return null;
         ServerLevel level = server.overworld();
         return level.getDataStorage().computeIfAbsent(StoredPlayerAccountRecords.FACTORY, CobbledLevelControl.MOD_ID + "_player_account_records");

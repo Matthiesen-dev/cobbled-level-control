@@ -26,7 +26,6 @@ import java.util.Arrays;
 
 public final class BattleStartEventsListener {
     public static ObservableSubscription<BattleStartedEvent.Pre> register() {
-        // TODO: Figure out why this event handler refuses to cancel events... for now we are relying only on the BattleRegistryMixin
         return CobblemonEvents.BATTLE_STARTED_PRE.subscribe(Priority.HIGHEST, event -> {
             PokemonBattle battle = event.getBattle();
             var modInstance = CobbledLevelControl.INSTANCE;
@@ -41,14 +40,7 @@ public final class BattleStartEventsListener {
                 RuntimeDifficulty difficulty = modInstance.getDifficulty(playerDiffValue);
                 var battleModule = difficulty.getBattleModule();
                 if (battleModule.doNotRestrictBattles()) continue;
-
-                modInstance.createInfoLog("[BattleStartEventsListener] Battle Event Started, Checking if Player vs Wild Pokemon");
-
-                // Only restrict battles that are Player vs Wild Pokemon
                 if (!battle.isPvW()) return Unit.INSTANCE;
-
-                modInstance.createInfoLog("[BattleStartEventsListener] Battle started for player " + player.getName().getString() + " with difficulty " + playerDiffValue);
-
                 PlayerPartyStore partyStore = Cobblemon.INSTANCE.getStorage().getParty(player);
                 int maxLevel = 0;
                 for (int i = 0; i < 6; i++) {
@@ -60,18 +52,11 @@ public final class BattleStartEventsListener {
                         }
                     }
                 }
-
                 var levelingModule = difficulty.getLevelingModule();
                 if (levelingModule.doRestrictLeveling()) {
-
-                    modInstance.createInfoLog("[BattleStartEventsListener] Player " + player.getName().getString() + " has max level " + maxLevel + " and leveling tier " + playerData.getLeveling());
-
                     int levelingLevel = playerData.getLeveling();
                     int maxLevelingLevel = levelingModule.getConfig().tiers.get(Integer.toString(levelingLevel));
                     if (maxLevel > maxLevelingLevel) {
-
-                        modInstance.createInfoLog("[BattleStartEventsListener] Player " + player.getName().getString() + " has max level " + maxLevel + " which exceeds the allowed level " + maxLevelingLevel + " for their leveling tier " + levelingLevel);
-
                         player.sendSystemMessage(Component.literal(config.errors.battle).withStyle(ChatFormatting.RED), config.errors.useActionBar);
                         event.setReason(Component.literal(config.errors.battle).withStyle(ChatFormatting.RED));
                         event.cancel();

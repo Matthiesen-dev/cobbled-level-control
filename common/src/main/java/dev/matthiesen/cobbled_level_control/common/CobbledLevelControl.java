@@ -5,11 +5,11 @@ import dev.matthiesen.cobbled_level_control.common.config.CobbledLevelControlCon
 import dev.matthiesen.cobbled_level_control.common.runtime.data.StoredPlayerAccountRecords;
 import dev.matthiesen.cobbled_level_control.common.permissions.PermissionHelpers;
 import dev.matthiesen.cobbled_level_control.common.runtime.RuntimeDifficulty;
-import dev.matthiesen.cobbled_level_control.common.runtime.events.PlayerEvents;
-import dev.matthiesen.cobbled_level_control.common.runtime.events.ServerEvents;
+import dev.matthiesen.cobbled_level_control.common.runtime.events.cobblemon.CobblemonSubscriptionsManager;
 import dev.matthiesen.cobbled_level_control.common.runtime.molang.PlayerExtensions;
-import dev.matthiesen.common.matthiesen_lib_api.abstracts.AbstractCommonMod;
 import dev.matthiesen.libs.faststats.Token;
+import dev.matthiesen.matthiesen_core.common.AbstractCommonMod;
+import dev.matthiesen.matthiesen_core.common.api.events.PlatformEvents;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -35,15 +35,31 @@ public final class CobbledLevelControl extends AbstractCommonMod {
         super.initialize();
         configManager.init();
         PermissionHelpers.init();
-        registerServerEventHandler(new ServerEvents());
-        registerPlayerEventHandler(new PlayerEvents());
-        registerCommand(LevelControlCommand.CMD);
+
+        PlatformEvents.SERVER_RELOAD.subscribe(event -> reload().run());
+
+        PlatformEvents.SERVER_STARTING.subscribe(event ->
+                CobblemonSubscriptionsManager.registerSubscriptions());
+
+        PlatformEvents.SERVER_STOPPING.subscribe(event -> {
+            getStoredPlayerAccountRecords().setDirty();
+            CobblemonSubscriptionsManager.teardownAllActiveSubscriptions();
+        });
+
+        PlatformEvents.PLAYER_JOIN.subscribe(event -> {
+            var registry = getStoredPlayerAccountRecords();
+            if (!registry.hasPlayerAccountRecord(event.player().getUUID())) {
+                registry.createNewPlayerAccountRecord(event.player().getUUID());
+            }
+        });
+
+        getCommandsRegistryManager().registerCommand(LevelControlCommand.CMD);
+
         PlayerExtensions.init();
 
         createInfoLog("Initialized");
     }
 
-    @Override
     public Runnable reload() {
         return () -> {
             difficulties.clear();

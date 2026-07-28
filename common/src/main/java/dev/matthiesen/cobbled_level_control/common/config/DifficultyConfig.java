@@ -1,7 +1,5 @@
 package dev.matthiesen.cobbled_level_control.common.config;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Map;
@@ -98,10 +96,4 @@ public final class DifficultyConfig {
             "4", 80,
             "5", 100
     );
-
-    @SuppressWarnings("unused")
-    public static final Gson GSON = new GsonBuilder()
-            .disableHtmlEscaping()
-            .setPrettyPrinting()
-            .create();
 }

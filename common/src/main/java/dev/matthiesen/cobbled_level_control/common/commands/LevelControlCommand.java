@@ -9,9 +9,9 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
 import dev.matthiesen.cobbled_level_control.common.permissions.PermissionHelpers;
 import dev.matthiesen.cobbled_level_control.common.runtime.RuntimeDifficulty;
-import dev.matthiesen.common.matthiesen_lib_api.command.AbstractCommand;
-import dev.matthiesen.common.matthiesen_lib_api.utility.ChatTableBuilder;
-import dev.matthiesen.common.matthiesen_lib_api.utility.CommandBuilder;
+import dev.matthiesen.matthiesen_core.common.api.command.CoreCommand;
+import dev.matthiesen.matthiesen_core.common.utility.chat.ChatTableBuilder;
+import dev.matthiesen.matthiesen_core.common.utility.commands.CommandBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -20,7 +20,7 @@ import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
-public final class LevelControlCommand extends AbstractCommand {
+public final class LevelControlCommand implements CoreCommand {
     public static final LevelControlCommand CMD = new LevelControlCommand();
 
     @Override
@@ -88,7 +88,6 @@ public final class LevelControlCommand extends AbstractCommand {
         };
     }
 
-    @Override
     public int action(CommandContext<CommandSourceStack> context) {
         try {
             var source = context.getSource();
