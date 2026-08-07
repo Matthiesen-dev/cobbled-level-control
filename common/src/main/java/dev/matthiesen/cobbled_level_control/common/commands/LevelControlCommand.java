@@ -7,6 +7,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
+import dev.matthiesen.cobbled_level_control.common.config.CobbledLevelControlConfigManager;
 import dev.matthiesen.cobbled_level_control.common.permissions.PermissionHelpers;
 import dev.matthiesen.cobbled_level_control.common.runtime.RuntimeDifficulty;
 import dev.matthiesen.matthiesen_core.common.api.command.CoreCommand;
@@ -46,7 +47,7 @@ public final class LevelControlCommand implements CoreCommand {
                                 .then(Commands.argument("player", ServerUserArgument.playerArg())
                                         .then(Commands.argument("difficulty", StringArgumentType.string())
                                                 .suggests((_ctx, builder) -> {
-                                                    var diffNames = CobbledLevelControl.INSTANCE.getConfigManager().getMainConfig().difficulties;
+                                                    var diffNames = CobbledLevelControlConfigManager.SERVER_CONFIG.difficulties.get();
                                                     for (var difficulty : diffNames) {
                                                         builder.suggest(difficulty);
                                                     }
@@ -130,15 +131,13 @@ public final class LevelControlCommand implements CoreCommand {
 
     public int reload(CommandContext<CommandSourceStack> context) {
         var modInstance = CobbledLevelControl.INSTANCE;
-        var messagesConfig = modInstance.getConfigManager().getMessagesConfig();
         modInstance.reload().run();
-        context.getSource().sendSystemMessage(Component.literal(messagesConfig.messages.reloaded).withStyle(ChatFormatting.GREEN));
+        context.getSource().sendSystemMessage(Component.literal(CobbledLevelControlConfigManager.SERVER_CONFIG.messages_success_reloaded.get()).withStyle(ChatFormatting.GREEN));
         return 1;
     }
 
     public int setLevel(CommandContext<CommandSourceStack> context) {
         var modInstance = CobbledLevelControl.INSTANCE;
-        var messagesConfig = modInstance.getConfigManager().getMessagesConfig();
         var source = context.getSource();
         ServerUser player = ServerUserArgument.getUser(context, "player");
         String module = StringArgumentType.getString(context, "module");
@@ -146,7 +145,7 @@ public final class LevelControlCommand implements CoreCommand {
         var playerData = modInstance.getStoredPlayerAccountRecords().getPlayerAccountRecord(player.getUUID());
         String playerDiffValue = playerData.getDifficulty();
         if (playerDiffValue.equalsIgnoreCase(RuntimeDifficulty.emptyDifficulty)) {
-            source.sendSystemMessage(Component.literal(messagesConfig.errors.missingDifficulty).withStyle(ChatFormatting.YELLOW));
+            source.sendSystemMessage(Component.literal(CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_missingDifficulty.get()).withStyle(ChatFormatting.YELLOW));
             return 0;
         }
         RuntimeDifficulty difficulty = modInstance.getDifficulty(playerDiffValue);
@@ -159,7 +158,7 @@ public final class LevelControlCommand implements CoreCommand {
                 int maxLevel = catchingModule.getConfig().tiers.size();
                 if (level > maxLevel) {
                     source.sendSystemMessage(Component.literal(
-                            messagesConfig.errors.catchingLevelToHigh
+                            CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_catchingLevelToHigh.get()
                                     .replace("%maxLevel%", Integer.toString(maxLevel))
                     ).withStyle(ChatFormatting.RED));
                     return 0;
@@ -168,13 +167,13 @@ public final class LevelControlCommand implements CoreCommand {
 
                 if (onlinePlayer != null) {
                     onlinePlayer.sendSystemMessage(Component.literal(
-                            messagesConfig.messages.targetCatchingLevelSet
+                            CobbledLevelControlConfigManager.SERVER_CONFIG.messages_success_targetCatchingLevelSet.get()
                                     .replace("%level%", Integer.toString(level))
-                    ).withStyle(ChatFormatting.GREEN), messagesConfig.messages.useActionBar);
+                    ).withStyle(ChatFormatting.GREEN), CobbledLevelControlConfigManager.SERVER_CONFIG.messages_success_useActionBar.getAsBoolean());
                 }
 
                 source.sendSystemMessage(Component.literal(
-                        messagesConfig.messages.sourceCatchingLevelSet
+                        CobbledLevelControlConfigManager.SERVER_CONFIG.messages_success_sourceCatchingLevelSet.get()
                                 .replace("%target%", player.getUsername())
                                 .replace("%level%", Integer.toString(level))
                 ).withStyle(ChatFormatting.GREEN));
@@ -185,7 +184,8 @@ public final class LevelControlCommand implements CoreCommand {
                 int maxLevel = levelingModule.getConfig().tiers.size();
                 if (level > maxLevel) {
                     source.sendSystemMessage(Component.literal(
-                            messagesConfig.errors.levelingLevelToHigh.replace("%maxLevel%", Integer.toString(maxLevel))
+                            CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_levelingLevelToHigh.get()
+                                    .replace("%maxLevel%", Integer.toString(maxLevel))
                     ).withStyle(ChatFormatting.RED));
                     return 0;
                 }
@@ -193,20 +193,20 @@ public final class LevelControlCommand implements CoreCommand {
 
                 if (onlinePlayer != null) {
                     onlinePlayer.sendSystemMessage(Component.literal(
-                            messagesConfig.messages.targetLevelingLevelSet
+                            CobbledLevelControlConfigManager.SERVER_CONFIG.messages_success_targetLevelingLevelSet.get()
                                     .replace("%level%", Integer.toString(level))
-                    ).withStyle(ChatFormatting.GREEN), messagesConfig.messages.useActionBar);
+                    ).withStyle(ChatFormatting.GREEN), CobbledLevelControlConfigManager.SERVER_CONFIG.messages_success_useActionBar.getAsBoolean());
                 }
 
                 source.sendSystemMessage(Component.literal(
-                        messagesConfig.messages.sourceLevelingLevelSet
+                        CobbledLevelControlConfigManager.SERVER_CONFIG.messages_success_sourceLevelingLevelSet.get()
                                 .replace("%target%", player.getUsername())
                                 .replace("%level%", Integer.toString(level))
                 ).withStyle(ChatFormatting.GREEN));
                 return 1;
             }
             default -> {
-                source.sendSystemMessage(Component.literal(messagesConfig.errors.invalidModule).withStyle(ChatFormatting.RED));
+                source.sendSystemMessage(Component.literal(CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_invalidModule.get()).withStyle(ChatFormatting.RED));
                 return 0;
             }
         }
@@ -214,21 +214,20 @@ public final class LevelControlCommand implements CoreCommand {
 
     public int setDifficulty(CommandContext<CommandSourceStack> context) {
         var modInstance = CobbledLevelControl.INSTANCE;
-        var messagesConfig = modInstance.getConfigManager().getMessagesConfig();
         var source = context.getSource();
         ServerUser player = ServerUserArgument.getUser(context, "player");
         String difficultyName = StringArgumentType.getString(context, "difficulty");
         if (difficultyName == null) {
-            source.sendSystemMessage(Component.literal(messagesConfig.errors.invalidDifficulty).withStyle(ChatFormatting.RED));
+            source.sendSystemMessage(Component.literal(CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_invalidDifficulty.get()).withStyle(ChatFormatting.RED));
             return 0;
         }
         String difficulty = null;
-        if (modInstance.getConfigManager().getMainConfig().difficulties.contains(difficultyName)) {
+        if (CobbledLevelControlConfigManager.SERVER_CONFIG.difficulties.get().contains(difficultyName)) {
             difficulty = difficultyName;
         }
         if (difficulty == null) {
             source.sendFailure(Component.literal(
-                    messagesConfig.errors.difficultyDoesNotExist
+                    CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_difficultyDoesNotExist.get()
                             .replace("%difficultyName%", difficultyName)
             ).withStyle(ChatFormatting.RED));
             return 0;
@@ -241,13 +240,13 @@ public final class LevelControlCommand implements CoreCommand {
 
         if (onlinePlayer != null) {
             onlinePlayer.sendSystemMessage(Component.literal(
-                    messagesConfig.messages.targetSetDifficulty
+                    CobbledLevelControlConfigManager.SERVER_CONFIG.messages_success_targetSetDifficulty.get()
                             .replace("%difficulty%", finalDifficulty)
-            ).withStyle(ChatFormatting.GREEN), messagesConfig.messages.useActionBar);
+            ).withStyle(ChatFormatting.GREEN), CobbledLevelControlConfigManager.SERVER_CONFIG.messages_success_useActionBar.getAsBoolean());
         }
 
         source.sendSystemMessage(Component.literal(
-                messagesConfig.messages.sourceSetDifficulty
+                CobbledLevelControlConfigManager.SERVER_CONFIG.messages_success_sourceSetDifficulty.get()
                         .replace("%target%", player.getUsername())
                         .replace("%difficulty%", finalDifficulty)
         ).withStyle(ChatFormatting.GREEN));
@@ -259,11 +258,10 @@ public final class LevelControlCommand implements CoreCommand {
         ServerUser player = ServerUserArgument.getUser(context, "player");
         String module = StringArgumentType.getString(context, "module");
         var modInstance = CobbledLevelControl.INSTANCE;
-        var messagesConfig = modInstance.getConfigManager().getMessagesConfig();
         var playerData = modInstance.getStoredPlayerAccountRecords().getPlayerAccountRecord(player.getUUID());
         String playerDiffValue = playerData.getDifficulty();
         if (playerDiffValue.equalsIgnoreCase(RuntimeDifficulty.emptyDifficulty)) {
-            source.sendSystemMessage(Component.literal(messagesConfig.errors.missingDifficulty).withStyle(ChatFormatting.YELLOW));
+            source.sendSystemMessage(Component.literal(CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_missingDifficulty.get()).withStyle(ChatFormatting.YELLOW));
             return 0;
         }
         RuntimeDifficulty difficulty = modInstance.getDifficulty(playerDiffValue);
@@ -279,20 +277,20 @@ public final class LevelControlCommand implements CoreCommand {
                 nextLevel = level + 1;
                 int maxLevel = catchingModule.getConfig().tiers.size();
                 if (nextLevel > maxLevel) {
-                    source.sendSystemMessage(Component.literal(messagesConfig.errors.catchingLevelAlreadyMax).withStyle(ChatFormatting.YELLOW));
+                    source.sendSystemMessage(Component.literal(CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_catchingLevelAlreadyMax.get()).withStyle(ChatFormatting.YELLOW));
                     return 0;
                 }
                 modInstance.getStoredPlayerAccountRecords().editPlayerAccountRecord(player.getUUID(), record -> record.setCatching(nextLevel));
 
                 if (onlinePlayer != null) {
                     onlinePlayer.sendSystemMessage(Component.literal(
-                            messagesConfig.messages.targetCatchingTierSet
+                            CobbledLevelControlConfigManager.SERVER_CONFIG.messages_success_targetCatchingTierSet.get()
                                     .replace("%tier%", Integer.toString(nextLevel))
-                    ).withStyle(ChatFormatting.AQUA), messagesConfig.messages.useActionBar);
+                    ).withStyle(ChatFormatting.AQUA), CobbledLevelControlConfigManager.SERVER_CONFIG.messages_success_useActionBar.getAsBoolean());
                 }
 
                 source.sendSystemMessage(Component.literal(
-                        messagesConfig.messages.sourceCatchingTierSet
+                        CobbledLevelControlConfigManager.SERVER_CONFIG.messages_success_sourceCatchingTierSet.get()
                                 .replace("%target%", player.getUsername())
                                 .replace("%tier%", Integer.toString(nextLevel))
                 ).withStyle(ChatFormatting.GREEN));
@@ -304,25 +302,25 @@ public final class LevelControlCommand implements CoreCommand {
                 nextLevel = level + 1;
                 int maxLevel = levelingModule.getConfig().tiers.size();
                 if (nextLevel > maxLevel) {
-                    source.sendSystemMessage(Component.literal(messagesConfig.errors.levelingLevelAlreadyMax).withStyle(ChatFormatting.YELLOW));
+                    source.sendSystemMessage(Component.literal(CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_levelingLevelAlreadyMax.get()).withStyle(ChatFormatting.YELLOW));
                     return 0;
                 }
                 modInstance.getStoredPlayerAccountRecords().editPlayerAccountRecord(player.getUUID(), record -> record.setLeveling(nextLevel));
                 if (onlinePlayer != null) {
                     onlinePlayer.sendSystemMessage(Component.literal(
-                            messagesConfig.messages.targetLevelingTierSet
+                            CobbledLevelControlConfigManager.SERVER_CONFIG.messages_success_targetLevelingTierSet.get()
                                     .replace("%tier%", Integer.toString(nextLevel))
-                    ).withStyle(ChatFormatting.AQUA), messagesConfig.messages.useActionBar);
+                    ).withStyle(ChatFormatting.AQUA), CobbledLevelControlConfigManager.SERVER_CONFIG.messages_success_useActionBar.getAsBoolean());
                 }
                 source.sendSystemMessage(Component.literal(
-                        messagesConfig.messages.sourceLevelingTierSet
+                        CobbledLevelControlConfigManager.SERVER_CONFIG.messages_success_sourceLevelingTierSet.get()
                                 .replace("%target%", player.getUsername())
                                 .replace("%tier%", Integer.toString(nextLevel))
                 ).withStyle(ChatFormatting.GREEN));
                 return 1;
             }
             default -> {
-                source.sendSystemMessage(Component.literal(messagesConfig.errors.invalidModule).withStyle(ChatFormatting.RED));
+                source.sendSystemMessage(Component.literal(CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_invalidModule.get()).withStyle(ChatFormatting.RED));
                 return 0;
             }
         }

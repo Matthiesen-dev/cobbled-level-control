@@ -4,6 +4,7 @@ import com.bedrockk.molang.runtime.MoParams;
 import com.cobblemon.mod.common.api.molang.MoLangFunctions;
 import com.cobblemon.mod.common.api.molang.ObjectValue;
 import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
+import dev.matthiesen.cobbled_level_control.common.config.CobbledLevelControlConfigManager;
 import dev.matthiesen.cobbled_level_control.common.runtime.PlayerAccountRecord;
 import dev.matthiesen.cobbled_level_control.common.runtime.RuntimeDifficulty;
 import dev.matthiesen.cobbled_level_control.common.runtime.molang.data.LevelControlData;
@@ -30,14 +31,13 @@ public final class PlayerExtensions {
         if (diff.isEmpty()) return 0;
 
         var modInstance = CobbledLevelControl.INSTANCE;
-        var messagesConfig = modInstance.getConfigManager().getMessagesConfig();
 
-        var diffNames = modInstance.getConfigManager().getMainConfig().difficulties;
+        var diffNames = CobbledLevelControlConfigManager.SERVER_CONFIG.difficulties.get();
         if (!diffNames.contains(diff)) return 0;
 
         modInstance.getStoredPlayerAccountRecords().editPlayerAccountRecord(player.getUUID(), record -> record.setDifficulty(diff));
         player.sendSystemMessage(Component.literal(
-                messagesConfig.messages.targetSetDifficulty
+                CobbledLevelControlConfigManager.SERVER_CONFIG.messages_success_targetSetDifficulty.get()
                         .replace("%difficulty%", diff)
         ).withStyle(ChatFormatting.GREEN));
         return 1;
@@ -48,7 +48,6 @@ public final class PlayerExtensions {
         if (module.isEmpty()) return 0;
 
         var modInstance = CobbledLevelControl.INSTANCE;
-        var messagesConfig = modInstance.getConfigManager().getMessagesConfig();
 
         PlayerAccountRecord playerData = data != null ? data.accountRecord() : modInstance.getStoredPlayerAccountRecords().getPlayerAccountRecord(player.getUUID());
         if (playerData == null) return 0;
@@ -71,7 +70,7 @@ public final class PlayerExtensions {
                 if (nextLevel > maxLevel) return 0;
                 modInstance.getStoredPlayerAccountRecords().editPlayerAccountRecord(player.getUUID(), record -> record.setCatching(nextLevel));
                 player.sendSystemMessage(Component.literal(
-                        messagesConfig.messages.targetCatchingTierSet
+                        CobbledLevelControlConfigManager.SERVER_CONFIG.messages_success_targetCatchingTierSet.get()
                                 .replace("%tier%", Integer.toString(nextLevel))
                 ).withStyle(ChatFormatting.AQUA));
                 return 1;
@@ -84,7 +83,7 @@ public final class PlayerExtensions {
                 if (nextLevel > maxLevel) return 0;
                 modInstance.getStoredPlayerAccountRecords().editPlayerAccountRecord(player.getUUID(), record -> record.setLeveling(nextLevel));
                 player.sendSystemMessage(Component.literal(
-                        messagesConfig.messages.targetLevelingTierSet
+                        CobbledLevelControlConfigManager.SERVER_CONFIG.messages_success_targetLevelingTierSet.get()
                                 .replace("%tier%", Integer.toString(nextLevel))
                 ).withStyle(ChatFormatting.AQUA));
                 return 1;
@@ -102,7 +101,6 @@ public final class PlayerExtensions {
         if (module.isEmpty() || level == 0) return 0;
 
         var modInstance = CobbledLevelControl.INSTANCE;
-        var messagesConfig = modInstance.getConfigManager().getMessagesConfig();
 
         PlayerAccountRecord playerData = data != null ? data.accountRecord() : modInstance.getStoredPlayerAccountRecords().getPlayerAccountRecord(player.getUUID());
         if (playerData == null) return 0;
@@ -121,7 +119,7 @@ public final class PlayerExtensions {
 
                 modInstance.getStoredPlayerAccountRecords().editPlayerAccountRecord(player.getUUID(), record -> record.setCatching(level));
                 player.sendSystemMessage(Component.literal(
-                        messagesConfig.messages.targetCatchingLevelSet
+                        CobbledLevelControlConfigManager.SERVER_CONFIG.messages_success_targetCatchingTierSet.get()
                                 .replace("%level%", Integer.toString(level))
                 ).withStyle(ChatFormatting.GREEN));
                 return 1;
@@ -132,7 +130,7 @@ public final class PlayerExtensions {
                 if (level > maxLevel) return 0;
                 modInstance.getStoredPlayerAccountRecords().editPlayerAccountRecord(player.getUUID(), record -> record.setLeveling(level));
                 player.sendSystemMessage(Component.literal(
-                        messagesConfig.messages.targetLevelingLevelSet
+                        CobbledLevelControlConfigManager.SERVER_CONFIG.messages_success_targetLevelingTierSet.get()
                                 .replace("%level%", Integer.toString(level))
                 ).withStyle(ChatFormatting.GREEN));
                 return 1;

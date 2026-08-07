@@ -33,14 +33,12 @@ public final class CobbledLevelControl extends AbstractCommonMod {
     @Override
     public void initialize() {
         super.initialize();
-        configManager.init();
         PermissionHelpers.init();
 
-        PlatformEvents.SERVER_RELOAD.subscribe(event -> reload().run());
-
-        PlatformEvents.SERVER_STARTING.subscribe(event ->
-                CobblemonSubscriptionsManager.registerSubscriptions());
-
+        PlatformEvents.SERVER_STARTED.subscribe(event -> {
+            configManager.init();
+            CobblemonSubscriptionsManager.registerSubscriptions();
+        });
         PlatformEvents.SERVER_STOPPING.subscribe(event -> {
             getStoredPlayerAccountRecords().setDirty();
             CobblemonSubscriptionsManager.teardownAllActiveSubscriptions();
@@ -71,10 +69,6 @@ public final class CobbledLevelControl extends AbstractCommonMod {
     @Override
     public @Token @NotNull String getMetricsToken() {
         return METRICS_TOKEN;
-    }
-
-    public CobbledLevelControlConfigManager getConfigManager() {
-        return configManager;
     }
 
     public void addDifficulty(RuntimeDifficulty difficulty) {

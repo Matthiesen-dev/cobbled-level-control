@@ -34,6 +34,8 @@ set catch rules, and even control the level of wild pokemon spawns. All of this 
 
 - [Matthiesen Core](https://modrinth.com/mod/matthiesen-core)
 - [Cobblemon](https://modrinth.com/mod/cobblemon)
+- [Fabric API](https://modrinth.com/mod/fabric-api) (Fabric only)
+- [Forge Config API Port](https://modrinth.com/mod/forge-config-api-port) (Fabric only)
 
 ## Docs
 

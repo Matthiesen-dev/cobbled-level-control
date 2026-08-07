@@ -15,6 +15,7 @@ import com.cobblemon.mod.common.battles.actor.PlayerBattleActor;
 import com.cobblemon.mod.common.battles.pokemon.BattlePokemon;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
+import dev.matthiesen.cobbled_level_control.common.config.CobbledLevelControlConfigManager;
 import dev.matthiesen.cobbled_level_control.common.runtime.RuntimeDifficulty;
 import dev.matthiesen.cobbled_level_control.common.utils.PokemonUtility;
 import kotlin.Unit;
@@ -29,7 +30,6 @@ public final class BattleStartEventsListener {
         return CobblemonEvents.BATTLE_STARTED_PRE.subscribe(Priority.HIGHEST, event -> {
             PokemonBattle battle = event.getBattle();
             var modInstance = CobbledLevelControl.INSTANCE;
-            var config = modInstance.getConfigManager().getMessagesConfig();
             for (BattleActor actor : battle.getActors()) {
                 if (actor.getType() != ActorType.PLAYER) continue;
                 ServerPlayer player = ((PlayerBattleActor) actor).getEntity();
@@ -57,8 +57,8 @@ public final class BattleStartEventsListener {
                     int levelingLevel = playerData.getLeveling();
                     int maxLevelingLevel = levelingModule.getConfig().tiers.get(Integer.toString(levelingLevel));
                     if (maxLevel > maxLevelingLevel) {
-                        player.sendSystemMessage(Component.literal(config.errors.battle).withStyle(ChatFormatting.RED), config.errors.useActionBar);
-                        event.setReason(Component.literal(config.errors.battle).withStyle(ChatFormatting.RED));
+                        player.sendSystemMessage(Component.literal(CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_battle.get()).withStyle(ChatFormatting.RED), CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_useActionBar.get());
+                        event.setReason(Component.literal(CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_battle.get()).withStyle(ChatFormatting.RED));
                         event.cancel();
                         return Unit.INSTANCE;
                     }
@@ -86,22 +86,22 @@ public final class BattleStartEventsListener {
                     if (battlePokemon == null) continue;
                     Pokemon pokemon = battlePokemon.getOriginalPokemon();
 
-                    if (pokemon.getShiny() && Util.conditionalCheck(player, battleConfig.shiny, config.errors.missingPermission, config, event)) {
+                    if (pokemon.getShiny() && Util.conditionalCheck(player, battleConfig.shiny, CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_missingPermission.get(), event)) {
                         return Unit.INSTANCE;
                     }
-                    if (pokemon.isLegendary() && Util.conditionalCheck(player, battleConfig.legendary, config.errors.missingPermission, config, event)) {
+                    if (pokemon.isLegendary() && Util.conditionalCheck(player, battleConfig.legendary, CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_missingPermission.get(), event)) {
                         return Unit.INSTANCE;
                     }
-                    if (pokemon.isMythical() && Util.conditionalCheck(player, battleConfig.mythical, config.errors.missingPermission, config, event)) {
+                    if (pokemon.isMythical() && Util.conditionalCheck(player, battleConfig.mythical, CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_missingPermission.get(), event)) {
                         return Unit.INSTANCE;
                     }
-                    if (pokemon.isUltraBeast() && Util.conditionalCheck(player, battleConfig.ultraBeast, config.errors.missingPermission, config, event)) {
+                    if (pokemon.isUltraBeast() && Util.conditionalCheck(player, battleConfig.ultraBeast, CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_missingPermission.get(), event)) {
                         return Unit.INSTANCE;
                     }
 
                     PokemonUtility.EvoStage evoStage = PokemonUtility.getEvoStage(pokemon);
                     String perm = Util.getPermissionString(evoStage, battleConfig);
-                    if (!perm.isEmpty() && Util.conditionalCheck(player, perm, config.errors.missingPermission, config, event)) {
+                    if (!perm.isEmpty() && Util.conditionalCheck(player, perm, CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_missingPermission.get(), event)) {
                         return Unit.INSTANCE;
                     }
                 }

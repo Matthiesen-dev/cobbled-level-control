@@ -3,14 +3,20 @@ package dev.matthiesen.cobbled_level_control.common.config;
 import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
 import dev.matthiesen.cobbled_level_control.common.runtime.*;
 import dev.matthiesen.matthiesen_core.common.utility.config.ConfigFolderManager;
-import dev.matthiesen.matthiesen_core.common.utility.config.ConfigManager;
+import net.neoforged.neoforge.common.ModConfigSpec;
+import org.apache.commons.lang3.tuple.Pair;
 
 public final class CobbledLevelControlConfigManager {
+    public static final ServerConfig SERVER_CONFIG;
+    public static final ModConfigSpec SERVER_SPEC;
+
+    static {
+        Pair<ServerConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(ServerConfig::new);
+        SERVER_CONFIG = specPair.getLeft();
+        SERVER_SPEC = specPair.getRight();
+    }
+
     private final CobbledLevelControl INSTANCE;
-
-    private ConfigManager<MainConfig> MAIN_CONFIG;
-    private ConfigManager<MessagesConfig> MESSAGES_CONFIG;
-
     private ConfigFolderManager<DifficultyConfig> DIFFICULTY_CONFIGS;
 
     public CobbledLevelControlConfigManager(CobbledLevelControl modInstance) {
@@ -18,23 +24,17 @@ public final class CobbledLevelControlConfigManager {
     }
 
     public void init() {
-        MAIN_CONFIG = INSTANCE.createConfigManager(MainConfig.class, "main");
-        MESSAGES_CONFIG = INSTANCE.createConfigManager(MessagesConfig.class, "messages");
         DIFFICULTY_CONFIGS = INSTANCE.createConfigFolderManager(DifficultyConfig.class, "difficulties");
 
         loadConfigs();
     }
 
     public void loadConfigs() {
-        INSTANCE.createInfoLog("Loading configs...");
-        MAIN_CONFIG.loadConfig();
-        MESSAGES_CONFIG.loadConfig();
+        INSTANCE.createInfoLog("Loaded configs! Loading difficulties...");
         DIFFICULTY_CONFIGS.loadConfigs();
 
-        INSTANCE.createInfoLog("Loaded configs! Loading difficulties...");
-
         // Ensure all registered difficulties have a config and are registered
-        var difficulties = MAIN_CONFIG.getConfig().difficulties;
+        var difficulties = CobbledLevelControlConfigManager.SERVER_CONFIG.difficulties.get();
         for (String difficulty : difficulties) {
             var loadedConfig = DIFFICULTY_CONFIGS.loadConfig(difficulty);
 
@@ -43,13 +43,5 @@ public final class CobbledLevelControlConfigManager {
         }
 
         INSTANCE.createInfoLog("Loaded all difficulties!");
-    }
-
-    public MainConfig getMainConfig() {
-        return MAIN_CONFIG.getConfig();
-    }
-
-    public MessagesConfig getMessagesConfig() {
-        return MESSAGES_CONFIG.getConfig();
     }
 }

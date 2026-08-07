@@ -1,8 +1,8 @@
 package dev.matthiesen.cobbled_level_control.common.runtime.events.cobblemon;
 
 import com.cobblemon.mod.common.api.events.battles.BattleStartedEvent;
+import dev.matthiesen.cobbled_level_control.common.config.CobbledLevelControlConfigManager;
 import dev.matthiesen.cobbled_level_control.common.config.DifficultyConfig;
-import dev.matthiesen.cobbled_level_control.common.config.MessagesConfig;
 import dev.matthiesen.cobbled_level_control.common.permissions.PermissionHelpers;
 import dev.matthiesen.cobbled_level_control.common.utils.PokemonUtility;
 import net.minecraft.ChatFormatting;
@@ -48,27 +48,27 @@ public final class Util {
         return false;
     }
 
-    public static boolean conditionalCheck(ServerPlayer player, boolean condition, String errorMessage, MessagesConfig modConfig, Runnable action) {
+    public static boolean conditionalCheck(ServerPlayer player, boolean condition, String errorMessage, Runnable action) {
         if (condition) {
-            player.sendSystemMessage(Component.literal(errorMessage).withStyle(ChatFormatting.RED), modConfig.errors.useActionBar);
+            player.sendSystemMessage(Component.literal(errorMessage).withStyle(ChatFormatting.RED), CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_useActionBar.getAsBoolean());
             action.run();
             return true;
         }
         return false;
     }
 
-    public static boolean conditionalCheck(ServerPlayer player, String permissionNode, String errorMessage, MessagesConfig modConfig, Runnable action) {
+    public static boolean conditionalCheck(ServerPlayer player, String permissionNode, String errorMessage, Runnable action) {
         if (!permissionNode.isEmpty() && PermissionHelpers.doesNotHavePermission(player, permissionNode)) {
-            player.sendSystemMessage(Component.literal(errorMessage).withStyle(ChatFormatting.RED), modConfig.errors.useActionBar);
+            player.sendSystemMessage(Component.literal(errorMessage).withStyle(ChatFormatting.RED), CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_useActionBar.getAsBoolean());
             action.run();
             return true;
         }
         return false;
     }
 
-    public static boolean conditionalCheck(ServerPlayer player, String permissionNode, String errorMessage, MessagesConfig modConfig, BattleStartedEvent.Pre event) {
+    public static boolean conditionalCheck(ServerPlayer player, String permissionNode, String errorMessage, BattleStartedEvent.Pre event) {
         if (!permissionNode.isEmpty() && PermissionHelpers.doesNotHavePermission(player, permissionNode)) {
-            player.sendSystemMessage(Component.literal(errorMessage).withStyle(ChatFormatting.RED), modConfig.errors.useActionBar);
+            player.sendSystemMessage(Component.literal(errorMessage).withStyle(ChatFormatting.RED), CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_useActionBar.getAsBoolean());
             event.setReason(Component.literal(errorMessage).withStyle(ChatFormatting.RED));
             event.cancel();
             return true;

@@ -6,6 +6,7 @@ import com.cobblemon.mod.common.api.events.pokemon.interaction.ExperienceCandyUs
 import com.cobblemon.mod.common.api.reactive.ObservableSubscription;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
+import dev.matthiesen.cobbled_level_control.common.config.CobbledLevelControlConfigManager;
 import dev.matthiesen.cobbled_level_control.common.runtime.RuntimeDifficulty;
 import kotlin.Unit;
 import net.minecraft.ChatFormatting;
@@ -29,8 +30,7 @@ public final class CandyUseListener {
             int pokemonLevel = pokemon.getLevel();
             if (pokemonLevel >= maxLevel) {
                 event.setExperienceYield(0);
-                var config = modInstance.getConfigManager().getMessagesConfig();
-                player.sendSystemMessage(Component.literal(config.errors.levelingTier).withStyle(ChatFormatting.RED), config.errors.useActionBar);
+                player.sendSystemMessage(Component.literal(CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_levelingTier.get()).withStyle(ChatFormatting.RED), CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_useActionBar.get());
             }
             return Unit.INSTANCE;
         });
