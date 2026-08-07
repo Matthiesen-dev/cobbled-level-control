@@ -10,6 +10,7 @@ import dev.matthiesen.cobbled_level_control.common.runtime.molang.PlayerExtensio
 import dev.matthiesen.libs.faststats.Token;
 import dev.matthiesen.matthiesen_core.common.AbstractCommonMod;
 import dev.matthiesen.matthiesen_core.common.api.events.PlatformEvents;
+import dev.matthiesen.matthiesen_core.common.api.platform.loader.ModConfigType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -34,6 +35,8 @@ public final class CobbledLevelControl extends AbstractCommonMod {
     public void initialize() {
         super.initialize();
         PermissionHelpers.init();
+
+        registerModConfig(MOD_ID, ModConfigType.SERVER, CobbledLevelControlConfigManager.SERVER_SPEC, "cobbled_level_control/server.toml");
 
         PlatformEvents.SERVER_STARTED.subscribe(event -> {
             configManager.init();
