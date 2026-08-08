@@ -1,4 +1,4 @@
-package dev.matthiesen.cobbled_level_control.common.runtime.events.cobblemon;
+package dev.matthiesen.cobbled_level_control.common.runtime.events;
 
 import com.cobblemon.mod.common.api.Priority;
 import com.cobblemon.mod.common.api.battles.model.PokemonBattle;
@@ -11,8 +11,7 @@ import com.cobblemon.mod.common.net.messages.client.battle.BattleCaptureEndPacke
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.cobblemon.mod.common.util.PlayerExtensionsKt;
 import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
-import dev.matthiesen.cobbled_level_control.common.config.CobbledLevelControlConfigManager;
-import dev.matthiesen.cobbled_level_control.common.runtime.RuntimeDifficulty;
+import dev.matthiesen.cobbled_level_control.common.config.CLCConfig;
 import dev.matthiesen.cobbled_level_control.common.utils.PokemonUtility;
 import kotlin.Pair;
 import kotlin.Unit;
@@ -28,37 +27,34 @@ public final class CaptureListener {
             if (event.getPokeBall().getOwner() instanceof ServerPlayer player) {
                 var modInstance = CobbledLevelControl.INSTANCE;
                 var playerData = modInstance.getStoredPlayerAccountRecords().getPlayerAccountRecord(player.getUUID());
-                String playerDiffValue = playerData.getDifficulty();
-                if (playerDiffValue.equalsIgnoreCase(RuntimeDifficulty.emptyDifficulty)) return Unit.INSTANCE;
-                RuntimeDifficulty difficulty = modInstance.getDifficulty(playerDiffValue);
-                var catchingModule = difficulty.getCatchingModule();
+                var catchingModule = CLCConfig.getCatchingConfig();
                 if (catchingModule.doNotRestrictCatching()) return Unit.INSTANCE;
-                if (pokemon.getShiny() && Util.conditionalCheck(player, catchingModule.getConfig().shiny, CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_missingPermission.get(), () ->
-                        doCancel(event, player, CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_missingPermission.get()))) {
+                if (pokemon.getShiny() && Util.conditionalCheck(player, catchingModule.shiny(), CLCConfig.SERVER_CONFIG.messages_error_missingPermission.get(), () ->
+                        doCancel(event, player, CLCConfig.SERVER_CONFIG.messages_error_missingPermission.get()))) {
                     return Unit.INSTANCE;
                 }
-                if (pokemon.isLegendary() && Util.conditionalCheck(player, catchingModule.getConfig().legendary, CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_missingPermission.get(), () ->
-                        doCancel(event, player, CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_missingPermission.get()))) {
+                if (pokemon.isLegendary() && Util.conditionalCheck(player, catchingModule.legendary(), CLCConfig.SERVER_CONFIG.messages_error_missingPermission.get(), () ->
+                        doCancel(event, player, CLCConfig.SERVER_CONFIG.messages_error_missingPermission.get()))) {
                     return Unit.INSTANCE;
                 }
-                if (pokemon.isMythical() && Util.conditionalCheck(player, catchingModule.getConfig().mythical, CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_missingPermission.get(), () ->
-                        doCancel(event, player, CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_missingPermission.get()))) {
+                if (pokemon.isMythical() && Util.conditionalCheck(player, catchingModule.mythical(), CLCConfig.SERVER_CONFIG.messages_error_missingPermission.get(), () ->
+                        doCancel(event, player, CLCConfig.SERVER_CONFIG.messages_error_missingPermission.get()))) {
                     return Unit.INSTANCE;
                 }
-                if (pokemon.isUltraBeast() &&Util.conditionalCheck(player, catchingModule.getConfig().ultraBeast, CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_missingPermission.get(), () ->
-                        doCancel(event, player, CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_missingPermission.get()))) {
+                if (pokemon.isUltraBeast() &&Util.conditionalCheck(player, catchingModule.ultraBeast(), CLCConfig.SERVER_CONFIG.messages_error_missingPermission.get(), () ->
+                        doCancel(event, player, CLCConfig.SERVER_CONFIG.messages_error_missingPermission.get()))) {
                     return Unit.INSTANCE;
                 }
                 PokemonUtility.EvoStage evoStage = PokemonUtility.getEvoStage(pokemon);
-                String perm = Util.getPermissionString(evoStage, catchingModule.getConfig());
-                if (!perm.isEmpty() && Util.conditionalCheck(player, perm, CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_missingPermission.get(), () ->
-                        doCancel(event, player, CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_missingPermission.get()))) {
+                String perm = Util.getPermissionString(evoStage, catchingModule);
+                if (!perm.isEmpty() && Util.conditionalCheck(player, perm, CLCConfig.SERVER_CONFIG.messages_error_missingPermission.get(), () ->
+                        doCancel(event, player, CLCConfig.SERVER_CONFIG.messages_error_missingPermission.get()))) {
                     return Unit.INSTANCE;
                 }
                 int tierLevel = playerData.getCatching();
-                int maxLevel = catchingModule.getConfig().tiers.get(Integer.toString(tierLevel));
-                if (Util.conditionalCheck(player, pokemon.getLevel() > maxLevel, CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_catchingTier.get(), () ->
-                        doCancel(event, player, CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_catchingTier.get()))) {
+                int maxLevel = catchingModule.tiers().get(Integer.toString(tierLevel));
+                if (Util.conditionalCheck(player, pokemon.getLevel() > maxLevel, CLCConfig.SERVER_CONFIG.messages_error_catchingTier.get(), () ->
+                        doCancel(event, player, CLCConfig.SERVER_CONFIG.messages_error_catchingTier.get()))) {
                     return Unit.INSTANCE;
                 }
             }

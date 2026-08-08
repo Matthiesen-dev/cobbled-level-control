@@ -1,6 +1,7 @@
 package dev.matthiesen.cobbled_level_control.common.permissions;
 
 import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
+import dev.matthiesen.cobbled_level_control.common.config.CLCConfig;
 import dev.matthiesen.matthiesen_core.common.api.permissions.Permission;
 import dev.matthiesen.matthiesen_core.common.api.permissions.PermissionLevel;
 import dev.matthiesen.matthiesen_core.common.utility.AbstractPermission;
@@ -10,31 +11,23 @@ import net.minecraft.server.level.ServerPlayer;
 public final class PermissionHelpers {
     public static Permission COMMAND_ROOT_PERMISSION = register(
             "command.level-control",
-            0
-    );
-    public static Permission COMMAND_RELOAD_PERMISSION = register(
-            "command.level-control.reload",
-            4
+            CLCConfig.PERMISSIONS_CONFIG.command_levelControl.get().getLevel()
     );
     public static Permission COMMAND_LEVEL_UP_PERMISSION = register(
             "command.level-control.level-up",
-            4
-    );
-    public static Permission COMMAND_SET_DIFFICULTY_PERMISSION = register(
-            "command.level-control.set-difficulty",
-            4
+            CLCConfig.PERMISSIONS_CONFIG.command_levelControl_levelUp.get().getLevel()
     );
     public static Permission COMMAND_SET_LEVEL_PERMISSION = register(
             "command.level-control.set-level",
-            4
+            CLCConfig.PERMISSIONS_CONFIG.command_levelControl_setLevel.get().getLevel()
     );
     public static Permission COMMAND_STATUS_PERMISSION = register(
             "command.level-control.status",
-            0
+            CLCConfig.PERMISSIONS_CONFIG.command_levelControl_status.get().getLevel()
     );
     public static Permission COMMAND_STATUS_OTHER_PERMISSION = register(
             "command.level-control.status-other",
-            4
+            CLCConfig.PERMISSIONS_CONFIG.command_levelControl_statusOther.get().getLevel()
     );
 
     public static boolean checkPermission(CommandSourceStack source, Permission permission) {

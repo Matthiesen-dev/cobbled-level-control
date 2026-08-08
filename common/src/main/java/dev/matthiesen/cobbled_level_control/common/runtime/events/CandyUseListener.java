@@ -1,4 +1,4 @@
-package dev.matthiesen.cobbled_level_control.common.runtime.events.cobblemon;
+package dev.matthiesen.cobbled_level_control.common.runtime.events;
 
 import com.cobblemon.mod.common.api.Priority;
 import com.cobblemon.mod.common.api.events.CobblemonEvents;
@@ -6,8 +6,7 @@ import com.cobblemon.mod.common.api.events.pokemon.interaction.ExperienceCandyUs
 import com.cobblemon.mod.common.api.reactive.ObservableSubscription;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
-import dev.matthiesen.cobbled_level_control.common.config.CobbledLevelControlConfigManager;
-import dev.matthiesen.cobbled_level_control.common.runtime.RuntimeDifficulty;
+import dev.matthiesen.cobbled_level_control.common.config.CLCConfig;
 import kotlin.Unit;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -20,17 +19,14 @@ public final class CandyUseListener {
             ServerPlayer player = event.getPlayer();
             var modInstance = CobbledLevelControl.INSTANCE;
             var playerData = modInstance.getStoredPlayerAccountRecords().getPlayerAccountRecord(player.getUUID());
-            String playerDiffValue = playerData.getDifficulty();
-            if (playerDiffValue.equalsIgnoreCase(RuntimeDifficulty.emptyDifficulty)) return Unit.INSTANCE;
-            RuntimeDifficulty difficulty = modInstance.getDifficulty(playerDiffValue);
-            var levelingModule = difficulty.getLevelingModule();
+            var levelingModule = CLCConfig.getLevelingConfig();
             if (levelingModule.doNotRestrictLeveling()) return Unit.INSTANCE;
             int tierLevel = playerData.getLeveling();
-            int maxLevel = levelingModule.getConfig().tiers.get(Integer.toString(tierLevel));
+            int maxLevel = levelingModule.tiers().get(Integer.toString(tierLevel));
             int pokemonLevel = pokemon.getLevel();
             if (pokemonLevel >= maxLevel) {
                 event.setExperienceYield(0);
-                player.sendSystemMessage(Component.literal(CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_levelingTier.get()).withStyle(ChatFormatting.RED), CobbledLevelControlConfigManager.SERVER_CONFIG.messages_error_useActionBar.get());
+                player.sendSystemMessage(Component.literal(CLCConfig.SERVER_CONFIG.messages_error_levelingTier.get()).withStyle(ChatFormatting.RED), CLCConfig.SERVER_CONFIG.messages_error_useActionBar.get());
             }
             return Unit.INSTANCE;
         });

@@ -1,8 +1,6 @@
 package dev.matthiesen.cobbled_level_control.common.runtime.data;
 
 import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
-import dev.matthiesen.cobbled_level_control.common.config.CobbledLevelControlConfigManager;
-import dev.matthiesen.cobbled_level_control.common.runtime.PlayerAccountRecord;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
@@ -78,11 +76,7 @@ public final class StoredPlayerAccountRecords extends SavedData {
     }
 
     private PlayerAccountRecord createNewPlayerAccountsRecord() {
-        return new PlayerAccountRecord(
-                CobbledLevelControlConfigManager.SERVER_CONFIG.defaults_autoApplyDefault.get()
-                        ? CobbledLevelControlConfigManager.SERVER_CONFIG.defaults_defaultDifficulty.get()
-                        : null
-        );
+        return new PlayerAccountRecord();
     }
 
     public void setPlayerAccountRecord(UUID playerUUID, PlayerAccountRecord record) {
