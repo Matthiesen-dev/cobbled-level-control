@@ -54,8 +54,6 @@ public final class ServerConfig {
     public ModConfigSpec.ConfigValue<String> messages_success_sourceCatchingLevelSet;
     public ModConfigSpec.ConfigValue<String> messages_success_targetLevelingLevelSet;
     public ModConfigSpec.ConfigValue<String> messages_success_sourceLevelingLevelSet;
-    public ModConfigSpec.ConfigValue<String> messages_success_targetSetDifficulty;
-    public ModConfigSpec.ConfigValue<String> messages_success_sourceSetDifficulty;
     public ModConfigSpec.ConfigValue<String> messages_success_targetCatchingTierSet;
     public ModConfigSpec.ConfigValue<String> messages_success_sourceCatchingTierSet;
     public ModConfigSpec.ConfigValue<String> messages_success_targetLevelingTierSet;
@@ -67,9 +65,6 @@ public final class ServerConfig {
     public ModConfigSpec.ConfigValue<String> messages_error_catchingTier;
     public ModConfigSpec.ConfigValue<String> messages_error_levelingTier;
     public ModConfigSpec.ConfigValue<String> messages_error_missingPermission;
-    public ModConfigSpec.ConfigValue<String> messages_error_invalidDifficulty;
-    public ModConfigSpec.ConfigValue<String> messages_error_missingDifficulty;
-    public ModConfigSpec.ConfigValue<String> messages_error_difficultyDoesNotExist;
     public ModConfigSpec.ConfigValue<String> messages_error_catchingLevelToHigh;
     public ModConfigSpec.ConfigValue<String> messages_error_levelingLevelToHigh;
     public ModConfigSpec.ConfigValue<String> messages_error_invalidModule;
@@ -341,12 +336,6 @@ public final class ServerConfig {
         messages_success_sourceLevelingLevelSet = builder.comment("Message sent to players when they set another player's leveling level")
                 .translation("cobbled_level_control.configuration.server.messages.success.sourceLevelingLevelSet")
                 .define("sourceLevelingLevelSet", "Set Leveling level of %target% to %level%.");
-        messages_success_targetSetDifficulty = builder.comment("Message sent to players when their difficulty is set")
-                .translation("cobbled_level_control.configuration.server.messages.success.targetSetDifficulty")
-                .define("targetSetDifficulty", "Your difficulty has been set to %difficulty%!");
-        messages_success_sourceSetDifficulty = builder.comment("Message sent to players when they set another player's difficulty")
-                .translation("cobbled_level_control.configuration.server.messages.success.sourceSetDifficulty")
-                .define("sourceSetDifficulty", "Set %target%'s difficulty to %difficulty%!");
         messages_success_targetCatchingTierSet = builder.comment("Message sent to players when their catching tier is set")
                 .translation("cobbled_level_control.configuration.server.messages.success.targetCatchingTierSet")
                 .define("targetCatchingTierSet", "Your tier in catching has increased to %tier%!");
@@ -383,15 +372,6 @@ public final class ServerConfig {
         messages_error_missingPermission = builder.comment("Message sent to players when they try to execute a command without the required permission")
                 .translation("cobbled_level_control.configuration.server.messages.error.missingPermission")
                 .define("missingPermission", "You do not have permission to do that!");
-        messages_error_invalidDifficulty = builder.comment("Message sent to players when they try to set a difficulty that does not exist")
-                .translation("cobbled_level_control.configuration.server.messages.error.invalidDifficulty")
-                .define("invalidDifficulty", "The difficulty you specified is invalid!");
-        messages_error_missingDifficulty = builder.comment("Message sent to players when they try to set a difficulty for a player that does not have a difficulty set")
-                .translation("cobbled_level_control.configuration.server.messages.error.missingDifficulty")
-                .define("missingDifficulty", "Target player does not have a difficulty set. Please set a difficulty first.");
-        messages_error_difficultyDoesNotExist = builder.comment("Message sent to players when they try to set a difficulty that does not exist")
-                .translation("cobbled_level_control.configuration.server.messages.error.difficultyDoesNotExist")
-                .define("difficultyDoesNotExist", "Difficulty %difficultyName% does not exist!");
         messages_error_catchingLevelToHigh = builder.comment("Message sent to players when they try to set a catching level that exceeds the maximum allowed for their difficulty")
                 .translation("cobbled_level_control.configuration.server.messages.error.catchingLevelToHigh")
                 .define("catchingLevelToHigh", "Level exceeds maximum level for Catching module. Max level is %maxLevel%.");
