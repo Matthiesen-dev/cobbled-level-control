@@ -140,7 +140,11 @@ public final class PlayerExtensions {
         MoLangFunctions.INSTANCE.getPlayerFunctions().add(player -> {
             HashMap<String, Function<MoParams, Object>> map = new HashMap<>();
 
-            // q.player.level_control()
+            // q.player.level_control() -> { "playerUUID": "string", "accountRecord": { "catching": number, "leveling": number } }
+            // q.player.level_control.status() returns following object or 0
+            // { "difficulty": "string", "catching": int, "leveling": int }
+            // q.player.level_control.lvlup(<module string>) returns 1 for success or 0
+            // q.player.level_control.setlvl(<module string>, <lvl int>) returns 1 for success or 0
             map.put("level_control", params -> buildLevelControlObject(player));
 
             return map;
