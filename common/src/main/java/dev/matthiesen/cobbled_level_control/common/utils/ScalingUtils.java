@@ -1,6 +1,7 @@
 package dev.matthiesen.cobbled_level_control.common.utils;
 
 import com.cobblemon.mod.common.Cobblemon;
+import dev.matthiesen.matthiesen_core.common.utility.Randomizer;
 
 public final class ScalingUtils {
     private static final String RandomParam = "random";

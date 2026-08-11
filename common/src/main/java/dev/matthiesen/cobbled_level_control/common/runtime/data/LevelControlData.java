@@ -1,7 +1,6 @@
-package dev.matthiesen.cobbled_level_control.common.runtime.molang.data;
+package dev.matthiesen.cobbled_level_control.common.runtime.data;
 
 import com.cobblemon.mod.common.api.molang.ObjectValue;
-import dev.matthiesen.cobbled_level_control.common.runtime.PlayerAccountRecord;
 import net.minecraft.world.entity.player.Player;
 
 public record LevelControlData(Player player, PlayerAccountRecord accountRecord) implements ILevelControlData {

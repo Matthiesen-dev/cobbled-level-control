@@ -1,7 +1,6 @@
 package dev.matthiesen.cobbled_level_control.common.runtime.data;
 
 import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
-import dev.matthiesen.cobbled_level_control.common.runtime.PlayerAccountRecord;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
@@ -77,10 +76,7 @@ public final class StoredPlayerAccountRecords extends SavedData {
     }
 
     private PlayerAccountRecord createNewPlayerAccountsRecord() {
-        var mainConfig = CobbledLevelControl.INSTANCE.getConfigManager().getMainConfig();
-        return new PlayerAccountRecord(
-                mainConfig.defaults.autoApplyDefault ? mainConfig.defaults.defaultDifficulty : null
-        );
+        return new PlayerAccountRecord();
     }
 
     public void setPlayerAccountRecord(UUID playerUUID, PlayerAccountRecord record) {
@@ -106,7 +102,7 @@ public final class StoredPlayerAccountRecords extends SavedData {
     );
 
     public static StoredPlayerAccountRecords getInstance() {
-        MinecraftServer server = CobbledLevelControl.INSTANCE.getMinecraftServer();
+        MinecraftServer server = CobbledLevelControl.INSTANCE.getCommonUtils().getServer();
         if (server == null) return null;
         ServerLevel level = server.overworld();
         return level.getDataStorage().computeIfAbsent(StoredPlayerAccountRecords.FACTORY, CobbledLevelControl.MOD_ID + "_player_account_records");
