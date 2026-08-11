@@ -59,6 +59,18 @@ public final class LevelControlCommand implements CoreCommand {
                                         .executes(this::action)
                                 )
                         )
+                        .then("configure", configure -> configure
+                                .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_CONFIGURE_PERMISSION))
+                                .then(Commands.argument("module", StringArgumentType.string())
+                                        .suggests(ConfigureCommand.CMD.modulesProvider())
+                                        .then(Commands.argument("property", StringArgumentType.string())
+                                                .suggests(ConfigureCommand.CMD.propertiesProvider())
+                                                .then(Commands.argument("value", StringArgumentType.greedyString())
+                                                        .executes(ConfigureCommand.CMD::configure)
+                                                )
+                                        )
+                                )
+                        )
 
                         .build()
         );

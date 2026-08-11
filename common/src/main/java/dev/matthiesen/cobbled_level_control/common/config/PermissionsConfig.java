@@ -10,6 +10,7 @@ public final class PermissionsConfig {
     public ModConfigSpec.EnumValue<PermissionLevel> command_levelControl_setLevel;
     public ModConfigSpec.EnumValue<PermissionLevel> command_levelControl_status;
     public ModConfigSpec.EnumValue<PermissionLevel> command_levelControl_statusOther;
+    public ModConfigSpec.EnumValue<PermissionLevel> command_levelControl_configure;
 
     public PermissionsConfig(ModConfigSpec.Builder builder) {
         builder.comment("Permissions Configuration")
@@ -54,6 +55,13 @@ public final class PermissionsConfig {
                 )
                 .translation("cobbled_level_control.configuration.permissions.commands.levelControl.statusOther")
                 .defineEnum("levelControl_statusOther", PermissionLevel.ALL_COMMANDS);
+        command_levelControl_configure = builder
+                .comment(
+                        "Permission level for the /levelControl configure command",
+                        "Permission Node: 'cobbled_level_control.command.level-control.configure'"
+                )
+                .translation("cobbled_level_control.configuration.permissions.commands.levelControl.configure")
+                .defineEnum("levelControl_configure", PermissionLevel.ALL_COMMANDS);
         builder.pop();
 
         builder.pop();
