@@ -20,6 +20,8 @@
   "cobbled_level_control.configuration.permissions.commands.levelControl.status.tooltip": "Manage permissions for the /level-control status command",
   "cobbled_level_control.configuration.permissions.commands.levelControl.statusOther": "Level Control Status Other Command",
   "cobbled_level_control.configuration.permissions.commands.levelControl.statusOther.tooltip": "Manage permissions for the /level-control status-other command",
+  "cobbled_level_control.configuration.permissions.commands.levelControl.configure": "Level Control Configure Command",
+  "cobbled_level_control.configuration.permissions.commands.levelControl.configure.tooltip": "Manage permissions for the /level-control configure command",
   "cobbled_level_control.configuration.server.main.catchingModule.legendary": "Legendary Permission Level",
   "cobbled_level_control.configuration.server.main.catchingModule.tiersConfig": "Tiers Configuration",
   "cobbled_level_control.configuration.server.main.catchingModule.evoStages.firstStageEvo": "First Stage Evolution Permission Level",

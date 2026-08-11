@@ -29,6 +29,10 @@ public final class PermissionHelpers {
             "command.level-control.status-other",
             CLCConfig.PERMISSIONS_CONFIG.command_levelControl_statusOther.get().getLevel()
     );
+    public static Permission COMMAND_CONFIGURE_PERMISSION = register(
+            "command.level-control.configure",
+            CLCConfig.PERMISSIONS_CONFIG.command_levelControl_configure.get().getLevel()
+    );
 
     public static boolean checkPermission(CommandSourceStack source, Permission permission) {
         return CobbledLevelControl.INSTANCE.getPermissionsManager().getPermissionValidator().hasPermission(source, permission);
