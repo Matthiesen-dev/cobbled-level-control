@@ -35,7 +35,6 @@ import java.util.Set;
  *   <tr><td>{@code evoStages.firstStageEvo}</td><td>string</td><td>Permission node for first-stage evolution battles</td></tr>
  *   <tr><td>{@code evoStages.secondStageEvo}</td><td>string</td><td>Permission node for second-stage evolution battles</td></tr>
  *   <tr><td>{@code evoStages.finalStageEvo}</td><td>string</td><td>Permission node for final-stage evolution battles</td></tr>
- *
  *   <tr><td rowspan="9">{@code catching}</td>
  *       <td>{@code restrictCatching}</td><td>boolean</td><td>Enables/disables catching level restrictions</td></tr>
  *   <tr><td>{@code legendary}</td><td>string</td><td>Permission node required to catch legendary Pokémon</td></tr>
@@ -46,14 +45,12 @@ import java.util.Set;
  *   <tr><td>{@code evoStages.firstStageEvo}</td><td>string</td><td>Permission node for first-stage evolution catching</td></tr>
  *   <tr><td>{@code evoStages.secondStageEvo}</td><td>string</td><td>Permission node for second-stage evolution catching</td></tr>
  *   <tr><td>{@code evoStages.finalStageEvo}</td><td>string</td><td>Permission node for final-stage evolution catching</td></tr>
- *
  *   <tr><td rowspan="5">{@code leveling}</td>
  *       <td>{@code restrictLeveling}</td><td>boolean</td><td>Enables/disables leveling level restrictions</td></tr>
  *   <tr><td>{@code evoStages.singleEvo}</td><td>string</td><td>Permission node for single-evolution Pokémon leveling</td></tr>
  *   <tr><td>{@code evoStages.firstStageEvo}</td><td>string</td><td>Permission node for first-stage evolution leveling</td></tr>
  *   <tr><td>{@code evoStages.secondStageEvo}</td><td>string</td><td>Permission node for second-stage evolution leveling</td></tr>
  *   <tr><td>{@code evoStages.finalStageEvo}</td><td>string</td><td>Permission node for final-stage evolution leveling</td></tr>
- *
  *   <tr><td rowspan="2">{@code scaling}</td>
  *       <td>{@code enableScaling}</td><td>boolean</td><td>Enables/disables wild Pokémon level scaling</td></tr>
  *   <tr><td>{@code scalingMethod}</td><td>string</td><td>Scaling formula, e.g. {@code "+- random7"}, {@code "+ 0"}</td></tr>
@@ -153,7 +150,7 @@ public final class ConfigureCommand {
      * Returns a {@link com.mojang.brigadier.suggestion.SuggestionProvider} that suggests
      * the valid property keys for whichever module has already been typed in the
      * {@code <module>} argument position. If the module argument is not yet present or
-     * unrecognised, no suggestions are returned.
+     * unrecognized, no suggestions are returned.
      *
      * @return context-aware suggestion provider for the {@code <property>} argument
      */
