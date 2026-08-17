@@ -26,54 +26,60 @@ public final class LevelControlCommand implements CoreCommand {
 
     @Override
     public void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registry, Commands.CommandSelection context) {
-        dispatcher.register(
-                new CommandBuilder("level-control")
-                        .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_ROOT_PERMISSION))
-                        .then("level-up", levelUp -> levelUp
-                                .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_LEVEL_UP_PERMISSION))
-                                .then(Commands.argument("player", StringArgumentType.string())
-                                        .suggests(playersProvider())
-                                        .then(Commands.argument("module", StringArgumentType.string())
-                                                .suggests(modulesProvider())
-                                                .executes(this::levelUp)
-                                        )
-                                )
+        var levelUp = new CommandBuilder("level-up")
+                .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_LEVEL_UP_PERMISSION))
+                .then(Commands.argument("player", StringArgumentType.string())
+                        .suggests(playersProvider())
+                        .then(Commands.argument("module", StringArgumentType.string())
+                                .suggests(modulesProvider())
+                                .executes(this::levelUp)
                         )
-                        .then("set-level", setLevel -> setLevel
-                                .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_SET_LEVEL_PERMISSION))
-                                .then(Commands.argument("player", StringArgumentType.string())
-                                                .suggests(playersProvider())
-                                                .then(Commands.argument("level", IntegerArgumentType.integer(1))
-                                                        .executes(this::setLevel)
-                                                )
-                                        )
-                        )
-                        .then("status", status -> status
-                                .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_STATUS_PERMISSION))
-                                .executes(this::action)
-                        )
-                        .then("status-other", statusOther -> statusOther
-                                .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_STATUS_OTHER_PERMISSION))
-                                .then(Commands.argument("player", StringArgumentType.string())
-                                        .suggests(playersProvider())
-                                        .executes(this::action)
-                                )
-                        )
-                        .then("configure", configure -> configure
-                                .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_CONFIGURE_PERMISSION))
-                                .then(Commands.argument("module", StringArgumentType.string())
-                                        .suggests(ConfigureCommand.CMD.modulesProvider())
-                                        .then(Commands.argument("property", StringArgumentType.string())
-                                                .suggests(ConfigureCommand.CMD.propertiesProvider())
-                                                .then(Commands.argument("value", StringArgumentType.greedyString())
-                                                        .executes(ConfigureCommand.CMD::configure)
-                                                )
-                                        )
-                                )
-                        )
+                );
 
-                        .build()
-        );
+        var setLevel = new CommandBuilder("set-level")
+                .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_SET_LEVEL_PERMISSION))
+                .then(Commands.argument("player", StringArgumentType.string())
+                        .suggests(playersProvider())
+                        .then(Commands.argument("module", StringArgumentType.string())
+                                .suggests(modulesProvider())
+                                .then(Commands.argument("level", IntegerArgumentType.integer(1))
+                                        .executes(this::setLevel)
+                                )
+                        )
+                );
+
+        var status = new CommandBuilder("status")
+                .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_STATUS_PERMISSION))
+                .executes(this::action);
+
+        var statusOther = new CommandBuilder("status-other")
+                .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_STATUS_OTHER_PERMISSION))
+                .then(Commands.argument("player", StringArgumentType.string())
+                        .suggests(playersProvider())
+                        .executes(this::action)
+                );
+
+        var configure = new CommandBuilder("configure")
+                .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_CONFIGURE_PERMISSION))
+                .then(Commands.argument("module", StringArgumentType.string())
+                        .suggests(ConfigureCommand.CMD.modulesProvider())
+                        .then(Commands.argument("property", StringArgumentType.string())
+                                .suggests(ConfigureCommand.CMD.propertiesProvider())
+                                .then(Commands.argument("value", StringArgumentType.greedyString())
+                                        .executes(ConfigureCommand.CMD::configure)
+                                )
+                        )
+                );
+
+        var rootCommand = new CommandBuilder("level-control")
+                .requires(src -> PermissionHelpers.checkPermission(src, PermissionHelpers.COMMAND_ROOT_PERMISSION))
+                .then(levelUp)
+                .then(setLevel)
+                .then(status)
+                .then(statusOther)
+                .then(configure);
+
+        dispatcher.register(rootCommand.build());
     }
 
     public SuggestionProvider<CommandSourceStack> modulesProvider() {
