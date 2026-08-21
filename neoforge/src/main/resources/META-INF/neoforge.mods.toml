@@ -12,6 +12,7 @@ description = '''
 ${mod_description}
 '''
 logoFile = "icon.png"
+displayTest = "IGNORE_ALL_VERSION"
 
 [[dependencies.${mod_id}]]
 modId = "minecraft"
