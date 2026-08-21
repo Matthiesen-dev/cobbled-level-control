@@ -97,7 +97,6 @@ public final class CobbledLevelControlClient extends AbstractCommonClientMod {
         int offsetX = (int) Math.round(CLCConfig.CLIENT_CONFIG.hud_offsetX.get() * guiScale);
         int offsetY = (int) Math.round(CLCConfig.CLIENT_CONFIG.hud_offsetY.get() * guiScale);
 
-        int x = offsetX;
         int contentHeight = lines.size() * LINE_HEIGHT;
         int boxHeight = contentHeight + (BOX_PADDING_Y * 2);
         int maxLineWidth = 0;
@@ -108,15 +107,15 @@ public final class CobbledLevelControlClient extends AbstractCommonClientMod {
         int topY = guiGraphics.guiHeight() - offsetY - boxHeight;
 
         // Draw a styled panel inspired by modern status widgets.
-        guiGraphics.fill(x, topY, x + boxWidth, topY + boxHeight, BOX_BACKGROUND_COLOR);
-        guiGraphics.fill(x, topY, x + boxWidth, topY + 1, BOX_BORDER_COLOR);
-        guiGraphics.fill(x, topY + boxHeight - 1, x + boxWidth, topY + boxHeight, BOX_BORDER_COLOR);
-        guiGraphics.fill(x, topY, x + 1, topY + boxHeight, BOX_BORDER_COLOR);
-        guiGraphics.fill(x + boxWidth - 1, topY, x + boxWidth, topY + boxHeight, BOX_BORDER_COLOR);
-        guiGraphics.fill(x, topY, x + BOX_ACCENT_WIDTH, topY + boxHeight, BOX_ACCENT_COLOR);
+        guiGraphics.fill(offsetX, topY, offsetX + boxWidth, topY + boxHeight, BOX_BACKGROUND_COLOR);
+        guiGraphics.fill(offsetX, topY, offsetX + boxWidth, topY + 1, BOX_BORDER_COLOR);
+        guiGraphics.fill(offsetX, topY + boxHeight - 1, offsetX + boxWidth, topY + boxHeight, BOX_BORDER_COLOR);
+        guiGraphics.fill(offsetX, topY, offsetX + 1, topY + boxHeight, BOX_BORDER_COLOR);
+        guiGraphics.fill(offsetX + boxWidth - 1, topY, offsetX + boxWidth, topY + boxHeight, BOX_BORDER_COLOR);
+        guiGraphics.fill(offsetX, topY, offsetX + BOX_ACCENT_WIDTH, topY + boxHeight, BOX_ACCENT_COLOR);
 
         int y = topY + BOX_PADDING_Y;
-        int textX = x + BOX_ACCENT_WIDTH + BOX_PADDING_X;
+        int textX = offsetX + BOX_ACCENT_WIDTH + BOX_PADDING_X;
 
         for (Component line : lines) {
             guiGraphics.drawString(mc.font, line, textX, y, 0xFFFFFF, true);
