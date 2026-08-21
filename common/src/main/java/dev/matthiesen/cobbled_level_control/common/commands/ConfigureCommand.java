@@ -3,6 +3,7 @@ package dev.matthiesen.cobbled_level_control.common.commands;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
+import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
 import dev.matthiesen.cobbled_level_control.common.config.CLCConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
@@ -356,6 +357,7 @@ public final class ConfigureCommand {
         source.sendSystemMessage(Component.literal(
                 "[CLC] Set " + module + "." + property + " = " + value
         ).withStyle(ChatFormatting.GREEN));
+        CobbledLevelControl.INSTANCE.scheduleHudSnapshotBroadcast();
         return 1;
 
     }

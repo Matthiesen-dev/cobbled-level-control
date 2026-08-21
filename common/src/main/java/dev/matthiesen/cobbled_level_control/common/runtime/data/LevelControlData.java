@@ -6,6 +6,7 @@ import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
 import dev.matthiesen.cobbled_level_control.common.config.CLCConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.HashMap;
@@ -39,6 +40,9 @@ public record LevelControlData(Player player, PlayerAccountRecord accountRecord)
                 int maxLevel = catchingModule.tiers().size();
                 if (nextLevel > maxLevel) return 0;
                 modInstance.getStoredPlayerAccountRecords().editPlayerAccountRecord(player.getUUID(), record -> record.setCatching(nextLevel));
+                if (player instanceof ServerPlayer serverPlayer) {
+                    modInstance.sendHudSnapshot(serverPlayer);
+                }
                 player.sendSystemMessage(Component.literal(
                         CLCConfig.SERVER_CONFIG.messages_success_targetCatchingTierSet.get()
                                 .replace("%tier%", Integer.toString(nextLevel))
@@ -52,6 +56,9 @@ public record LevelControlData(Player player, PlayerAccountRecord accountRecord)
                 int maxLevel = levelingModule.tiers().size();
                 if (nextLevel > maxLevel) return 0;
                 modInstance.getStoredPlayerAccountRecords().editPlayerAccountRecord(player.getUUID(), record -> record.setLeveling(nextLevel));
+                if (player instanceof ServerPlayer serverPlayer) {
+                    modInstance.sendHudSnapshot(serverPlayer);
+                }
                 player.sendSystemMessage(Component.literal(
                         CLCConfig.SERVER_CONFIG.messages_success_targetLevelingTierSet.get()
                                 .replace("%tier%", Integer.toString(nextLevel))
@@ -82,6 +89,9 @@ public record LevelControlData(Player player, PlayerAccountRecord accountRecord)
                 if (level > maxLevel) return 0;
 
                 modInstance.getStoredPlayerAccountRecords().editPlayerAccountRecord(player.getUUID(), record -> record.setCatching(level));
+                if (player instanceof ServerPlayer serverPlayer) {
+                    modInstance.sendHudSnapshot(serverPlayer);
+                }
                 player.sendSystemMessage(Component.literal(
                         CLCConfig.SERVER_CONFIG.messages_success_targetCatchingTierSet.get()
                                 .replace("%level%", Integer.toString(level))
@@ -93,6 +103,9 @@ public record LevelControlData(Player player, PlayerAccountRecord accountRecord)
                 int maxLevel = levelingModule.tiers().size();
                 if (level > maxLevel) return 0;
                 modInstance.getStoredPlayerAccountRecords().editPlayerAccountRecord(player.getUUID(), record -> record.setLeveling(level));
+                if (player instanceof ServerPlayer serverPlayer) {
+                    modInstance.sendHudSnapshot(serverPlayer);
+                }
                 player.sendSystemMessage(Component.literal(
                         CLCConfig.SERVER_CONFIG.messages_success_targetLevelingTierSet.get()
                                 .replace("%level%", Integer.toString(level))
