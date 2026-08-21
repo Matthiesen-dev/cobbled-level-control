@@ -32,11 +32,11 @@ public final class ClientConfig {
 
         hud_offsetX = builder.comment("Bottom-left X offset in pixels at GUI scale 1")
                 .translation("cobbled_level_control.configuration.client.hud.offsetX")
-                .defineInRange("offsetX", 6, 0, 500);
+                .defineInRange("offsetX", 2, 0, 500);
 
         hud_offsetY = builder.comment("Bottom-left Y offset in pixels at GUI scale 1")
                 .translation("cobbled_level_control.configuration.client.hud.offsetY")
-                .defineInRange("offsetY", 6, 0, 500);
+                .defineInRange("offsetY", 4, 0, 500);
 
         builder.pop(); // client.hud
         builder.pop(); // client

@@ -25,6 +25,13 @@ public final class CobbledLevelControlClient extends AbstractCommonClientMod {
     private static final ResourceLocation HUD_LAYER_ID = ResourceLocation.fromNamespaceAndPath(CobbledLevelControl.MOD_ID, "player_status_hud");
     private static final String KEY_CATEGORY = "key.categories.cobbled_level_control";
     private static final String KEY_TOGGLE = "key.cobbled_level_control.toggle_hud";
+    private static final int LINE_HEIGHT = 10;
+    private static final int BOX_PADDING_X = 6;
+    private static final int BOX_PADDING_Y = 4;
+    private static final int BOX_ACCENT_WIDTH = 3;
+    private static final int BOX_BACKGROUND_COLOR = 0xAA101018;
+    private static final int BOX_BORDER_COLOR = 0xCC3A3F4A;
+    private static final int BOX_ACCENT_COLOR = 0xFF4AA3FF;
 
     public CobbledLevelControlClient() {
         super(CobbledLevelControl.INSTANCE);
@@ -91,32 +98,47 @@ public final class CobbledLevelControlClient extends AbstractCommonClientMod {
         int offsetY = (int) Math.round(CLCConfig.CLIENT_CONFIG.hud_offsetY.get() * guiScale);
 
         int x = offsetX;
-        int y = guiGraphics.guiHeight() - offsetY - ((lines.size() - 1) * 10);
+        int contentHeight = lines.size() * LINE_HEIGHT;
+        int boxHeight = contentHeight + (BOX_PADDING_Y * 2);
+        int maxLineWidth = 0;
+        for (Component line : lines) {
+            maxLineWidth = Math.max(maxLineWidth, mc.font.width(line));
+        }
+        int boxWidth = maxLineWidth + (BOX_PADDING_X * 2) + BOX_ACCENT_WIDTH;
+        int topY = guiGraphics.guiHeight() - offsetY - boxHeight;
+
+        // Draw a styled panel inspired by modern status widgets.
+        guiGraphics.fill(x, topY, x + boxWidth, topY + boxHeight, BOX_BACKGROUND_COLOR);
+        guiGraphics.fill(x, topY, x + boxWidth, topY + 1, BOX_BORDER_COLOR);
+        guiGraphics.fill(x, topY + boxHeight - 1, x + boxWidth, topY + boxHeight, BOX_BORDER_COLOR);
+        guiGraphics.fill(x, topY, x + 1, topY + boxHeight, BOX_BORDER_COLOR);
+        guiGraphics.fill(x + boxWidth - 1, topY, x + boxWidth, topY + boxHeight, BOX_BORDER_COLOR);
+        guiGraphics.fill(x, topY, x + BOX_ACCENT_WIDTH, topY + boxHeight, BOX_ACCENT_COLOR);
+
+        int y = topY + BOX_PADDING_Y;
+        int textX = x + BOX_ACCENT_WIDTH + BOX_PADDING_X;
 
         for (Component line : lines) {
-            guiGraphics.drawString(mc.font, line, x, y, 0xFFFFFF, true);
-            y += 10;
+            guiGraphics.drawString(mc.font, line, textX, y, 0xFFFFFF, true);
+            y += LINE_HEIGHT;
         }
     }
 
     private List<Component> buildCompactLines(CompoundTag snapshot) {
         List<Component> lines = new ArrayList<>();
 
-        int catchingTier = snapshot.getInt("catchingTier");
         int catchingCap = snapshot.getInt("catchingCap");
-        int levelingTier = snapshot.getInt("levelingTier");
         int levelingCap = snapshot.getInt("levelingCap");
 
-        MutableComponent main = Component.literal("CLC ")
-                .withStyle(ChatFormatting.GOLD)
-                .append(Component.literal("C:" + catchingTier + " (" + catchingCap + ")").withStyle(ChatFormatting.AQUA))
-                .append(Component.literal("  L:" + levelingTier + " (" + levelingCap + ")").withStyle(ChatFormatting.GREEN));
-        lines.add(main);
+        lines.add(Component.translatable("cobbled_level_control.hud.compact.catchingCap", catchingCap)
+                .withStyle(ChatFormatting.AQUA));
+        lines.add(Component.translatable("cobbled_level_control.hud.compact.levelingCap", levelingCap)
+                .withStyle(ChatFormatting.GREEN));
 
         if (CLCConfig.CLIENT_CONFIG.hud_showWarningLine.get()) {
-            String warning = snapshot.getString("warning");
-            if (!warning.isEmpty()) {
-                lines.add(Component.literal(warning).withStyle(ChatFormatting.YELLOW));
+            Component warning = buildWarningLine(snapshot);
+            if (warning != null) {
+                lines.add(warning);
             }
         }
         return lines;
@@ -125,39 +147,56 @@ public final class CobbledLevelControlClient extends AbstractCommonClientMod {
     private List<Component> buildDetailedLines(CompoundTag snapshot) {
         List<Component> lines = new ArrayList<>();
         lines.add(Component.translatable("cobbled_level_control.hud.title").withStyle(ChatFormatting.GOLD));
+        lines.add(Component.translatable("cobbled_level_control.hud.section.progress").withStyle(ChatFormatting.DARK_AQUA));
 
-        lines.add(Component.translatable(
-                "cobbled_level_control.hud.catching",
+        lines.add(Component.translatable("cobbled_level_control.hud.catching",
                 snapshot.getInt("catchingTier"),
-                snapshot.getInt("catchingCap"),
-                snapshot.getInt("catchingNextCap")
+                snapshot.getInt("catchingCap")
         ).withStyle(ChatFormatting.AQUA));
 
-        lines.add(Component.translatable(
-                "cobbled_level_control.hud.leveling",
+        lines.add(Component.translatable("cobbled_level_control.hud.leveling",
                 snapshot.getInt("levelingTier"),
-                snapshot.getInt("levelingCap"),
-                snapshot.getInt("levelingNextCap")
+                snapshot.getInt("levelingCap")
         ).withStyle(ChatFormatting.GREEN));
 
-        lines.add(Component.translatable(
-                "cobbled_level_control.hud.restrictions",
-                humanFlag(snapshot.getBoolean("restrictBattles")),
-                humanFlag(snapshot.getBoolean("restrictCatching")),
-                humanFlag(snapshot.getBoolean("restrictLeveling"))
-        ).withStyle(ChatFormatting.GRAY));
+        lines.add(Component.translatable("cobbled_level_control.hud.section.restrictions").withStyle(ChatFormatting.DARK_AQUA));
 
-        lines.add(Component.translatable(
-                "cobbled_level_control.hud.status",
-                humanFlag(snapshot.getBoolean("hasPermissionLocks")),
-                humanFlag(snapshot.getBoolean("capExceeded")),
-                humanFlag(snapshot.getBoolean("dataAvailable"))
-        ).withStyle(ChatFormatting.GRAY));
+        lines.add(buildStateLine(
+                "cobbled_level_control.hud.restrictions.battle",
+                snapshot.getBoolean("restrictBattles")
+        ));
+
+        lines.add(buildStateLine(
+                "cobbled_level_control.hud.restrictions.catching",
+                snapshot.getBoolean("restrictCatching")
+        ));
+
+        lines.add(buildStateLine(
+                "cobbled_level_control.hud.restrictions.leveling",
+                snapshot.getBoolean("restrictLeveling")
+        ));
+
+        lines.add(Component.translatable("cobbled_level_control.hud.section.status").withStyle(ChatFormatting.DARK_AQUA));
+
+        lines.add(buildStateLine(
+                "cobbled_level_control.hud.status.permissionLocks",
+                snapshot.getBoolean("hasPermissionLocks")
+        ));
+
+        lines.add(buildStateLine(
+                "cobbled_level_control.hud.status.capExceeded",
+                snapshot.getBoolean("capExceeded")
+        ));
+
+        lines.add(buildStateLine(
+                "cobbled_level_control.hud.status.dataAvailable",
+                snapshot.getBoolean("dataAvailable")
+        ));
 
         if (CLCConfig.CLIENT_CONFIG.hud_showWarningLine.get()) {
-            String warning = snapshot.getString("warning");
-            if (!warning.isEmpty()) {
-                lines.add(Component.literal(warning).withStyle(ChatFormatting.YELLOW));
+            Component warning = buildWarningLine(snapshot);
+            if (warning != null) {
+                lines.add(warning);
             }
         }
 
@@ -168,5 +207,25 @@ public final class CobbledLevelControlClient extends AbstractCommonClientMod {
         return enabled
                 ? Component.translatable("cobbled_level_control.hud.yes")
                 : Component.translatable("cobbled_level_control.hud.no");
+    }
+
+    private Component buildStateLine(String labelKey, boolean enabled) {
+        MutableComponent line = Component.translatable(labelKey).withStyle(ChatFormatting.GRAY)
+                .append(Component.literal(": "));
+        line.append(humanFlag(enabled).copy().withStyle(enabled ? ChatFormatting.GREEN : ChatFormatting.RED));
+        return line;
+    }
+
+    private Component buildWarningLine(CompoundTag snapshot) {
+        if (snapshot.getBoolean("hasPermissionLocks")) {
+            return Component.translatable("cobbled_level_control.hud.warning.permission").withStyle(ChatFormatting.YELLOW);
+        }
+        if (snapshot.getBoolean("capExceeded")) {
+            return Component.translatable("cobbled_level_control.hud.warning.capExceeded").withStyle(ChatFormatting.YELLOW);
+        }
+        if (!snapshot.getBoolean("dataAvailable")) {
+            return Component.translatable("cobbled_level_control.hud.warning.dataUnavailable").withStyle(ChatFormatting.YELLOW);
+        }
+        return null;
     }
 }
