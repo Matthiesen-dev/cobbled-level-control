@@ -161,6 +161,7 @@ public final class LevelControlCommand implements CoreCommand {
                             CLCConfig.SERVER_CONFIG.messages_success_targetCatchingLevelSet.get()
                                     .replace("%level%", Integer.toString(level))
                     ).withStyle(ChatFormatting.GREEN), CLCConfig.SERVER_CONFIG.messages_success_useActionBar.getAsBoolean());
+                    modInstance.sendHudSnapshot(onlinePlayer);
                 }
 
                 source.sendSystemMessage(Component.literal(
@@ -187,6 +188,7 @@ public final class LevelControlCommand implements CoreCommand {
                             CLCConfig.SERVER_CONFIG.messages_success_targetLevelingLevelSet.get()
                                     .replace("%level%", Integer.toString(level))
                     ).withStyle(ChatFormatting.GREEN), CLCConfig.SERVER_CONFIG.messages_success_useActionBar.getAsBoolean());
+                    modInstance.sendHudSnapshot(onlinePlayer);
                 }
 
                 source.sendSystemMessage(Component.literal(
@@ -231,6 +233,7 @@ public final class LevelControlCommand implements CoreCommand {
                             CLCConfig.SERVER_CONFIG.messages_success_targetCatchingTierSet.get()
                                     .replace("%tier%", Integer.toString(nextLevel))
                     ).withStyle(ChatFormatting.AQUA), CLCConfig.SERVER_CONFIG.messages_success_useActionBar.getAsBoolean());
+                    modInstance.sendHudSnapshot(onlinePlayer);
                 }
 
                 source.sendSystemMessage(Component.literal(
@@ -255,6 +258,7 @@ public final class LevelControlCommand implements CoreCommand {
                             CLCConfig.SERVER_CONFIG.messages_success_targetLevelingTierSet.get()
                                     .replace("%tier%", Integer.toString(nextLevel))
                     ).withStyle(ChatFormatting.AQUA), CLCConfig.SERVER_CONFIG.messages_success_useActionBar.getAsBoolean());
+                    modInstance.sendHudSnapshot(onlinePlayer);
                 }
                 source.sendSystemMessage(Component.literal(
                         CLCConfig.SERVER_CONFIG.messages_success_sourceLevelingTierSet.get()

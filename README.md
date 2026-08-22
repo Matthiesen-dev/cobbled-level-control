@@ -18,6 +18,7 @@ set catch rules, and even control the level of wild pokemon spawns. All of this 
   - Level Control: Set level caps for wild pokemon spawns, allowing you to create a unique and challenging experience for your players.
 - Permission nodes for absolute control: Use permission nodes to set level caps for different pokemon species, catch rules, and wild pokemon spawns.
 - Server-side only: This mod is designed to be used on the server-side, ensuring that all players have a consistent experience regardless of their client setup.
+- Optional Client-side: While the mod is server-side only, it also includes an optional client-side component that allows players to view their current level caps and catch rules in-game.
 - Easy to use: The mod is easy to install and configure, making it accessible to server owners of all skill levels.
 
 ### Currently Supported Cobblemon Events
