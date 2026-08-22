@@ -4,7 +4,6 @@ import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
 import dev.matthiesen.cobbled_level_control.common.commands.LevelControlCommand;
 import dev.matthiesen.cobbled_level_control.common.config.CLCConfig;
-import dev.matthiesen.cobbled_level_control.common.network.CLCNetworking;
 import dev.matthiesen.cobbled_level_control.common.network.CLCStatusHudSyncS2CPacket;
 import dev.matthiesen.cobbled_level_control.common.permissions.PermissionHelpers;
 import dev.matthiesen.cobbled_level_control.common.runtime.data.StoredPlayerAccountRecords;
@@ -47,7 +46,7 @@ public final class CobbledLevelControl extends AbstractCommonMod {
         PlatformEvents.SERVER_RELOAD.subscribe(this::onServerReload);
         PlatformEvents.PLAYER_JOIN.subscribe(this::onPlayerJoin);
 
-        CLCNetworking.registerOptionalS2C(CLCStatusHudSyncS2CPacket.TYPE, CLCStatusHudSyncS2CPacket.CODEC, (packet, context) -> {
+        getNetworkingManager().registerOptionalS2C(CLCStatusHudSyncS2CPacket.TYPE, CLCStatusHudSyncS2CPacket.CODEC, (packet, context) -> {
             if (context.player() == null || !context.player().level().isClientSide()) {
                 return;
             }
@@ -113,7 +112,7 @@ public final class CobbledLevelControl extends AbstractCommonMod {
 
     public void sendHudSnapshot(ServerPlayer player) {
         if (player == null) return;
-        if (!CLCNetworking.canSendToPlayer(player, CLCStatusHudSyncS2CPacket.CHANNEL_ID)) return;
+        if (!getNetworkingManager().canSendToPlayer(player, CLCStatusHudSyncS2CPacket.CHANNEL_ID)) return;
 
         var accountRecord = getStoredPlayerAccountRecords().getPlayerAccountRecord(player.getUUID());
         if (accountRecord == null) return;
@@ -151,7 +150,7 @@ public final class CobbledLevelControl extends AbstractCommonMod {
         tag.putBoolean("dataAvailable", dataAvailable);
         tag.putString("warning", computeWarning(hasPermissionLocks, capExceeded, dataAvailable));
 
-        CLCNetworking.sendToPlayer(player, new CLCStatusHudSyncS2CPacket(tag));
+        getNetworkingManager().sendToPlayer(player, new CLCStatusHudSyncS2CPacket(tag));
     }
 
     public void broadcastHudSnapshots() {
