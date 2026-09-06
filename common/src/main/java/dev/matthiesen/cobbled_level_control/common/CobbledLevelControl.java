@@ -2,6 +2,7 @@ package dev.matthiesen.cobbled_level_control.common;
 
 import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
+import dev.matthiesen.cobbled_level_control.common.client.HudClientState;
 import dev.matthiesen.cobbled_level_control.common.commands.LevelControlCommand;
 import dev.matthiesen.cobbled_level_control.common.config.CLCConfig;
 import dev.matthiesen.cobbled_level_control.common.network.CLCStatusHudSyncS2CPacket;
@@ -50,9 +51,7 @@ public final class CobbledLevelControl extends AbstractCommonMod {
             if (context.player() == null || !context.player().level().isClientSide()) {
                 return;
             }
-            context.enqueue(() -> {
-                dev.matthiesen.cobbled_level_control.common.client.HudClientState.applySnapshot(packet.snapshot());
-            });
+            context.enqueue(() -> HudClientState.applySnapshot(packet.snapshot()));
         });
 
         PermissionHelpers.init();
