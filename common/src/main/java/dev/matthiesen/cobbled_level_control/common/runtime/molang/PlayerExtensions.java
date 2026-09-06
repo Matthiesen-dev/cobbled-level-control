@@ -1,14 +1,15 @@
 package dev.matthiesen.cobbled_level_control.common.runtime.molang;
 
 import com.bedrockk.molang.runtime.MoParams;
-import com.cobblemon.mod.common.api.molang.MoLangFunctions;
 import com.cobblemon.mod.common.api.molang.ObjectValue;
+import com.cobblemon.mod.common.api.molang.function.PlayerMoLangFunctions;
 import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
 import dev.matthiesen.cobbled_level_control.common.runtime.data.LevelControlData;
+import kotlin.jvm.functions.Function1;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.HashMap;
-import java.util.function.Function;
+import java.util.Map;
 
 public final class PlayerExtensions {
 
@@ -23,8 +24,8 @@ public final class PlayerExtensions {
     public static void init() {
         CobbledLevelControl.INSTANCE.createInfoLog("Registering MoLang Player Extensions...");
 
-        MoLangFunctions.INSTANCE.getPlayerFunctions().add(player -> {
-            HashMap<String, Function<MoParams, Object>> map = new HashMap<>();
+        PlayerMoLangFunctions.INSTANCE.getCustom().add(player -> {
+            Map<String, Function1<MoParams, Object>> map = new HashMap<>();
 
             // q.player.level_control() -> { "playerUUID": "string", "accountRecord": { "catching": number, "leveling": number } }
             // q.player.level_control.status() returns following object or 0
