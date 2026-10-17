@@ -48,7 +48,8 @@ Documentation for this mod can be found at [mods.matthiesen.dev](https://mods.ma
 |-------------------|-------------------------|-------------------|----------------|
 | 1.21.1            | Unsupported             | 1.7.3             | 1.0.0-beta.1+  |
 | 1.21.1            | 1.x.x                   | 1.7.3             | 1.0.0-beta.19+ |
-| 1.21.1            | 1.2.7+                  | 1.8.0             | 1.2.0+         |
+| 1.21.1            | 1.2.7+                  | 1.8.x+            | 1.2.0+         |
+| 1.21.1            | 1.3.0+                  | 1.8.x+            | 1.3.0+         |
 
 > Before `v1.0.0-beta.19` This mod relied on [Matthiesen Lib API](https://modrinth.com/mod/matthiesen-lib-api) for its APIs, which has since been replaced by [Matthiesen Core](https://modrinth.com/mod/matthiesen-core).
 
