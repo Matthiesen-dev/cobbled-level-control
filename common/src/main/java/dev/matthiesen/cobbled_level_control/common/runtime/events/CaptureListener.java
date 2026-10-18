@@ -47,7 +47,7 @@ public final class CaptureListener {
                     return Unit.INSTANCE;
                 }
                 PokemonUtility.EvoStage evoStage = PokemonUtility.getEvoStage(pokemon);
-                PermSet perm = Util.getPermissionString(evoStage, catchingModule);
+                PermSet perm = Util.getPermSet(evoStage, catchingModule.evolutionStages());
                 if (Util.conditionalCheck(player, perm, CLCConfig.SERVER_CONFIG.messages_error_missingPermission.get(), () ->
                         doCancel(event, player, CLCConfig.SERVER_CONFIG.messages_error_missingPermission.get()))) {
                     return Unit.INSTANCE;

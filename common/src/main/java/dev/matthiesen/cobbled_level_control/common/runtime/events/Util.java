@@ -2,10 +2,7 @@ package dev.matthiesen.cobbled_level_control.common.runtime.events;
 
 import com.cobblemon.mod.common.api.events.battles.BattleStartedEvent;
 import dev.matthiesen.cobbled_level_control.common.config.CLCConfig;
-import dev.matthiesen.cobbled_level_control.common.config.def.BattleConfig;
-import dev.matthiesen.cobbled_level_control.common.config.def.CatchingConfig;
-import dev.matthiesen.cobbled_level_control.common.config.def.LevelingConfig;
-import dev.matthiesen.cobbled_level_control.common.config.def.PermSet;
+import dev.matthiesen.cobbled_level_control.common.config.def.*;
 import dev.matthiesen.cobbled_level_control.common.permissions.PermissionHelpers;
 import dev.matthiesen.cobbled_level_control.common.utils.PokemonUtility;
 import net.minecraft.ChatFormatting;
@@ -13,41 +10,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
 public final class Util {
-    public static PermSet getPermissionString(PokemonUtility.EvoStage evoStage, LevelingConfig levelingModule) {
-        PermSet perm;
-        switch (evoStage) {
-            case PokemonUtility.EvoStage.FINAL -> perm = levelingModule.evolutionStages().finalStageEvo();
-            case PokemonUtility.EvoStage.FIRST -> perm = levelingModule.evolutionStages().firstStageEvo();
-            case PokemonUtility.EvoStage.SECOND -> perm = levelingModule.evolutionStages().secondStageEvo();
-            default -> perm = levelingModule.evolutionStages().singleEvo();
-        }
-        return perm;
-    }
-
-    public static PermSet getPermissionString(PokemonUtility.EvoStage evoStage, CatchingConfig catchingModule) {
-        PermSet perm;
-        switch (evoStage) {
-            case PokemonUtility.EvoStage.FINAL -> perm = catchingModule.evolutionStages().finalStageEvo();
-            case PokemonUtility.EvoStage.FIRST -> perm = catchingModule.evolutionStages().firstStageEvo();
-            case PokemonUtility.EvoStage.SECOND -> perm = catchingModule.evolutionStages().secondStageEvo();
-            default -> perm = catchingModule.evolutionStages().singleEvo();
-        }
-        return perm;
-    }
-
-    public static PermSet getPermissionString(PokemonUtility.EvoStage evoStage, BattleConfig battleConfig) {
-        PermSet perm;
-        switch (evoStage) {
-            case PokemonUtility.EvoStage.FINAL -> perm = battleConfig.evolutionStages().finalStageEvo();
-            case PokemonUtility.EvoStage.FIRST -> perm = battleConfig.evolutionStages().firstStageEvo();
-            case PokemonUtility.EvoStage.SECOND -> perm = battleConfig.evolutionStages().secondStageEvo();
-            default -> perm = battleConfig.evolutionStages().singleEvo();
-        }
-        return perm;
-    }
-
-    public static boolean conditionalCheck(ServerPlayer player, PermSet permissionNode) {
-        return PermissionHelpers.doesNotHavePermission(player, permissionNode);
+    public static PermSet getPermSet(PokemonUtility.EvoStage evoStage, EvolutionStages evolutionStages) {
+        return switch (evoStage) {
+            case FINAL -> evolutionStages.finalStageEvo();
+            case FIRST -> evolutionStages.firstStageEvo();
+            case SECOND -> evolutionStages.secondStageEvo();
+            default -> evolutionStages.singleEvo();
+        };
     }
 
     public static boolean conditionalCheck(ServerPlayer player, boolean condition, String errorMessage, Runnable action) {

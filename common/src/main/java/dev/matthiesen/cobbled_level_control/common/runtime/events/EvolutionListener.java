@@ -7,6 +7,7 @@ import com.cobblemon.mod.common.api.reactive.ObservableSubscription;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import dev.matthiesen.cobbled_level_control.common.config.CLCConfig;
 import dev.matthiesen.cobbled_level_control.common.config.def.PermSet;
+import dev.matthiesen.cobbled_level_control.common.permissions.PermissionHelpers;
 import dev.matthiesen.cobbled_level_control.common.utils.PokemonUtility;
 import kotlin.Unit;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,8 +21,8 @@ public final class EvolutionListener {
             var levelingModule = CLCConfig.getLevelingConfig();
             if (levelingModule.doNotRestrictLeveling()) return Unit.INSTANCE;
             PokemonUtility.EvoStage evoStage = PokemonUtility.getEvoStage(pokemon);
-            PermSet perm = Util.getPermissionString(evoStage, levelingModule);
-            if (Util.conditionalCheck(player, perm)) {
+            PermSet perm = Util.getPermSet(evoStage, levelingModule.evolutionStages());
+            if (PermissionHelpers.doesNotHavePermission(player, perm)) {
                 event.setResult(false);
                 return Unit.INSTANCE;
             }

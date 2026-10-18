@@ -96,7 +96,7 @@ public final class BattleStartEventsListener {
                     }
 
                     PokemonUtility.EvoStage evoStage = PokemonUtility.getEvoStage(pokemon);
-                    PermSet perm = Util.getPermissionString(evoStage, battleModule);
+                    PermSet perm = Util.getPermSet(evoStage, battleModule.evolutionStages());
                     if (Util.conditionalCheck(player, perm, CLCConfig.SERVER_CONFIG.messages_error_missingPermission.get(), event)) {
                         return Unit.INSTANCE;
                     }
