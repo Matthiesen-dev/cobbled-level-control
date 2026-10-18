@@ -12,6 +12,7 @@ import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.cobblemon.mod.common.util.PlayerExtensionsKt;
 import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
 import dev.matthiesen.cobbled_level_control.common.config.CLCConfig;
+import dev.matthiesen.cobbled_level_control.common.config.def.PermSet;
 import dev.matthiesen.cobbled_level_control.common.utils.PokemonUtility;
 import kotlin.Pair;
 import kotlin.Unit;
@@ -46,8 +47,8 @@ public final class CaptureListener {
                     return Unit.INSTANCE;
                 }
                 PokemonUtility.EvoStage evoStage = PokemonUtility.getEvoStage(pokemon);
-                String perm = Util.getPermissionString(evoStage, catchingModule);
-                if (!perm.isEmpty() && Util.conditionalCheck(player, perm, CLCConfig.SERVER_CONFIG.messages_error_missingPermission.get(), () ->
+                PermSet perm = Util.getPermSet(evoStage, catchingModule.evolutionStages());
+                if (Util.conditionalCheck(player, perm, CLCConfig.SERVER_CONFIG.messages_error_missingPermission.get(), () ->
                         doCancel(event, player, CLCConfig.SERVER_CONFIG.messages_error_missingPermission.get()))) {
                     return Unit.INSTANCE;
                 }
