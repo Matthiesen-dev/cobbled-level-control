@@ -28,30 +28,30 @@ import java.util.Set;
  *   <tr><th>Module</th><th>Property</th><th>Type</th><th>Description</th></tr>
  *   <tr><td rowspan="9">{@code battle}</td>
  *       <td>{@code restrictBattles}</td><td>boolean</td><td>Enables/disables battle level restrictions</td></tr>
- *   <tr><td>{@code legendary}</td><td>string</td><td>Permission node required to battle legendary Pokémon</td></tr>
- *   <tr><td>{@code mythical}</td><td>string</td><td>Permission node required to battle mythical Pokémon</td></tr>
- *   <tr><td>{@code ultraBeast}</td><td>string</td><td>Permission node required to battle ultra beast Pokémon</td></tr>
- *   <tr><td>{@code shiny}</td><td>string</td><td>Permission node required to battle shiny Pokémon</td></tr>
- *   <tr><td>{@code evoStages.singleEvo}</td><td>string</td><td>Permission node for single-evolution Pokémon battles</td></tr>
- *   <tr><td>{@code evoStages.firstStageEvo}</td><td>string</td><td>Permission node for first-stage evolution battles</td></tr>
- *   <tr><td>{@code evoStages.secondStageEvo}</td><td>string</td><td>Permission node for second-stage evolution battles</td></tr>
- *   <tr><td>{@code evoStages.finalStageEvo}</td><td>string</td><td>Permission node for final-stage evolution battles</td></tr>
+ *   <tr><td>{@code legendary}</td><td>boolean</td><td>Enables/disables legendary Pokémon battle restrictions</td></tr>
+ *   <tr><td>{@code mythical}</td><td>boolean</td><td>Enables/disables mythical Pokémon battle restrictions</td></tr>
+ *   <tr><td>{@code ultraBeast}</td><td>boolean</td><td>Enables/disables ultra beast Pokémon battle restrictions</td></tr>
+ *   <tr><td>{@code shiny}</td><td>boolean</td><td>Enables/disables shiny Pokémon battle restrictions</td></tr>
+ *   <tr><td>{@code evoStages.singleEvo}</td><td>boolean</td><td>Enables/disables single-evolution Pokémon battle restrictions</td></tr>
+ *   <tr><td>{@code evoStages.firstStageEvo}</td><td>boolean</td><td>Enables/disables first-stage evolution battle restrictions</td></tr>
+ *   <tr><td>{@code evoStages.secondStageEvo}</td><td>boolean</td><td>Enables/disables second-stage evolution battle restrictions</td></tr>
+ *   <tr><td>{@code evoStages.finalStageEvo}</td><td>boolean</td><td>Enables/disables final-stage evolution battle restrictions</td></tr>
  *   <tr><td rowspan="9">{@code catching}</td>
  *       <td>{@code restrictCatching}</td><td>boolean</td><td>Enables/disables catching level restrictions</td></tr>
- *   <tr><td>{@code legendary}</td><td>string</td><td>Permission node required to catch legendary Pokémon</td></tr>
- *   <tr><td>{@code mythical}</td><td>string</td><td>Permission node required to catch mythical Pokémon</td></tr>
- *   <tr><td>{@code ultraBeast}</td><td>string</td><td>Permission node required to catch ultra beast Pokémon</td></tr>
- *   <tr><td>{@code shiny}</td><td>string</td><td>Permission node required to catch shiny Pokémon</td></tr>
- *   <tr><td>{@code evoStages.singleEvo}</td><td>string</td><td>Permission node for single-evolution Pokémon catching</td></tr>
- *   <tr><td>{@code evoStages.firstStageEvo}</td><td>string</td><td>Permission node for first-stage evolution catching</td></tr>
- *   <tr><td>{@code evoStages.secondStageEvo}</td><td>string</td><td>Permission node for second-stage evolution catching</td></tr>
- *   <tr><td>{@code evoStages.finalStageEvo}</td><td>string</td><td>Permission node for final-stage evolution catching</td></tr>
+ *   <tr><td>{@code legendary}</td><td>boolean</td><td>Enables/disables legendary Pokémon catching restrictions</td></tr>
+ *   <tr><td>{@code mythical}</td><td>boolean</td><td>Enables/disables mythical Pokémon catching restrictions</td></tr>
+ *   <tr><td>{@code ultraBeast}</td><td>boolean</td><td>Enables/disables ultra beast Pokémon catching restrictions</td></tr>
+ *   <tr><td>{@code shiny}</td><td>boolean</td><td>Enables/disables shiny Pokémon catching restrictions</td></tr>
+ *   <tr><td>{@code evoStages.singleEvo}</td><td>boolean</td><td>Enables/disables single-evolution Pokémon catching restrictions</td></tr>
+ *   <tr><td>{@code evoStages.firstStageEvo}</td><td>boolean</td><td>Enables/disables first-stage evolution catching restrictions</td></tr>
+ *   <tr><td>{@code evoStages.secondStageEvo}</td><td>boolean</td><td>Enables/disables second-stage evolution catching restrictions</td></tr>
+ *   <tr><td>{@code evoStages.finalStageEvo}</td><td>boolean</td><td>Enables/disables final-stage evolution catching restrictions</td></tr>
  *   <tr><td rowspan="5">{@code leveling}</td>
  *       <td>{@code restrictLeveling}</td><td>boolean</td><td>Enables/disables leveling level restrictions</td></tr>
- *   <tr><td>{@code evoStages.singleEvo}</td><td>string</td><td>Permission node for single-evolution Pokémon leveling</td></tr>
- *   <tr><td>{@code evoStages.firstStageEvo}</td><td>string</td><td>Permission node for first-stage evolution leveling</td></tr>
- *   <tr><td>{@code evoStages.secondStageEvo}</td><td>string</td><td>Permission node for second-stage evolution leveling</td></tr>
- *   <tr><td>{@code evoStages.finalStageEvo}</td><td>string</td><td>Permission node for final-stage evolution leveling</td></tr>
+ *   <tr><td>{@code evoStages.singleEvo}</td><td>boolean</td><td>Enables/disables single-evolution Pokémon leveling restrictions</td></tr>
+ *   <tr><td>{@code evoStages.firstStageEvo}</td><td>boolean</td><td>Enables/disables first-stage evolution leveling restrictions</td></tr>
+ *   <tr><td>{@code evoStages.secondStageEvo}</td><td>boolean</td><td>Enables/disables second-stage evolution leveling restrictions</td></tr>
+ *   <tr><td>{@code evoStages.finalStageEvo}</td><td>boolean</td><td>Enables/disables final-stage evolution leveling restrictions</td></tr>
  *   <tr><td rowspan="2">{@code scaling}</td>
  *       <td>{@code enableScaling}</td><td>boolean</td><td>Enables/disables wild Pokémon level scaling</td></tr>
  *   <tr><td>{@code scalingMethod}</td><td>string</td><td>Scaling formula, e.g. {@code "+- random7"}, {@code "+ 0"}</td></tr>
@@ -60,10 +60,10 @@ import java.util.Set;
  * <h2>Examples</h2>
  * <pre>{@code
  * /level-control configure battle restrictBattles false
- * /level-control configure catching legendary cobbled_level_control.catching.legendary
+ * /level-control configure catching legendary true
  * /level-control configure scaling enableScaling true
  * /level-control configure scaling scalingMethod "+- random5"
- * /level-control configure leveling evoStages.finalStageEvo cobbled_level_control.leveling.evoStages.final
+ * /level-control configure leveling evoStages.finalStageEvo false
  * }</pre>
  *
  * <h2>Permissions</h2>
@@ -181,9 +181,12 @@ public final class ConfigureCommand {
      * and immediately persists it by calling {@code .save()} on that specific
      * {@link net.neoforged.neoforge.common.ModConfigSpec.ConfigValue ConfigValue}.</p>
      *
-     * <p>Boolean properties ({@code restrictBattles}, {@code restrictCatching},
-     * {@code restrictLeveling}, {@code enableScaling}) accept {@code "true"} or
-     * {@code "false"} (case-insensitive, via {@link Boolean#parseBoolean}).</p>
+     * <p>Boolean properties ({@code restrictBattles}, {@code legendary}, {@code mythical},
+     * {@code ultraBeast}, {@code shiny}, {@code evoStages.singleEvo},
+     * {@code evoStages.firstStageEvo}, {@code evoStages.secondStageEvo},
+     * {@code evoStages.finalStageEvo}, {@code restrictCatching}, {@code restrictLeveling},
+     * {@code enableScaling}) accept {@code "true"} or {@code "false"}
+     * (case-insensitive, via {@link Boolean#parseBoolean}).</p>
      *
      * <p>On success, sends a green {@code [CLC] Set module.property = value} message
      * to the command source. On failure (unknown module or property), sends a red error
@@ -208,35 +211,35 @@ public final class ConfigureCommand {
                         cfg.battleModule_restrictBattles.save();
                     }
                     case "legendary"       -> {
-                        cfg.battleModule_legendary.set(value);
+                        cfg.battleModule_legendary.set(Boolean.parseBoolean(value));
                         cfg.battleModule_legendary.save();
                     }
                     case "mythical"        -> {
-                        cfg.battleModule_mythical.set(value);
+                        cfg.battleModule_mythical.set(Boolean.parseBoolean(value));
                         cfg.battleModule_mythical.save();
                     }
                     case "ultraBeast"      -> {
-                        cfg.battleModule_ultraBeast.set(value);
+                        cfg.battleModule_ultraBeast.set(Boolean.parseBoolean(value));
                         cfg.battleModule_ultraBeast.save();
                     }
                     case "shiny"           -> {
-                        cfg.battleModule_shiny.set(value);
+                        cfg.battleModule_shiny.set(Boolean.parseBoolean(value));
                         cfg.battleModule_shiny.save();
                     }
                     case "evoStages.singleEvo"    -> {
-                        cfg.battleModule_evoStages_singleEvo.set(value);
+                        cfg.battleModule_evoStages_singleEvo.set(Boolean.parseBoolean(value));
                         cfg.battleModule_evoStages_singleEvo.save();
                     }
                     case "evoStages.firstStageEvo"  -> {
-                        cfg.battleModule_evoStages_firstStageEvo.set(value);
+                        cfg.battleModule_evoStages_firstStageEvo.set(Boolean.parseBoolean(value));
                         cfg.battleModule_evoStages_firstStageEvo.save();
                     }
                     case "evoStages.secondStageEvo" -> {
-                        cfg.battleModule_evoStages_secondStageEvo.set(value);
+                        cfg.battleModule_evoStages_secondStageEvo.set(Boolean.parseBoolean(value));
                         cfg.battleModule_evoStages_secondStageEvo.save();
                     }
                     case "evoStages.finalStageEvo"  -> {
-                        cfg.battleModule_evoStages_finalStageEvo.set(value);
+                        cfg.battleModule_evoStages_finalStageEvo.set(Boolean.parseBoolean(value));
                         cfg.battleModule_evoStages_finalStageEvo.save();
                     }
                     default -> {
@@ -255,35 +258,35 @@ public final class ConfigureCommand {
                         cfg.catchingModule_restrictCatching.save();
                     }
                     case "legendary"        -> {
-                        cfg.catchingModule_legendary.set(value);
+                        cfg.catchingModule_legendary.set(Boolean.parseBoolean(value));
                         cfg.catchingModule_legendary.save();
                     }
                     case "mythical"         -> {
-                        cfg.catchingModule_mythical.set(value);
+                        cfg.catchingModule_mythical.set(Boolean.parseBoolean(value));
                         cfg.catchingModule_mythical.save();
                     }
                     case "ultraBeast"       -> {
-                        cfg.catchingModule_ultraBeast.set(value);
+                        cfg.catchingModule_ultraBeast.set(Boolean.parseBoolean(value));
                         cfg.catchingModule_ultraBeast.save();
                     }
                     case "shiny"            -> {
-                        cfg.catchingModule_shiny.set(value);
+                        cfg.catchingModule_shiny.set(Boolean.parseBoolean(value));
                         cfg.catchingModule_shiny.save();
                     }
                     case "evoStages.singleEvo"    -> {
-                        cfg.catchingModule_evoStages_singleEvo.set(value);
+                        cfg.catchingModule_evoStages_singleEvo.set(Boolean.parseBoolean(value));
                         cfg.catchingModule_evoStages_singleEvo.save();
                     }
                     case "evoStages.firstStageEvo"  -> {
-                        cfg.catchingModule_evoStages_firstStageEvo.set(value);
+                        cfg.catchingModule_evoStages_firstStageEvo.set(Boolean.parseBoolean(value));
                         cfg.catchingModule_evoStages_firstStageEvo.save();
                     }
                     case "evoStages.secondStageEvo" -> {
-                        cfg.catchingModule_evoStages_secondStageEvo.set(value);
+                        cfg.catchingModule_evoStages_secondStageEvo.set(Boolean.parseBoolean(value));
                         cfg.catchingModule_evoStages_secondStageEvo.save();
                     }
                     case "evoStages.finalStageEvo"  -> {
-                        cfg.catchingModule_evoStages_finalStageEvo.set(value);
+                        cfg.catchingModule_evoStages_finalStageEvo.set(Boolean.parseBoolean(value));
                         cfg.catchingModule_evoStages_finalStageEvo.save();
                     }
                     default -> {
@@ -302,19 +305,19 @@ public final class ConfigureCommand {
                         cfg.levelingModule_restrictLeveling.save();
                     }
                     case "evoStages.singleEvo"    -> {
-                        cfg.levelingModule_evoStages_singleEvo.set(value);
+                        cfg.levelingModule_evoStages_singleEvo.set(Boolean.parseBoolean(value));
                         cfg.levelingModule_evoStages_singleEvo.save();
                     }
                     case "evoStages.firstStageEvo"  -> {
-                        cfg.levelingModule_evoStages_firstStageEvo.set(value);
+                        cfg.levelingModule_evoStages_firstStageEvo.set(Boolean.parseBoolean(value));
                         cfg.levelingModule_evoStages_firstStageEvo.save();
                     }
                     case "evoStages.secondStageEvo" -> {
-                        cfg.levelingModule_evoStages_secondStageEvo.set(value);
+                        cfg.levelingModule_evoStages_secondStageEvo.set(Boolean.parseBoolean(value));
                         cfg.levelingModule_evoStages_secondStageEvo.save();
                     }
                     case "evoStages.finalStageEvo"  -> {
-                        cfg.levelingModule_evoStages_finalStageEvo.set(value);
+                        cfg.levelingModule_evoStages_finalStageEvo.set(Boolean.parseBoolean(value));
                         cfg.levelingModule_evoStages_finalStageEvo.save();
                     }
                     default -> {

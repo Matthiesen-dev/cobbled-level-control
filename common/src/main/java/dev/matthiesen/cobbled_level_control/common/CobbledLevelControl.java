@@ -5,6 +5,7 @@ import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
 import dev.matthiesen.cobbled_level_control.common.client.HudClientState;
 import dev.matthiesen.cobbled_level_control.common.commands.LevelControlCommand;
 import dev.matthiesen.cobbled_level_control.common.config.CLCConfig;
+import dev.matthiesen.cobbled_level_control.common.config.def.PermSet;
 import dev.matthiesen.cobbled_level_control.common.network.CLCStatusHudSyncS2CPacket;
 import dev.matthiesen.cobbled_level_control.common.permissions.PermissionHelpers;
 import dev.matthiesen.cobbled_level_control.common.runtime.data.StoredPlayerAccountRecords;
@@ -210,8 +211,8 @@ public final class CobbledLevelControl extends AbstractCommonMod {
                 || hasMissingPermission(player, levelingConfig.evolutionStages().finalStageEvo());
     }
 
-    private boolean hasMissingPermission(ServerPlayer player, String permissionNode) {
-        return !permissionNode.isEmpty() && PermissionHelpers.doesNotHavePermission(player, permissionNode);
+    private boolean hasMissingPermission(ServerPlayer player, PermSet permissionNode) {
+        return PermissionHelpers.doesNotHavePermission(player, permissionNode);
     }
 
     private String computeWarning(boolean hasPermissionLocks, boolean capExceeded, boolean dataAvailable) {

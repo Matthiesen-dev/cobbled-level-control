@@ -12,33 +12,33 @@ public final class ServerConfig {
 
     // Battle Module Config
     public ModConfigSpec.BooleanValue battleModule_restrictBattles;
-    public ModConfigSpec.ConfigValue<String> battleModule_legendary;
-    public ModConfigSpec.ConfigValue<String> battleModule_mythical;
-    public ModConfigSpec.ConfigValue<String> battleModule_ultraBeast;
-    public ModConfigSpec.ConfigValue<String> battleModule_shiny;
-    public ModConfigSpec.ConfigValue<String> battleModule_evoStages_singleEvo;
-    public ModConfigSpec.ConfigValue<String> battleModule_evoStages_firstStageEvo;
-    public ModConfigSpec.ConfigValue<String> battleModule_evoStages_secondStageEvo;
-    public ModConfigSpec.ConfigValue<String> battleModule_evoStages_finalStageEvo;
+    public ModConfigSpec.BooleanValue battleModule_legendary;
+    public ModConfigSpec.BooleanValue battleModule_mythical;
+    public ModConfigSpec.BooleanValue battleModule_ultraBeast;
+    public ModConfigSpec.BooleanValue battleModule_shiny;
+    public ModConfigSpec.BooleanValue battleModule_evoStages_singleEvo;
+    public ModConfigSpec.BooleanValue battleModule_evoStages_firstStageEvo;
+    public ModConfigSpec.BooleanValue battleModule_evoStages_secondStageEvo;
+    public ModConfigSpec.BooleanValue battleModule_evoStages_finalStageEvo;
 
     // Catching Module Config
     public ModConfigSpec.BooleanValue catchingModule_restrictCatching;
-    public ModConfigSpec.ConfigValue<String> catchingModule_legendary;
-    public ModConfigSpec.ConfigValue<String> catchingModule_mythical;
-    public ModConfigSpec.ConfigValue<String> catchingModule_ultraBeast;
-    public ModConfigSpec.ConfigValue<String> catchingModule_shiny;
-    public ModConfigSpec.ConfigValue<String> catchingModule_evoStages_singleEvo;
-    public ModConfigSpec.ConfigValue<String> catchingModule_evoStages_firstStageEvo;
-    public ModConfigSpec.ConfigValue<String> catchingModule_evoStages_secondStageEvo;
-    public ModConfigSpec.ConfigValue<String> catchingModule_evoStages_finalStageEvo;
+    public ModConfigSpec.BooleanValue catchingModule_legendary;
+    public ModConfigSpec.BooleanValue catchingModule_mythical;
+    public ModConfigSpec.BooleanValue catchingModule_ultraBeast;
+    public ModConfigSpec.BooleanValue catchingModule_shiny;
+    public ModConfigSpec.BooleanValue catchingModule_evoStages_singleEvo;
+    public ModConfigSpec.BooleanValue catchingModule_evoStages_firstStageEvo;
+    public ModConfigSpec.BooleanValue catchingModule_evoStages_secondStageEvo;
+    public ModConfigSpec.BooleanValue catchingModule_evoStages_finalStageEvo;
     public ModConfigSpec.ConfigValue<List<? extends Config>> catchingModule_tiersConfig;
 
     // Leveling Module Config
     public ModConfigSpec.BooleanValue levelingModule_restrictLeveling;
-    public ModConfigSpec.ConfigValue<String> levelingModule_evoStages_singleEvo;
-    public ModConfigSpec.ConfigValue<String> levelingModule_evoStages_firstStageEvo;
-    public ModConfigSpec.ConfigValue<String> levelingModule_evoStages_secondStageEvo;
-    public ModConfigSpec.ConfigValue<String> levelingModule_evoStages_finalStageEvo;
+    public ModConfigSpec.BooleanValue levelingModule_evoStages_singleEvo;
+    public ModConfigSpec.BooleanValue levelingModule_evoStages_firstStageEvo;
+    public ModConfigSpec.BooleanValue levelingModule_evoStages_secondStageEvo;
+    public ModConfigSpec.BooleanValue levelingModule_evoStages_finalStageEvo;
     public ModConfigSpec.ConfigValue<List<? extends Config>> levelingModule_tiersConfig;
 
     // Spawn Config
@@ -88,63 +88,63 @@ public final class ServerConfig {
                         "If set to false, players will be able to battle with any Pokémon regardless of their level"
                 )
                 .translation("cobbled_level_control.configuration.server.main.battleModule.restrictBattles")
-                .define("restrictBattles", true);
+                .define("restrictBattles", false);
         battleModule_legendary = builder.comment(
-                        "The Required permission node for legendary Pokémon that players can battle with",
+                        "If the player requires a permission node for legendary Pokémon that players can battle with",
                         "If a player tries to battle with a legendary Pokémon without the required permission, they will be prevented from doing so",
-                        "Note: If this field is empty, there will be no restriction"
+                        "Note: If this field is false, there will be no restriction"
                 )
                 .translation("cobbled_level_control.configuration.server.main.battleModule.legendary")
-                .define("legendary", "cobbled_level_control.battles.legendary");
+                .define("legendary", true);
         battleModule_mythical = builder.comment(
-                        "The Required permission node for mythical Pokémon that players can battle with",
+                        "If the player requires a permission node for mythical Pokémon that players can battle with",
                         "If a player tries to battle with a mythical Pokémon without the required permission, they will be prevented from doing so",
-                        "Note: If this field is empty, there will be no restriction"
+                        "Note: If this field is false, there will be no restriction"
                 )
                 .translation("cobbled_level_control.configuration.server.main.battleModule.mythical")
-                .define("mythical", "cobbled_level_control.battles.mythical");
+                .define("mythical", true);
         battleModule_ultraBeast = builder.comment(
-                        "The Required permission node for ultra beast Pokémon that players can battle with",
+                        "If the player requires a permission node for ultra beast Pokémon that players can battle with",
                         "If a player tries to battle with an ultra beast Pokémon without the required permission, they will be prevented from doing so",
-                        "Note: If this field is empty, there will be no restriction"
+                        "Note: If this field is false, there will be no restriction"
                 )
                 .translation("cobbled_level_control.configuration.server.main.battleModule.ultraBeast")
-                .define("ultraBeast", "cobbled_level_control.battles.ultraBeast");
+                .define("ultraBeast", true);
         battleModule_shiny = builder.comment(
-                        "The Required permission node for shiny Pokémon that players can battle with",
+                        "If the player requires a permission node for shiny Pokémon that players can battle with",
                         "If a player tries to battle with a shiny Pokémon without the required permission, they will be prevented from doing so",
-                        "Note: If this field is empty, there will be no restriction"
+                        "Note: If this field is false, there will be no restriction"
                 )
                 .translation("cobbled_level_control.configuration.server.main.battleModule.shiny")
-                .define("shiny", "cobbled_level_control.battles.shiny");
+                .define("shiny", true);
         battleModule_evoStages_singleEvo = builder.comment(
-                        "The Required permission node for single evolution stage Pokémon that players can battle with",
+                        "If the player requires a permission node for single evolution stage Pokémon that players can battle with",
                         "If a player tries to battle with a single evolution stage Pokémon without the required permission, they will be prevented from doing so",
-                        "Note: If this field is empty, there will be no restriction"
+                        "Note: If this field is false, there will be no restriction"
                 )
                 .translation("cobbled_level_control.configuration.server.main.battleModule.evoStages.singleEvo")
-                .define("evoStages.singleEvo", "");
+                .define("evoStages.singleEvo", false);
         battleModule_evoStages_firstStageEvo = builder.comment(
-                        "The Required permission node for first evolution stage Pokémon that players can battle with",
+                        "If the player requires a permission node for first evolution stage Pokémon that players can battle with",
                         "If a player tries to battle with a first evolution stage Pokémon without the required permission, they will be prevented from doing so",
-                        "Note: If this field is empty, there will be no restriction"
+                        "Note: If this field is false, there will be no restriction"
                 )
                 .translation("cobbled_level_control.configuration.server.main.battleModule.evoStages.firstStageEvo")
-                .define("evoStages.firstStageEvo", "");
+                .define("evoStages.firstStageEvo", false);
         battleModule_evoStages_secondStageEvo = builder.comment(
-                        "The Required permission node for second evolution stage Pokémon that players can battle with",
+                        "If the player requires a permission node for second evolution stage Pokémon that players can battle with",
                         "If a player tries to battle with a second evolution stage Pokémon without the required permission, they will be prevented from doing so",
-                        "Note: If this field is empty, there will be no restriction"
+                        "Note: If this field is false, there will be no restriction"
                 )
                 .translation("cobbled_level_control.configuration.server.main.battleModule.evoStages.secondStageEvo")
-                .define("evoStages.secondStageEvo", "cobbled_level_control.battles.evoStages.secondStageEvo");
+                .define("evoStages.secondStageEvo", true);
         battleModule_evoStages_finalStageEvo = builder.comment(
-                        "The Required permission node for final evolution stage Pokémon that players can battle with",
+                        "If the player requires a permission node for final evolution stage Pokémon that players can battle with",
                         "If a player tries to battle with a final evolution stage Pokémon without the required permission, they will be prevented from doing so",
-                        "Note: If this field is empty, there will be no restriction"
+                        "Note: If this field is false, there will be no restriction"
                 )
                 .translation("cobbled_level_control.configuration.server.main.battleModule.evoStages.finalStageEvo")
-                .define("evoStages.finalStageEvo", "cobbled_level_control.battles.evoStages.finalStageEvo");
+                .define("evoStages.finalStageEvo", true);
         builder.pop(); // Closes "server.main.battleModule"
 
         builder.comment("Catching Module Configuration")
@@ -157,61 +157,61 @@ public final class ServerConfig {
                 .translation("cobbled_level_control.configuration.server.main.catchingModule.restrictCatching")
                 .define("restrictCatching", true);
         catchingModule_legendary = builder.comment(
-                        "The Required permission node for legendary Pokémon that players can catch",
+                        "If the player requires a permission node for legendary Pokémon that players can catch",
                         "If a player tries to catch a legendary Pokémon without the required permission, they will be prevented from doing so",
-                        "Note: If this field is empty, there will be no restriction"
+                        "Note: If this field is false, there will be no restriction"
                 )
                 .translation("cobbled_level_control.configuration.server.main.catchingModule.legendary")
-                .define("legendary", "cobbled_level_control.catching.legendary");
+                .define("legendary", true);
         catchingModule_mythical = builder.comment(
-                        "The Required permission node for mythical Pokémon that players can catch",
+                        "If the player requires a permission node for mythical Pokémon that players can catch",
                         "If a player tries to catch a mythical Pokémon without the required permission, they will be prevented from doing so",
-                        "Note: If this field is empty, there will be no restriction"
+                        "Note: If this field is false, there will be no restriction"
                 )
                 .translation("cobbled_level_control.configuration.server.main.catchingModule.mythical")
-                .define("mythical", "cobbled_level_control.catching.mythical");
+                .define("mythical", true);
         catchingModule_ultraBeast = builder.comment(
-                        "The Required permission node for ultra beast Pokémon that players can catch",
+                        "If the player requires a permission node for ultra beast Pokémon that players can catch",
                         "If a player tries to catch an ultra beast Pokémon without the required permission, they will be prevented from doing so",
-                        "Note: If this field is empty, there will be no restriction"
+                        "Note: If this field is false, there will be no restriction"
                 )
                 .translation("cobbled_level_control.configuration.server.main.catchingModule.ultraBeast")
-                .define("ultraBeast", "cobbled_level_control.catching.ultraBeast");
+                .define("ultraBeast", true);
         catchingModule_shiny = builder.comment(
-                        "The Required permission node for shiny Pokémon that players can catch",
+                        "If the player requires a permission node for shiny Pokémon that players can catch",
                         "If a player tries to catch a shiny Pokémon without the required permission, they will be prevented from doing so",
-                        "Note: If this field is empty, there will be no restriction"
+                        "Note: If this field is false, there will be no restriction"
                 )
                 .translation("cobbled_level_control.configuration.server.main.catchingModule.shiny")
-                .define("shiny", "cobbled_level_control.catching.shiny");
+                .define("shiny", true);
         catchingModule_evoStages_singleEvo = builder.comment(
-                        "The Required permission node for single evolution stage Pokémon that players can catch",
+                        "If the player requires a permission node for single evolution stage Pokémon that players can catch",
                         "If a player tries to catch a single evolution stage Pokémon without the required permission, they will be prevented from doing so",
-                        "Note: If this field is empty, there will be no restriction"
+                        "Note: If this field is false, there will be no restriction"
                 )
                 .translation("cobbled_level_control.configuration.server.main.catchingModule.evoStages.singleEvo")
-                .define("evoStages.singleEvo", "");
+                .define("evoStages.singleEvo", false);
         catchingModule_evoStages_firstStageEvo = builder.comment(
-                        "The Required permission node for first evolution stage Pokémon that players can catch",
+                        "If the player requires a permission node for first evolution stage Pokémon that players can catch",
                         "If a player tries to catch a first evolution stage Pokémon without the required permission, they will be prevented from doing so",
-                        "Note: If this field is empty, there will be no restriction"
+                        "Note: If this field is false, there will be no restriction"
                 )
                 .translation("cobbled_level_control.configuration.server.main.catchingModule.evoStages.firstStageEvo")
-                .define("evoStages.firstStageEvo", "");
+                .define("evoStages.firstStageEvo", false);
         catchingModule_evoStages_secondStageEvo = builder.comment(
-                        "The Required permission node for second evolution stage Pokémon that players can catch",
+                        "If the player requires a permission node for second evolution stage Pokémon that players can catch",
                         "If a player tries to catch a second evolution stage Pokémon without the required permission, they will be prevented from doing so",
-                        "Note: If this field is empty, there will be no restriction"
+                        "Note: If this field is false, there will be no restriction"
                 )
                 .translation("cobbled_level_control.configuration.server.main.catchingModule.evoStages.secondStageEvo")
-                .define("evoStages.secondStageEvo", "cobbled_level_control.catching.evoStages.secondStageEvo");
+                .define("evoStages.secondStageEvo", true);
         catchingModule_evoStages_finalStageEvo = builder.comment(
-                        "The Required permission node for final evolution stage Pokémon that players can catch",
+                        "If the player requires a permission node for final evolution stage Pokémon that players can catch",
                         "If a player tries to catch a final evolution stage Pokémon without the required permission, they will be prevented from doing so",
-                        "Note: If this field is empty, there will be no restriction"
+                        "Note: If this field is false, there will be no restriction"
                 )
                 .translation("cobbled_level_control.configuration.server.main.catchingModule.evoStages.finalStageEvo")
-                .define("evoStages.finalStageEvo", "cobbled_level_control.catching.evoStages.finalStageEvo");
+                .define("evoStages.finalStageEvo", true);
         catchingModule_tiersConfig = builder.comment(
                         "The configuration for the catching tiers",
                         "This configuration defines the tiers for catching and the required levels for each tier",
@@ -239,33 +239,33 @@ public final class ServerConfig {
                 .translation("cobbled_level_control.configuration.server.main.levelingModule.restrictLeveling")
                 .define("restrictLeveling", true);
         levelingModule_evoStages_singleEvo = builder.comment(
-                        "The Required permission node for single evolution stage Pokémon that players can level with",
+                        "If the player requires a permission node for single evolution stage Pokémon that players can level with",
                         "If a player tries to level with a single evolution stage Pokémon without the required permission, they will be prevented from doing so",
-                        "Note: If this field is empty, there will be no restriction"
+                        "Note: If this field is false, there will be no restriction"
                 )
                 .translation("cobbled_level_control.configuration.server.main.levelingModule.evoStages.singleEvo")
-                .define("evoStages.singleEvo", "");
+                .define("evoStages.singleEvo", false);
         levelingModule_evoStages_firstStageEvo = builder.comment(
-                        "The Required permission node for first evolution stage Pokémon that players can level with",
+                        "If the player requires a permission node for first evolution stage Pokémon that players can level with",
                         "If a player tries to level with a first evolution stage Pokémon without the required permission, they will be prevented from doing so",
-                        "Note: If this field is empty, there will be no restriction"
+                        "Note: If this field is false, there will be no restriction"
                 )
                 .translation("cobbled_level_control.configuration.server.main.levelingModule.evoStages.firstStageEvo")
-                .define("evoStages.firstStageEvo", "");
+                .define("evoStages.firstStageEvo", false);
         levelingModule_evoStages_secondStageEvo = builder.comment(
-                        "The Required permission node for second evolution stage Pokémon that players can level with",
+                        "If the player requires a permission node for second evolution stage Pokémon that players can level with",
                         "If a player tries to level with a second evolution stage Pokémon without the required permission, they will be prevented from doing so",
-                        "Note: If this field is empty, there will be no restriction"
+                        "Note: If this field is false, there will be no restriction"
                 )
                 .translation("cobbled_level_control.configuration.server.main.levelingModule.evoStages.secondStageEvo")
-                .define("evoStages.secondStageEvo", "cobbled_level_control.leveling.evoStages.secondStageEvo");
+                .define("evoStages.secondStageEvo", true);
         levelingModule_evoStages_finalStageEvo = builder.comment(
-                        "The Required permission node for final evolution stage Pokémon that players can level with",
+                        "If the player requires a permission node for final evolution stage Pokémon that players can level with",
                         "If a player tries to level with a final evolution stage Pokémon without the required permission, they will be prevented from doing so",
-                        "Note: If this field is empty, there will be no restriction"
+                        "Note: If this field is false, there will be no restriction"
                 )
                 .translation("cobbled_level_control.configuration.server.main.levelingModule.evoStages.finalStageEvo")
-                .define("evoStages.finalStageEvo", "cobbled_level_control.leveling.evoStages.finalStageEvo");
+                .define("evoStages.finalStageEvo", true);
         levelingModule_tiersConfig = builder.comment(
                         "The configuration for the leveling tiers",
                         "This configuration defines the tiers for leveling and the required levels for each tier",

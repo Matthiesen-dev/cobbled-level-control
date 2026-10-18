@@ -16,6 +16,7 @@ import com.cobblemon.mod.common.battles.pokemon.BattlePokemon;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
 import dev.matthiesen.cobbled_level_control.common.config.CLCConfig;
+import dev.matthiesen.cobbled_level_control.common.config.def.PermSet;
 import dev.matthiesen.cobbled_level_control.common.utils.PokemonUtility;
 import kotlin.Unit;
 import net.minecraft.ChatFormatting;
@@ -95,8 +96,8 @@ public final class BattleStartEventsListener {
                     }
 
                     PokemonUtility.EvoStage evoStage = PokemonUtility.getEvoStage(pokemon);
-                    String perm = Util.getPermissionString(evoStage, battleModule);
-                    if (!perm.isEmpty() && Util.conditionalCheck(player, perm, CLCConfig.SERVER_CONFIG.messages_error_missingPermission.get(), event)) {
+                    PermSet perm = Util.getPermissionString(evoStage, battleModule);
+                    if (Util.conditionalCheck(player, perm, CLCConfig.SERVER_CONFIG.messages_error_missingPermission.get(), event)) {
                         return Unit.INSTANCE;
                     }
                 }
