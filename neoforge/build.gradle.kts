@@ -26,6 +26,7 @@ dependencies {
     minecraft(libs.minecraft.net)
     mappings(loom.officialMojangMappings())
     neoForge(libs.neoforge)
+    modRuntimeOnly(libs.bundles.neoforgeModRuntimeOnly)
 
     libs.bundles.neoforgeModImplementation.get().forEach { dependency ->
         modImplementation(dependency.copy()) { isTransitive = false }

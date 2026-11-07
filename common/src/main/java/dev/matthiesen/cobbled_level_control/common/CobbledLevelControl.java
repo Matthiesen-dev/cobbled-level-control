@@ -1,5 +1,6 @@
 package dev.matthiesen.cobbled_level_control.common;
 
+import dev.faststats.Token;
 import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
 import dev.matthiesen.cobbled_level_control.common.client.HudClientState;
@@ -11,7 +12,6 @@ import dev.matthiesen.cobbled_level_control.common.permissions.PermissionHelpers
 import dev.matthiesen.cobbled_level_control.common.runtime.data.StoredPlayerAccountRecords;
 import dev.matthiesen.cobbled_level_control.common.runtime.events.CobblemonSubscriptionsManager;
 import dev.matthiesen.cobbled_level_control.common.runtime.molang.PlayerExtensions;
-import dev.matthiesen.libs.faststats.Token;
 import dev.matthiesen.matthiesen_core.common.AbstractCommonMod;
 import dev.matthiesen.matthiesen_core.common.api.events.PlatformEvents;
 import dev.matthiesen.matthiesen_core.common.api.events.server.PlayerEvent;

@@ -10,10 +10,10 @@ import dev.matthiesen.cobbled_level_control.common.CobbledLevelControl;
 import dev.matthiesen.cobbled_level_control.common.config.CLCConfig;
 import dev.matthiesen.cobbled_level_control.common.permissions.PermissionHelpers;
 import dev.matthiesen.matthiesen_core.common.api.command.CoreCommand;
+import dev.matthiesen.matthiesen_core.common.core.data.ServerUser;
+import dev.matthiesen.matthiesen_core.common.core.data.ServerUserArguments;
 import dev.matthiesen.matthiesen_core.common.utility.chat.ChatTableBuilder;
 import dev.matthiesen.matthiesen_core.common.utility.commands.CommandBuilder;
-import dev.matthiesen.matthiesen_core.common.utility.player_data.ServerUser;
-import dev.matthiesen.matthiesen_core.common.utility.player_data.ServerUserArgument;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -111,7 +111,7 @@ public final class LevelControlCommand implements CoreCommand {
             boolean hasPlayerArgument = context.getNodes().stream()
                     .anyMatch(node -> "player".equals(node.getNode().getName()));
             if (hasPlayerArgument) {
-                targetPlayer = ServerUserArgument.getUser(context, "player");
+                targetPlayer = ServerUserArguments.getUser(context, "player");
             } else {
                 targetPlayer = new ServerUser(source.getPlayerOrException());
             }
@@ -137,7 +137,7 @@ public final class LevelControlCommand implements CoreCommand {
     public int setLevel(CommandContext<CommandSourceStack> context) {
         var modInstance = CobbledLevelControl.INSTANCE;
         var source = context.getSource();
-        ServerUser player = ServerUserArgument.getUser(context, "player");
+        ServerUser player = ServerUserArguments.getUser(context, "player");
         String module = StringArgumentType.getString(context, "module");
         int level = IntegerArgumentType.getInteger(context, "level");
 
@@ -207,7 +207,7 @@ public final class LevelControlCommand implements CoreCommand {
 
     public int levelUp(CommandContext<CommandSourceStack> context) {
         var source = context.getSource();
-        ServerUser player = ServerUserArgument.getUser(context, "player");
+        ServerUser player = ServerUserArguments.getUser(context, "player");
         String module = StringArgumentType.getString(context, "module");
         var modInstance = CobbledLevelControl.INSTANCE;
         var playerData = modInstance.getStoredPlayerAccountRecords().getPlayerAccountRecord(player.getUUID());
